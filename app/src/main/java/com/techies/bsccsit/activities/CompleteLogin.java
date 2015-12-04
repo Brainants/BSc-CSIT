@@ -1,14 +1,20 @@
 package com.techies.bsccsit.activities;
 
+import android.content.SharedPreferences;
+import android.provider.SyncStateContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatSpinner;
+import android.util.Log;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -18,17 +24,24 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.dd.processbutton.iml.ActionProcessButton;
 import com.techies.bsccsit.R;
+import com.techies.bsccsit.retrofit.MyApi;
 
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+
 public class CompleteLogin extends AppCompatActivity {
 
-    TextView name,email, phoneNo;
+    EditText name,email, phoneNo;
     ActionProcessButton loginBtn;
     AppCompatSpinner semester,college;
+    private Bundle bundle;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +50,9 @@ public class CompleteLogin extends AppCompatActivity {
         //view initilize gareko
         initializeView();
 
-        Bundle bundle = getIntent().getExtras();
+        bundle = getIntent().getExtras();
+
+        editor = getSharedPreferences("loginInfo",MODE_PRIVATE).edit();
 
         //semester list bhoreko
         final String[] semsters = {"Select your semester","First Semester","Second Semester","Third Semester","Fourth Semester",
@@ -80,27 +95,32 @@ public class CompleteLogin extends AppCompatActivity {
 
     private void uploadDataToServer() {
         //under construction coz php file ready chaina
-        RequestQueue queue= Volley.newRequestQueue(this);
-        JsonObjectRequest request = new JsonObjectRequest("https://avaj.com.np/bsccsit/", new JSONObject(getParams()), new Response.Listener<JSONObject>() {
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint("https://avaaj.com.np")  //call your base url
+                .build();
+
+
+        MyApi mylogin = restAdapter.create(MyApi.class); //this is how retrofit create your api
+        mylogin.uploadUserData("1234115","Aawaz","3","1278","demo","demo",new Callback<String>() {
+
             @Override
-            public void onResponse(JSONObject response) {
+            public void success(String s, retrofit.client.Response response) {
 
             }
-        }, null);
-        queue.add(request);
+
+            @Override
+            public void failure(RetrofitError retrofitError) {
+                loginBtn.setErrorText("Failed...");
+            }
+        });
     }
 
-    protected HashMap<String, String> getParams() {
-        HashMap<String, String> params = new HashMap<String, String>();
-        params.put("token", "AbCdEfGh123456");
-        return params;
-    }
 
     public void initializeView(){
-        name= (TextView) findViewById(R.id.inputName);
-        email= (TextView) findViewById(R.id.inputEmail);
+        name= (EditText) findViewById(R.id.inputName);
+        email= (EditText) findViewById(R.id.inputEmail);
         college= (AppCompatSpinner) findViewById(R.id.inputCollege);
-        phoneNo= (TextView) findViewById(R.id.inputPhone);
+        phoneNo= (EditText) findViewById(R.id.inputPhone);
         semester= (AppCompatSpinner) findViewById(R.id.inputSemester);
         loginBtn= (ActionProcessButton) findViewById(R.id.verifyLoginButton);
     }

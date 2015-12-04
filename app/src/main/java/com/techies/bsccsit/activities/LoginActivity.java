@@ -37,8 +37,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        //FB initilize gareko
-        FacebookSdk.sdkInitialize(getApplicationContext());
         button= (FancyButton) findViewById(R.id.loginButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,11 +58,11 @@ public class LoginActivity extends AppCompatActivity {
 
                 //saving data to shared pref
                 editor = getSharedPreferences("loginInfo",MODE_PRIVATE).edit();
-                editor.putBoolean("loggedIn",true);
                 editor.putString("FirstName", Profile.getCurrentProfile().getFirstName());
                 editor.putString("LastName", Profile.getCurrentProfile().getLastName());
                 editor.putString("FullName", Profile.getCurrentProfile().getName());
                 editor.putString("UserID", Profile.getCurrentProfile().getId());
+                editor.putBoolean("loggedIn", true);
 
                 Bundle bundle= new Bundle();
                 bundle.putString("fields", "email");

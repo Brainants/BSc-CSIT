@@ -4,62 +4,67 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="facebook_app_id">930611757009782</string>
-<string-array name="collegeList">
-    <item>Select your college</item>
-    <item>Aberdeen International College</item>
-    <item>Academia Int\'l College</item>
-    <item>Aims College</item>
-    <item>Ambikeshwori Campus</item>
-    <item>Ambition College</item>
-    <item>Amrit Science Campus</item>
-    <item>Asian College of Higher Studies</item>
-    <item>Asian School of management and technology</item>
-    <item>Banke Bageshwori College</item>
-    <item>Birat Kshitiz College</item>
-    <item>Birat Multiple College</item>
-    <item>Birendra Memorial College</item>
-    <item>Birendra Multiple Campus</item>
-    <item>Butwal Multiple Campus</item>
-    <item>College of Applied Business</item>
-    <item>Deerwalk Institute of Technology</item>
-    <item>Hari Khetan Multiple Campus</item>
-    <item>Hetauda City College</item>
-    <item>HenryFord Int\'l College</item>
-    <item>Himalaya College of Engineering</item>
-    <item>Himalaya Darshan College</item>
-    <item>Indreni College</item>
-    <item>Kathford Int\'l college of Engineering and Management</item>
-    <item>Kathmandu BernHardt College</item>
-    <item>Lumbini ICT College</item>
-    <item>Madan Bhandari Memorial College</item>
-    <item>Mahendra Morang Adarsha Multiple Campus</item>
-    <item>Mission College</item>
-    <item>Mount Annapurna Campus</item>
-    <item>Nagarjuna College of IT</item>
-    <item>National College of Computer Studies</item>
-    <item>National Infotech College</item>
-    <item>Nepalgunj College</item>
-    <item>Nepathya College</item>
-    <item>New Summit College</item>
-    <item>Nihareeka College</item>
-    <item>NIST College</item>
-    <item>Orchid Int\'l College</item>
-    <item>Patan Multiple Campus</item>
-    <item>Prime College</item>
-    <item>RamSwaroop Ramsagar Multiple Campus</item>
-    <item>Sagarmatha College of Science and Technology</item>
-    <item>Samajik College</item>
-    <item>Samriddhi College</item>
-    <item>Shaheed Smriti Multiple Campus</item>
-    <item>Shree Yantra College</item>
-    <item>Siddhanath Science Campus</item>
-    <item>Soch College of IT</item>
-    <item>St.Lawrence College</item>
-    <item>St.Xavier\'s College</item>
-    <item>Sushma and Godawari College</item>
-    <item>Swastik College</item>
-    <item>Texas Int\'l College</item>
-    <item>Tinau Technical College</item>
-    <item>Trinity Int\'l College</item>
-</string-array>
+    <string-array name="collegeList">
+        <item>Select your college</item>
+        <item>Aberdeen International College</item>
+        <item>Academia Int\'l College</item>
+        <item>Aims College</item>
+        <item>Ambikeshwori Campus</item>
+        <item>Ambition College</item>
+        <item>Amrit Science Campus</item>
+        <item>Asian College of Higher Studies</item>
+        <item>Asian School of management and technology</item>
+        <item>Banke Bageshwori College</item>
+        <item>Birat Kshitiz College</item>
+        <item>Birat Multiple College</item>
+        <item>Birendra Memorial College</item>
+        <item>Birendra Multiple Campus</item>
+        <item>Butwal Multiple Campus</item>
+        <item>College of Applied Business</item>
+        <item>Deerwalk Institute of Technology</item>
+        <item>Hari Khetan Multiple Campus</item>
+        <item>Hetauda City College</item>
+        <item>HenryFord Int\'l College</item>
+        <item>Himalaya College of Engineering</item>
+        <item>Himalaya Darshan College</item>
+        <item>Indreni College</item>
+        <item>Kathford Int\'l college of Engineering and Management</item>
+        <item>Kathmandu BernHardt College</item>
+        <item>Lumbini ICT College</item>
+        <item>Madan Bhandari Memorial College</item>
+        <item>Mahendra Morang Adarsha Multiple Campus</item>
+        <item>Mission College</item>
+        <item>Mount Annapurna Campus</item>
+        <item>Nagarjuna College of IT</item>
+        <item>National College of Computer Studies</item>
+        <item>National Infotech College</item>
+        <item>Nepalgunj College</item>
+        <item>Nepathya College</item>
+        <item>New Summit College</item>
+        <item>Nihareeka College</item>
+        <item>NIST College</item>
+        <item>Orchid Int\'l College</item>
+        <item>Patan Multiple Campus</item>
+        <item>Prime College</item>
+        <item>RamSwaroop Ramsagar Multiple Campus</item>
+        <item>Sagarmatha College of Science and Technology</item>
+        <item>Samajik College</item>
+        <item>Samriddhi College</item>
+        <item>Shaheed Smriti Multiple Campus</item>
+        <item>Shree Yantra College</item>
+        <item>Siddhanath Science Campus</item>
+        <item>Soch College of IT</item>
+        <item>St.Lawrence College</item>
+        <item>St.Xavier\'s College</item>
+        <item>Sushma and Godawari College</item>
+        <item>Swastik College</item>
+        <item>Texas Int\'l College</item>
+        <item>Tinau Technical College</item>
+        <item>Trinity Int\'l College</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="Open">Open</string>
+    <string name="Close">Close</string>
 </resources>

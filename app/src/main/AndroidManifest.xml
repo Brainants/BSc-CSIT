@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".advance.MyApp"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
@@ -32,9 +33,10 @@
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
-        <activity android:name=".activities.CompleteLogin"
+        <activity
+            android:name=".activities.CompleteLogin"
             android:theme="@style/FullscreenTheme" />
+        <activity android:name=".activities.Settings"></activity>
     </application>
 
 </manifest>

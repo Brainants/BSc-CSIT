@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/coreMenu" android:checkableBehavior="single">
+
+        <item android:id="@+id/newsEvent"
+            android:icon="@drawable/news"
+            android:checked="true"
+            android:title="News/Events"/>
+
+        <item android:id="@+id/elibrary"
+            android:icon="@drawable/elibrary"
+            android:title="E-library"/>
+
+        <item android:id="@+id/projects"
+            android:icon="@drawable/projects"
+            android:title="Projects"/>
+
+        <item android:id="@+id/community"
+            android:icon="@drawable/community"
+            android:title="Communities"/>
+
+        <item android:id="@+id/fourm"
+            android:icon="@drawable/forum"
+            android:title="Forum"/>
+
+        <group android:checkableBehavior="single">
+                <item android:id="@+id/setting"
+                    android:icon="@drawable/setting"
+                    android:title="Settings"/>
+
+            <item android:id="@+id/about"
+                android:icon="@drawable/about"
+                android:title="About Us"/>
+
+            <item android:id="@+id/rate_us"
+                android:icon="@drawable/rate"
+                android:title="Rate Us"/>
+        </group>
+    </group>
+
+</menu>
