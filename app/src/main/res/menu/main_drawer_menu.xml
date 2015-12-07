@@ -7,6 +7,10 @@
             android:checked="true"
             android:title="News/Events"/>
 
+        <item android:id="@+id/TUNotices"
+            android:icon="@drawable/notice"
+            android:title="TU Notices"/>
+
         <item android:id="@+id/elibrary"
             android:icon="@drawable/elibrary"
             android:title="E-library"/>

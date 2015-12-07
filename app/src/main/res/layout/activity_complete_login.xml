@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
     tools:context="com.techies.bsccsit.activities.CompleteLogin">
 
     <TextView
@@ -39,6 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_marginBottom="5dp"
                 android:id="@+id/inputName"
+                android:inputType="textPersonName"
                 android:layout_height="wrap_content" />
             <TextView
                 android:layout_width="wrap_content"
@@ -49,26 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_marginBottom="5dp"
                 android:id="@+id/inputEmail"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:text="Semester"
-                android:textColor="@color/black"
-                android:layout_height="wrap_content" />
-            <android.support.v7.widget.AppCompatSpinner
-                android:layout_width="match_parent"
-                android:layout_marginBottom="5dp"
-                android:id="@+id/inputSemester"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:text="College"
-                android:textColor="@color/black"
-                android:layout_height="wrap_content" />
-            <android.support.v7.widget.AppCompatSpinner
-                android:layout_width="match_parent"
-                android:layout_marginBottom="5dp"
-                android:id="@+id/inputCollege"
+                android:inputType="textEmailAddress"
                 android:layout_height="wrap_content" />
             <TextView
                 android:layout_width="wrap_content"
@@ -78,29 +59,42 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_marginBottom="5dp"
-                android:inputType="number"
+                android:inputType="phone"
                 android:id="@+id/inputPhone"
                 android:layout_height="wrap_content" />
-
-            <com.dd.processbutton.iml.ActionProcessButton
-                android:id="@+id/verifyLoginButton"
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="College"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content" />
+            <android.support.v7.widget.AppCompatSpinner
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:text="Continue..."
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
-                custom:pb_colorComplete="@color/green_complete"
-                custom:pb_colorNormal="@color/blue_normal"
-                custom:pb_colorPressed="@color/blue_pressed"
-                custom:pb_colorProgress="@color/purple_progress"
-                custom:pb_textComplete="Success"
-                custom:pb_textProgress="Logging in"
-                custom:pb_textError="Error"
-                custom:pb_colorError="@color/red_error" />
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:id="@+id/inputCollege"
+                android:layout_height="40dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="Semester"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content" />
+            <android.support.v7.widget.AppCompatSpinner
+                android:layout_width="match_parent"
+                android:layout_marginBottom="5dp"
+                android:id="@+id/inputSemester"
+                android:layout_marginTop="5dp"
+                android:layout_height="40dp" />
 
         </LinearLayout>
     </ScrollView>
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/arrow_right"
+        android:layout_alignParentRight="true"
+        android:layout_margin="16dp"
+        android:id="@+id/continueButton"
+        android:layout_height="wrap_content" />
 
 
 </RelativeLayout>

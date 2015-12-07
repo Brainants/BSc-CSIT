@@ -29,9 +29,18 @@
 
         <RelativeLayout
             android:id="@+id/fragHolder"
-            android:layout_width="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/message_plus"
+            android:id="@+id/mainFab"
+            app:layout_anchor="@id/fragHolder"
+            app:layout_anchorGravity="bottom|right|end"
+            android:layout_margin="16dp"/>
 
     </android.support.design.widget.CoordinatorLayout>
 

@@ -71,5 +71,4 @@ public class NewsEvents extends Fragment {
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_news_events, container, false);
     }
-
 }

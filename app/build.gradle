@@ -21,11 +21,9 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-
     compile('com.github.afollestad.material-dialogs:core:0.8.5.1@aar') {
         transitive = true
     }
-
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
     compile 'com.android.support:support-v4:23.1.1'
@@ -33,11 +31,8 @@ dependencies {
     compile 'com.android.support:cardview-v7:23.1.1'
     compile 'com.facebook.android:facebook-android-sdk:4.7.0'
     compile 'com.github.medyo:fancybuttons:1.5@aar'
-    compile 'com.beardedhen:androidbootstrap:2.0.0'
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.mcxiaoke.volley:library:1.0.19'
-    compile 'com.squareup.retrofit:retrofit:1.7.1'
     compile 'com.github.johnkil.android-robototextview:robototextview:2.4.2'
-    compile 'com.github.dmytrodanylyk.android-process-button:library:1.0.4'
 }

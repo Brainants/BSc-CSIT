@@ -2,53 +2,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     xmlns:fancy="http://schemas.android.com/apk/res-auto"
     tools:context="com.techies.bsccsit.activities.LoginActivity">
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_height="match_parent">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/logo"
+        android:layout_centerInParent="true"
+        android:src="@drawable/logo"/>
     <com.devspark.robototextview.widget.RobotoTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="10dp"
+        android:layout_below="@+id/logo"
         android:textColor="@color/colorPrimary"
         android:textSize="25dp"
         android:text="Bsc CSIT"/>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:orientation="vertical"
-        android:layout_centerInParent="true"
-        android:layout_height="wrap_content">
+    </RelativeLayout>
     <mehdi.sakout.fancybuttons.FancyButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:padding="20dp"
         fancy:fb_borderColor="#FFFFFF"
         fancy:fb_defaultColor="#3b5998"
-        fancy:fb_radius="10dp"
+        android:layout_alignParentBottom="true"
         fancy:fb_focusColor="#5474b8"
         fancy:fb_fontIconResource="\uf082"
         fancy:fb_iconPosition="left"
         fancy:fb_text="Login with Facebook"
         fancy:fb_textColor="#FFFFFF"
         android:id="@+id/loginButton" />
-
-        <com.devspark.robototextview.widget.RobotoTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="10dp"
-            android:textColor="@color/colorPrimary"
-            android:textSize="25dp"
-            android:text="Or"/>
-        <com.devspark.robototextview.widget.RobotoTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="10dp"
-            android:textColor="@color/colorPrimary"
-            android:textSize="15dp"
-            android:text="Use old method"/>
-    </LinearLayout>
 </RelativeLayout>

@@ -26,18 +26,18 @@ import mehdi.sakout.fancybuttons.FancyButton;
 
 public class LoginActivity extends AppCompatActivity {
 
-    FancyButton button;
-    LoginButton loginButton;
-    CallbackManager callbackManager;
-    SharedPreferences.Editor editor;
+    private LoginButton loginButton;
+    private CallbackManager callbackManager;
+    private SharedPreferences.Editor editor;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        FacebookSdk.sdkInitialize(this);
 
-        button= (FancyButton) findViewById(R.id.loginButton);
+        FancyButton button = (FancyButton) findViewById(R.id.loginButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,10 +62,11 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putString("LastName", Profile.getCurrentProfile().getLastName());
                 editor.putString("FullName", Profile.getCurrentProfile().getName());
                 editor.putString("UserID", Profile.getCurrentProfile().getId());
-                editor.putBoolean("loggedIn", true);
+                editor.putBoolean("loggedFirstIn", true);
 
                 Bundle bundle= new Bundle();
                 bundle.putString("fields", "email");
+
                 //user ko email taneko
                 new GraphRequest(AccessToken.getCurrentAccessToken(), "me",bundle, HttpMethod.GET, new GraphRequest.Callback() {
                     @Override
@@ -74,14 +75,9 @@ public class LoginActivity extends AppCompatActivity {
                             //email save garera complete login activity ma name ani email pass gareko
                             editor.putString("email", response.getJSONObject().getString("email"));
                             editor.apply();
-                            startActivity(new Intent(LoginActivity.this,CompleteLogin.class)
-                                    .putExtra("name",Profile.getCurrentProfile().getName())
-                                    .putExtra("userID",Profile.getCurrentProfile().getId())
-                                    .putExtra("email",response.getJSONObject().getString("email")));
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                            startActivity(new Intent(LoginActivity.this,CompleteLogin.class));
+                            finish();
+                        } catch (JSONException ignored) {}
                     }
                 }).executeAsync();
             }
@@ -94,7 +90,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onError(FacebookException e) {
                 Toast.makeText(LoginActivity.this, "Something went wrong. Please try again." + e, Toast.LENGTH_SHORT).show();
-                finish();
             }
         });
     }
