@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private FragmentManager manager;
     private int previous;
     public static FloatingActionButton fab;
+    private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +53,14 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         }
+        if(!pref.getBoolean("datas",false))
+            downloadFirstDatas();
+
 
         final Toolbar toolbar=(Toolbar) findViewById(R.id.toolbarMain);
+
         NavigationView navigationView= (NavigationView) findViewById(R.id.naviView);
-        final DrawerLayout drawerLayout= (DrawerLayout) findViewById(R.id.drawerLayout);
+        drawerLayout= (DrawerLayout) findViewById(R.id.drawerLayout);
         View view= navigationView.getHeaderView(0);
         final CircleImageView imageView1= (CircleImageView) view.findViewById(R.id.profilePicture);
         TextView name= (TextView) view.findViewById(R.id.nameHeader);
@@ -77,6 +82,9 @@ public class MainActivity extends AppCompatActivity {
         email.setText(getSharedPreferences("loginInfo",MODE_PRIVATE).getString("email",""));
 
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
         setTitle("Home");
 
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
@@ -152,7 +160,21 @@ public class MainActivity extends AppCompatActivity {
         fab.setVisibility(View.GONE);
         manager.beginTransaction().replace(R.id.fragHolder,new NewsEvents()).commit();
     }
+
+    private void downloadFirstDatas() {
+
+    }
+
     public FloatingActionButton getMainFAB(){
         return fab;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+               drawerLayout.openDrawer(findViewById(R.id.naviView));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

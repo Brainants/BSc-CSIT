@@ -4,11 +4,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSpinner;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,10 +21,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.facebook.FacebookSdk;
-import com.facebook.Profile;
 import com.techies.bsccsit.R;
+import com.techies.bsccsit.advance.Singleton;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -70,13 +69,13 @@ public class CompleteLogin extends AppCompatActivity implements AdapterView.OnIt
         SharedPreferences pref = getSharedPreferences("loginInfo", MODE_PRIVATE);
 
         //login activiy bata aako name edit text ma halera seal gareko
-        if(pref.getString("FullName","")!=null) {
+        if(!pref.getString("FullName","").equals("")) {
             name.setText(pref.getString("FullName",""));
             name.setEnabled(false);
         }
 
         //login activiy bata aako email edit text ma halera seal gareko
-        if(pref.getString("email","")!=null) {
+        if(!pref.getString("email","").equals("")) {
             email.setText(pref.getString("email",""));
             email.setEnabled(false);
         }
@@ -94,15 +93,16 @@ public class CompleteLogin extends AppCompatActivity implements AdapterView.OnIt
         final MaterialDialog dialog = new MaterialDialog.Builder(CompleteLogin.this)
                 .content("Registering...")
                 .progress(true,0)
+                .cancelable(false)
                 .build();
         dialog.show();
 
-        StringRequest request = new StringRequest(Request.Method.POST, "https://bsc-bloodskate.c9users.io/get_json.php", new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.POST, "https://slim-bloodskate.c9users.io/app/api/register", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 if (response.contains("success")) {
                     dialog.dismiss();
-                    Toast.makeText(CompleteLogin.this, "Registered successfully.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CompleteLogin.this, "Welcome "+getSharedPreferences("loginInfo",MODE_PRIVATE).getString("FirstName","")+"!", Toast.LENGTH_SHORT).show();
                     editor.putInt("semester",semester.getSelectedItemPosition());
                     editor.putString("phone_number",phoneNo.getText().toString());
                     editor.putString("college",college.getSelectedItem().toString());
@@ -116,29 +116,36 @@ public class CompleteLogin extends AppCompatActivity implements AdapterView.OnIt
             @Override
             public void onErrorResponse(VolleyError error) {
                 dialog.dismiss();
-                Toast.makeText(CompleteLogin.this,"Unable to connect. Please try again.",Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(R.id.CompleteCore),"Unable to connect.",Snackbar.LENGTH_SHORT).setAction("Retry", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        uploadDataToServer();
+                    }
+                }).show();
             }
         }) {
             @Override
             protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
+                Map<String, String> params = new HashMap<>();
                 params.put("name", name.getText().toString());
                 params.put("fbid", getSharedPreferences("loginInfo",MODE_PRIVATE).getString("UserID",""));
                 params.put("semester", semester.getSelectedItemPosition()+"");
                 params.put("phone_number", phoneNo.getText().toString());
                 params.put("college", college.getSelectedItem().toString());
                 params.put("email", email.getText().toString());
+                params.put("gender", getSharedPreferences("loginInfo",MODE_PRIVATE).getString("Gender",""));
+                params.put("location", getSharedPreferences("loginInfo",MODE_PRIVATE).getString("HomeTown",""));
                 return params;
             }
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
+                Map<String, String> params = new HashMap<>();
                 params.put("Content-Type", "application/x-www-form-urlencoded");
                 return params;
             }
         };
-        Volley.newRequestQueue(this).add(request);
+        Singleton.getInstance().getRequestQueue().add(request);
     }
 
 
@@ -162,6 +169,7 @@ public class CompleteLogin extends AppCompatActivity implements AdapterView.OnIt
         phoneNo= (EditText) findViewById(R.id.inputPhone);
         semester= (AppCompatSpinner) findViewById(R.id.inputSemester);
         loginBtn= (FloatingActionButton) findViewById(R.id.continueButton);
+        loginBtn.show();
         loginBtn.hide();
     }
 

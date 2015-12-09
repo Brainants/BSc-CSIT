@@ -58,7 +58,11 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.VH>{
             holder.imageHolder.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    context.startActivity(new Intent(context, ImageViewActivity.class).putExtra("ImageURL",imageURL.get(position)));
+                    context.startActivity(new Intent(context, ImageViewActivity.class)
+                            .putExtra("ImageURL",imageURL.get(position))
+                            .putExtra("like",likes.get(position)+"")
+                            .putExtra("comment",comments.get(position)+"")
+                            .putExtra("desc",message.get(position)));
                 }
             });
         }

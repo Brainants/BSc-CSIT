@@ -29,6 +29,7 @@ public class eLibrary extends Fragment {
         viewPager.setAdapter(new PagerAdapter(getChildFragmentManager()));
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
     }
 
     @Override

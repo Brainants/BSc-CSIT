@@ -8,7 +8,6 @@
     <android.support.design.widget.TabLayout
         android:layout_width="match_parent"
         android:id="@+id/tabLayoutLibrary"
-        app:tabTextAppearance="?android:attr/textAppearanceMedium"
         app:tabTextColor="@color/white"
         app:tabBackground="@color/colorPrimary"
         app:tabIndicatorColor="@color/colorAccent"
