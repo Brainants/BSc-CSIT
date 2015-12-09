@@ -4,23 +4,22 @@ import android.app.Application;
 import android.content.Context;
 
 import com.facebook.FacebookSdk;
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 
 public class MyApp extends Application {
-    private static MyApp sInstance;
+    private static Context mContext;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        sInstance = this;
+        Fabric.with(this, new Crashlytics());
+        mContext = getApplicationContext();
         FacebookSdk.sdkInitialize(getApplicationContext());
     }
 
-    public static MyApp getInstance() {
-        return sInstance;
-    }
 
-    public static Context getAppContext() {
-        return sInstance.getApplicationContext();
+    public static Context getContext() {
+        return mContext;
     }
-
 }

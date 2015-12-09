@@ -17,6 +17,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE eLibrary(Title TEXT,Source TEXT,Tag TEXT,Link TEXT,LinkLink TEXT);");
 
+        db.execSQL("CREATE TABLE popularCommunities(FbID TEXT,Title TEXT,IsVerified INT,ImageLink TEXT,ExtraText TEXT);");
+
+        db.execSQL("CREATE TABLE myCommunities(FbID TEXT,Title TEXT,IsVerified INT,ImageLink TEXT,ExtraText TEXT);");
     }
 
     @Override

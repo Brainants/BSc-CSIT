@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/searchCore"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:paddingBottom="10dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="10dp">
+
+        <ImageView
+            android:id="@+id/networkIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/facebook_box" />
+
+        <com.devspark.robototextview.widget.RobotoTextView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:fab="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/nameOfSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/networkIcon"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/networkIcon"
+            android:gravity="center"
+            android:text="Facebook Community"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            fab:fontFamily="roboto"
+            fab:textWeight="light" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/nameOfSearch"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/searchText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:hint="Enter name or keyword"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textColorLink="@color/white" />
+
+            <mehdi.sakout.fancybuttons.FancyButton
+                android:id="@+id/btnFbSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                fancy:fb_defaultColor="@color/colorAccent"
+                fancy:fb_focusColor="@color/colorAccentTrans"
+                fancy:fb_iconResource="@drawable/search"
+                fancy:fb_radius="30dp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/searchRecy"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

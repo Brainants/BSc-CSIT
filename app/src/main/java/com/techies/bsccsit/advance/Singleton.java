@@ -2,6 +2,7 @@ package com.techies.bsccsit.advance;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.android.volley.AuthFailureError;
@@ -26,8 +27,8 @@ public class Singleton {
 
 
     private Singleton() {
-        mDatabase = new DatabaseHandler(MyApp.getAppContext());
-        mRequestQueue = Volley.newRequestQueue(MyApp.getAppContext());
+        mDatabase = new DatabaseHandler(MyApp.getContext());
+        mRequestQueue = Volley.newRequestQueue(MyApp.getContext());
     }
 
     public static Singleton getInstance() {
@@ -72,7 +73,7 @@ public class Singleton {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("semester", MyApp.getAppContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getInt("semester",0)+"");
+                params.put("semester", MyApp.getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getInt("semester",0)+"");
                 return params;
             }
 
@@ -84,5 +85,16 @@ public class Singleton {
             }
         };
         Singleton.getInstance().getRequestQueue().add(request);
+    }
+
+    public static boolean checkExist(String id){
+        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT Title FROM myCommunities WHERE FbID = "+id,null);
+        if (cursor.moveToNext()){
+            cursor.close();
+            return true;
+        } else {
+            cursor.close();
+            return false;
+        }
     }
 }

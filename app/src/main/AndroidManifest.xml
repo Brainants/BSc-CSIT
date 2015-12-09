@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".advance.MyApp"
+        android:name="com.techies.bsccsit.advance.MyApp"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
@@ -39,7 +39,13 @@
             android:theme="@style/FullscreenTheme" />
         <activity android:name=".activities.Settings" />
         <activity android:name=".activities.ImageViewActivity" />
-        <activity android:name=".activities.EachPost"></activity>
+        <activity android:name=".activities.EachPost" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="9cfaedb2af986a27f7bd621e43ec9f21adaf8e68" />
+
+        <activity android:name=".activities.FbPage"></activity>
     </application>
 
 </manifest>

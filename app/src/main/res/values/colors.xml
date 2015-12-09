@@ -4,8 +4,12 @@
     <color name="colorPrimaryDark">#00796B</color>
     <color name="colorAccent">#FFC107</color>
 
+    <color name="colorAccentTrans">#80FFC107</color>
     <color name="black_overlay">#66000000</color>
-    <color name="primaryTransp">#40032530</color>
+    <color name="primaryTransp">#40009688</color>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
+    <color name="colorPrimaryTrans" >#80009688</color>
+    <color name="unfollowColor">#8A0707</color>
+    <color name="unfollowColorTrans">#808A0707</color>
 </resources>

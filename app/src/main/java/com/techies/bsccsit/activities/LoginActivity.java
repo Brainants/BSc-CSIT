@@ -165,7 +165,7 @@ public class LoginActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Snackbar.make(findViewById(R.id.LoginCore), "Unable to connect. Please try again.", Snackbar.LENGTH_SHORT).setAction("Retry", new View.OnClickListener() {
+                Snackbar.make(findViewById(R.id.LoginCore), "Unable to connect.", Snackbar.LENGTH_SHORT).setAction("Retry", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         postFbLoginWork();
