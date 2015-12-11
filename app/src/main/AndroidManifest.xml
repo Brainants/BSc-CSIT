@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-        android:name="com.techies.bsccsit.advance.MyApp"
+        android:name=".advance.MyApp"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
@@ -45,7 +45,9 @@
             android:name="io.fabric.ApiKey"
             android:value="9cfaedb2af986a27f7bd621e43ec9f21adaf8e68" />
 
-        <activity android:name=".activities.FbPage"></activity>
+        <activity android:name=".activities.FbPage" />
+        <activity android:name=".activities.AboutUs" />
+        <activity android:name=".admin.AdminPanel"></activity>
     </application>
 
 </manifest>

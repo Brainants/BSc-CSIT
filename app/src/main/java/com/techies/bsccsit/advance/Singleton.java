@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.format.DateUtils;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -11,13 +12,15 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class Singleton {
@@ -87,7 +90,7 @@ public class Singleton {
         Singleton.getInstance().getRequestQueue().add(request);
     }
 
-    public static boolean checkExist(String id){
+    public static boolean checkExistInFollowing(String id){
         Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT Title FROM myCommunities WHERE FbID = "+id,null);
         if (cursor.moveToNext()){
             cursor.close();
@@ -95,6 +98,50 @@ public class Singleton {
         } else {
             cursor.close();
             return false;
+        }
+    }
+
+    public static boolean checkExistInPopular(String id){
+        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT Title FROM popularCommunities WHERE FbID = "+id,null);
+        if (cursor.moveToNext()){
+            cursor.close();
+            return true;
+        } else {
+            cursor.close();
+            return false;
+        }
+    }
+
+    public static String getFollowingList(){
+        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT FbID FROM myCommunities",null);
+        String string="";
+        while(cursor.moveToNext()){
+            string=string+cursor.getString(cursor.getColumnIndex("FbID"))+",";
+        }
+        string=string+"bsccsitapp";
+        cursor.close();
+        return string;
+    }
+
+    public static ArrayList<String> getFollowingArray(){
+        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT FbID FROM myCommunities",null);
+        ArrayList<String> names=new ArrayList<>();
+        while(cursor.moveToNext()){
+            names.add(cursor.getString(cursor.getColumnIndex("FbID")));
+        }
+        names.add("bsccsitapp");
+        cursor.close();
+        return names;
+    }
+
+    public static CharSequence convertToSimpleDate(String created_time) {
+
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZZZZZ", Locale.US);
+        try {
+            Date date = simpleDateFormat.parse(created_time);
+            return DateUtils.getRelativeTimeSpanString(date.getTime(),System.currentTimeMillis(),DateUtils.SECOND_IN_MILLIS,DateUtils.FORMAT_ABBREV_RELATIVE);
+        } catch (Exception e) {
+            return "Unknown Time";
         }
     }
 }

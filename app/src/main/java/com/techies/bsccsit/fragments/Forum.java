@@ -1,15 +1,12 @@
 package com.techies.bsccsit.fragments;
 
 
-import android.net.ParseException;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,28 +22,28 @@ import com.facebook.HttpMethod;
 import com.techies.bsccsit.R;
 import com.techies.bsccsit.activities.MainActivity;
 import com.techies.bsccsit.adapters.ForumAdapter;
+import com.techies.bsccsit.advance.Singleton;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Forum extends Fragment {
 
-
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
-    private ArrayList<String> messages=new ArrayList<>();
-    private ArrayList<String> time=new ArrayList<>();
-    private ArrayList<Integer> comments=new ArrayList<>();
-    private ArrayList<Integer> likes=new ArrayList<>();
-    private ArrayList<String> names =new ArrayList<>();
-    private FloatingActionButton fab;
-    private ArrayList<String> ids=new ArrayList<>();
-    private ArrayList<String> imageURL=new ArrayList<>();
+    private ArrayList<String> messages=new ArrayList<>(),
+            time=new ArrayList<>(),
+            names =new ArrayList<>(),
+            ids=new ArrayList<>(),
+            imageURL=new ArrayList<>();
+
+    private ArrayList<Integer> comments=new ArrayList<>(),
+            likes=new ArrayList<>();
+
     private LinearLayout errorMessage;
+    private FloatingActionButton fab;
 
     public Forum() {
         // Required empty public constructor
@@ -91,7 +88,7 @@ public class Forum extends Fragment {
                                     }catch (Exception e){
                                         imageURL.add("");
                                     }
-                                    time.add(convertToSimpleDate(arrayItem.getString("created_time")).toString());
+                                    time.add(Singleton.convertToSimpleDate(arrayItem.getString("created_time")).toString());
                                     likes.add(arrayItem.getJSONObject("likes").getJSONObject("summary").getInt("total_count"));
                                     comments.add(arrayItem.getJSONObject("comments").getJSONObject("summary").getInt("total_count"));
                                     names.add(arrayItem.getJSONObject("from").getString("name"));
@@ -109,15 +106,7 @@ public class Forum extends Fragment {
         }).executeAsync();
     }
 
-    private CharSequence convertToSimpleDate(String created_time) {
 
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZZZZZ");
-        try {
-            Date date = simpleDateFormat.parse(created_time);
-            return DateUtils.getRelativeDateTimeString(getActivity(),date.getTime(),DateUtils.SECOND_IN_MILLIS,DateUtils.WEEK_IN_MILLIS,DateUtils.FORMAT_NO_MONTH_DAY);
-        } catch (Exception e) {}
-        return "Unknown Time";
-    }
     private void fillRecy() {
         fab.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);

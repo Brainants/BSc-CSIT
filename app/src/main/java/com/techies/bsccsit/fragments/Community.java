@@ -50,8 +50,6 @@ public class Community extends Fragment {
                 return "Popular";
             else if (position==1)
                 return "Following";
-            else if (position==2)
-                return "Search";
             return super.getPageTitle(position);
         }
 
@@ -61,14 +59,12 @@ public class Community extends Fragment {
                 return new PopularCommunities();
             else if(position==1)
                 return new FollowingCommunities();
-            else if(position==2)
-                return new SearchFragment();
             return null;
         }
 
         @Override
         public int getCount() {
-            return 3;
+            return 2;
         }
     }
 

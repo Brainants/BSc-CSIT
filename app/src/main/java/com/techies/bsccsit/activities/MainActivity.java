@@ -19,7 +19,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.squareup.picasso.Picasso;
 import com.techies.bsccsit.R;
-import com.techies.bsccsit.fragments.AboutUs;
+import com.techies.bsccsit.admin.AdminPanel;
 import com.techies.bsccsit.fragments.Community;
 import com.techies.bsccsit.fragments.Forum;
 import com.techies.bsccsit.fragments.NewsEvents;
@@ -92,6 +92,12 @@ public class MainActivity extends AppCompatActivity {
         //calling sync state is necessay or else your hamburger icon wont show up
         actionBarDrawerToggle.syncState();
 
+        //todo remove
+        pref.edit().putBoolean("admin",true).apply();
+
+        //checkAdmin
+        navigationView.getMenu().getItem(7).setVisible(pref.getBoolean("admin",false));
+
         manager = getSupportFragmentManager();
         previous=R.id.newsEvent;
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -100,42 +106,54 @@ public class MainActivity extends AppCompatActivity {
                 int id= item.getItemId();
                 if(id==previous)
                     return  true;
-                previous=id;
-                if(id!=R.id.rate_us)
-                    item.setChecked(true);
                 drawerLayout.closeDrawer(findViewById(R.id.naviView));
                 fab.setVisibility(View.GONE);
                 switch (id){
                     case R.id.newsEvent:
                         setTitle("Home");
+                        item.setChecked(true);
+                        previous=id;
                         manager.beginTransaction().replace(R.id.fragHolder,new NewsEvents()).commit();
                         break;
                     case R.id.TUNotices:
                         setTitle("TU Notices");
+                        item.setChecked(true);
+                        previous=id;
                         manager.beginTransaction().replace(R.id.fragHolder,new TuNotices()).commit();
                         break;
                     case R.id.elibrary:
                         setTitle("E-Library");
+                        item.setChecked(true);
+                        previous=id;
                         manager.beginTransaction().replace(R.id.fragHolder,new eLibrary()).commit();
                         break;
                     case R.id.projects:
                         setTitle("Projects");
+                        item.setChecked(true);
+                        previous=id;
                         manager.beginTransaction().replace(R.id.fragHolder,new Projects()).commit();
                         break;
                     case R.id.community:
                         setTitle("Communities");
+                        item.setChecked(true);
+                        previous=id;
                         manager.beginTransaction().replace(R.id.fragHolder,new Community()).commit();
                         break;
                     case R.id.fourm:
                         setTitle("Forum");
+                        item.setChecked(true);
+                        previous=id;
                         manager.beginTransaction().replace(R.id.fragHolder,new Forum()).commit();
                         break;
+
                     case R.id.setting:
                         startActivity(new Intent(MainActivity.this,Settings.class));
                         break;
+                    case R.id.adminPanel:
+                        startActivity(new Intent(MainActivity.this,AdminPanel.class));
+                        break;
                     case R.id.about:
-                        setTitle("About Us");
-                        manager.beginTransaction().replace(R.id.fragHolder,new AboutUs()).commit();
+                        startActivity(new Intent(MainActivity.this,AboutUs.class));
                         break;
                     case R.id.rate_us:
                         new MaterialDialog.Builder(MainActivity.this)
@@ -163,10 +181,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void downloadFirstDatas() {
 
-    }
-
-    public FloatingActionButton getMainFAB(){
-        return fab;
     }
 
     @Override

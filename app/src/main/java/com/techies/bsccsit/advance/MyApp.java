@@ -3,8 +3,9 @@ package com.techies.bsccsit.advance;
 import android.app.Application;
 import android.content.Context;
 
-import com.facebook.FacebookSdk;
 import com.crashlytics.android.Crashlytics;
+import com.facebook.FacebookSdk;
+
 import io.fabric.sdk.android.Fabric;
 
 public class MyApp extends Application {

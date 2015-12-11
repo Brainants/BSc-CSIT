@@ -21,6 +21,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.LoginEvent;
 import com.facebook.FacebookSdk;
 import com.techies.bsccsit.R;
 import com.techies.bsccsit.advance.Singleton;
@@ -108,6 +110,9 @@ public class CompleteLogin extends AppCompatActivity implements AdapterView.OnIt
                     editor.putString("college",college.getSelectedItem().toString());
                     editor.putBoolean("loggedIn",true);
                     editor.apply();
+                    Answers.getInstance().logLogin(new LoginEvent()
+                            .putMethod("Facebook")
+                            .putSuccess(true));
                     startActivity(new Intent(CompleteLogin.this, MainActivity.class));
                     finish();
                 }
@@ -116,6 +121,9 @@ public class CompleteLogin extends AppCompatActivity implements AdapterView.OnIt
             @Override
             public void onErrorResponse(VolleyError error) {
                 dialog.dismiss();
+                Answers.getInstance().logLogin(new LoginEvent()
+                        .putMethod("Facebook")
+                        .putSuccess(false));
                 Snackbar.make(findViewById(R.id.CompleteCore),"Unable to connect.",Snackbar.LENGTH_SHORT).setAction("Retry", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
