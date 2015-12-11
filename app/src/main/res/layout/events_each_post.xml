@@ -1,53 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="3dp"
     android:orientation="vertical">
 
-
-    <RelativeLayout
-        android:layout_width="80dp"
-        android:layout_gravity="right"
-        android:layout_height="80dp">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textSize="20sp"
-            android:textColor="@color/white"
-            android:text="10\nDEC"/>
-    </RelativeLayout>
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@color/colorPrimary" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@color/white"
         android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:id="@+id/eventCoverImage"
+            android:background="@color/colorPrimary" />
 
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_height="match_parent"
+            android:background="@color/white"
             android:orientation="horizontal"
-            android:padding="5dp">
+            android:paddingLeft="10dp">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="-30dp"
+                app:cardCornerRadius="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:orientation="vertical">
+
+                    <com.devspark.robototextview.widget.RobotoTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="DEC"
+                        android:id="@+id/monthTxt"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="23sp" />
+
+                    <com.devspark.robototextview.widget.RobotoTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:id="@+id/dayTxt"
+                        android:text="12"
+                        android:textColor="#000"
+                        android:textSize="23sp" />
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:gravity="center_vertical"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <com.devspark.robototextview.widget.RobotoTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/nameOfEvent"
                     android:text="CSITAN TU Meeting"
+                    android:maxLines="1"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/colorPrimary" />
 
@@ -55,20 +78,25 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
+                    android:maxLines="1"
+                    android:id="@+id/eventHoster"
                     android:text="Hosted By: CSITAN"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
             </LinearLayout>
 
             <View
                 android:layout_width="2dp"
-                android:layout_height="match_parent"
-                android:background="#ddd" />
+                android:background="#ddd"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:layout_height="match_parent"/>
 
             <ImageView
                 android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_height="match_parent"
+                android:id="@+id/addToCalender"
                 android:padding="5dp"
-                android:src="@drawable/calender_plus" />
+                android:src="@drawable/calender_plus"/>
         </LinearLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>
