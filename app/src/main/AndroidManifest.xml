@@ -16,7 +16,6 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -51,7 +50,7 @@
 
         <activity android:name=".activities.FbPage" />
         <activity android:name=".activities.AboutUs" />
-        <activity android:name=".admin.AdminPanel"/>
+        <activity android:name=".admin.AdminPanel" />
 
         <service
             android:name=".advance.BackgroundTaskHandler"
@@ -61,6 +60,8 @@
                 <action android:name="com.google.android.gms.gcm.ACTION_TASK_READY" />
             </intent-filter>
         </service>
+
+        <activity android:name=".activities.CommunityChooser"></activity>
     </application>
 
 </manifest>

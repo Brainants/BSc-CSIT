@@ -1,12 +1,15 @@
 package com.techies.bsccsit.advance;
 
 import android.content.ContentValues;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -21,20 +24,44 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class BackgroundTaskHandler extends GcmTaskService {
 
     @Override
     public int onRunTask(TaskParams taskParams) {
-        new NewsDownloader().execute();
-        new EventsDownloader().execute();
-        new CommunitiesDownloader().execute();
+        NewsDownloader newsDownloader = new NewsDownloader();
+        newsDownloader.execute();
+        newsDownloader.setTaskCompleteListener(new NewsDownloader.OnTaskCompleted() {
+            @Override
+            public void onTaskCompleted(boolean success) {
+
+            }
+        });
+
+        EventsDownloader eventDownloader = new EventsDownloader();
+        eventDownloader.execute();
+        eventDownloader.setTaskCompleteListener(new EventsDownloader.OnTaskCompleted() {
+            @Override
+            public void onTaskCompleted(boolean success) {
+
+            }
+        });
+
+        CommunitiesDownloader communityDownloader = new CommunitiesDownloader();
+        communityDownloader.doInBackground();
+        communityDownloader.setTaskCompleteListener(new CommunitiesDownloader.OnTaskCompleted() {
+            @Override
+            public void onTaskCompleted(boolean success) {
+
+            }
+        });
         return 1;
     }
 
-
-    private static Date convertToSimpleDate(String created_time) {
+    public static Date convertToSimpleDate(String created_time) {
 
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZZZZZ", Locale.US);
         try {
@@ -44,53 +71,65 @@ public class BackgroundTaskHandler extends GcmTaskService {
         }
     }
 
-    class CommunitiesDownloader extends AsyncTask<Void,Void,Void>{
-
-        @Override
-        protected Void doInBackground(Void... params) {
+    public static class CommunitiesDownloader {
+        public void doInBackground() {
             String url="https://slim-bloodskate.c9users.io/app/api/allcomm";
             final JsonArrayRequest request=new JsonArrayRequest(Request.Method.GET, url, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
                     Singleton.getInstance().getDatabase().execSQL("DELETE FROM popularCommunities");
-                    ArrayList<String> ids=new ArrayList<>(),
-                            names=new ArrayList<>(),
-                            extra=new ArrayList<>();
-                    ArrayList<Boolean> verified=new ArrayList<>();
+                    ArrayList<String> ids = new ArrayList<>(),
+                            names = new ArrayList<>(),
+                            extra = new ArrayList<>();
+                    ArrayList<Boolean> verified = new ArrayList<>();
 
                     ids.clear();
                     names.clear();
                     verified.clear();
                     extra.clear();
-                    try{
-                        ContentValues values=new ContentValues();
+                    try {
+                        ContentValues values = new ContentValues();
                         Singleton.getInstance().getDatabase().execSQL("DELETE FROM popularCommunities;");
-                        for (int i=0;i<response.length();i++){
-                            JSONObject object=response.getJSONObject(i);
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject object = response.getJSONObject(i);
                             ids.add(object.getString("fbid"));
                             names.add(object.getString("title"));
-                            verified.add(Integer.parseInt(object.getString("isverified"))==1);
+                            verified.add(Integer.parseInt(object.getString("isverified")) == 1);
                             extra.add(object.getString("extra"));
 
                             values.clear();
-                            values.put("FbID",ids.get(i));
-                            values.put("Title",names.get(i));
-                            values.put("IsVerified",verified.get(i)?1:0);
-                            values.put("ExtraText",extra.get(i));
-                            Singleton.getInstance().getDatabase().insert("popularCommunities",null,values);
+                            values.put("FbID", ids.get(i));
+                            values.put("Title", names.get(i));
+                            values.put("IsVerified", verified.get(i) ? 1 : 0);
+                            values.put("ExtraText", extra.get(i));
+                            Singleton.getInstance().getDatabase().insert("popularCommunities", null, values);
                         }
-                    } catch (Exception e){
-                        e.printStackTrace();
+                        listener.onTaskCompleted(true);
+                    } catch (Exception ignored) {
                     }
                 }
-            },null);
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    listener.onTaskCompleted(false);
+                }
+            });
             Singleton.getInstance().getRequestQueue().add(request);
-            return null;
+        }
+
+        private OnTaskCompleted listener;
+
+        public void setTaskCompleteListener(OnTaskCompleted listener){
+            this.listener=listener;
+        }
+
+        public interface OnTaskCompleted{
+            void onTaskCompleted(boolean success);
         }
     }
 
-    class NewsDownloader extends AsyncTask<Void,Void,Void> {
-
+    public static class NewsDownloader extends AsyncTask<Void,Void,Void> {
+        boolean success=false;
         ArrayList<String>  names=new ArrayList<>(),
                 posterId=new ArrayList<>(),
                 fullImage=new ArrayList<>(),
@@ -105,12 +144,8 @@ public class BackgroundTaskHandler extends GcmTaskService {
             new GraphRequest(AccessToken.getCurrentAccessToken(), "posts", param, HttpMethod.GET, new GraphRequest.Callback() {
                 @Override
                 public void onCompleted(GraphResponse response) {
-                    if (response.getError()!=null){
-                        Log.d("Debug","Unable " + response.getError().toString());
-                    } else {
-                        Log.d("Debug",response.getJSONObject().toString());
+                    if (response.getError()==null){
                         parseTheResponse(response.getJSONObject());
-
                     }
                 }
             }).executeAndWait();
@@ -208,17 +243,33 @@ public class BackgroundTaskHandler extends GcmTaskService {
                 values.put("created_time",created_time.get(i));
                 Singleton.getInstance().getDatabase().insert("news",null,values);
             }
+            success=true;
+        }
+
+        private OnTaskCompleted listener;
+
+        public void setTaskCompleteListener(OnTaskCompleted listener){
+            this.listener=listener;
+        }
+
+        public interface OnTaskCompleted{
+            void onTaskCompleted(boolean success);
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            listener.onTaskCompleted(success);
         }
     }
 
-    class EventsDownloader extends AsyncTask<Void, Void, Void> {
-
+    public static class EventsDownloader extends AsyncTask<Void, Void, Void> {
         ArrayList<String> names=new ArrayList<>(),
                 created_time=new ArrayList<>(),
                 eventIDs=new ArrayList<>(),
                 hosters=new ArrayList<>(),
                 fullImage=new ArrayList<>();
-
+        boolean success=false;
         @Override
         protected Void doInBackground(Void... params) {
             Bundle param = new Bundle();
@@ -227,10 +278,7 @@ public class BackgroundTaskHandler extends GcmTaskService {
             new GraphRequest(AccessToken.getCurrentAccessToken(), "events", param, HttpMethod.GET, new GraphRequest.Callback() {
                 @Override
                 public void onCompleted(GraphResponse response) {
-                    if (response.getError() != null) {
-                        Log.d("Debug", "Unable " + response.getError().toString());
-                    } else {
-                        Log.d("Debug", response.getJSONObject().toString());
+                    if (response.getError() == null) {
                         parseTheResponse(response.getJSONObject());
                     }
                 }
@@ -259,9 +307,7 @@ public class BackgroundTaskHandler extends GcmTaskService {
                 }
                 EventsSorter();
                 addToDatabase();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            } catch (Exception e) {}
         }
 
         private void EventsSorter() {
@@ -299,7 +345,6 @@ public class BackgroundTaskHandler extends GcmTaskService {
                         fullImage.add(i, image);
                         hosters.add(i, hoster);
                         eventIDs.add(i, id);
-
                     }
             }
         }
@@ -316,7 +361,79 @@ public class BackgroundTaskHandler extends GcmTaskService {
                 values.put("created_time",created_time.get(i));
                 Singleton.getInstance().getDatabase().insert("events",null,values);
             }
+            success=true;
+        }
 
+        private OnTaskCompleted listener;
+
+        public void setTaskCompleteListener(OnTaskCompleted listener){
+            this.listener=listener;
+        }
+
+        public interface OnTaskCompleted{
+            void onTaskCompleted(boolean success);
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            listener.onTaskCompleted(success);
+        }
+    }
+
+    public static class eLibraryDownloader extends AsyncTask<Void,Void,Void>{
+        boolean success=false;
+        @Override
+        protected Void doInBackground(Void... params) {
+            JsonArrayRequest request=new JsonArrayRequest(Request.Method.POST, "https://slim-bloodskate.c9users.io/app/api/elibrary", new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    SQLiteDatabase database= Singleton.getInstance().getDatabase();
+                    database.delete("eLibrary",null,null);
+                    ContentValues values=new ContentValues();
+                    try {
+                        for(int i=0;i<response.length();i++){
+                            values.clear();
+                            values.put("Title", response.getJSONObject(i).getString("title"));
+                            values.put("Source", response.getJSONObject(i).getString("source"));
+                            values.put("Tag", response.getJSONObject(i).getString("tag"));
+                            values.put("Link", response.getJSONObject(i).getString("link"));
+                            values.put("Link", response.getJSONObject(i).getString("filename"));
+                            database.insert("eLibrary",null,values);
+                        }
+                        listener.onTaskCompleted(true);
+
+                    }catch (Exception e){
+                        listener.onTaskCompleted(false);
+                    }
+                }
+            }, null){
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("semester", MyApp.getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getInt("semester",0)+"");
+                    return params;
+                }
+
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Content-Type", "application/x-www-form-urlencoded");
+                    return params;
+                }
+            };
+            Singleton.getInstance().getRequestQueue().add(request);
+            return null;
+        }
+
+        private OnTaskCompleted listener;
+
+        public void setTaskCompleteListener(OnTaskCompleted listener){
+            this.listener=listener;
+        }
+
+        public interface OnTaskCompleted{
+            void onTaskCompleted(boolean success);
         }
     }
 }

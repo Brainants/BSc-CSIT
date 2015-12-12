@@ -20,6 +20,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.squareup.picasso.Picasso;
 import com.techies.bsccsit.R;
 import com.techies.bsccsit.admin.AdminPanel;
+import com.techies.bsccsit.advance.BackgroundTaskHandler;
 import com.techies.bsccsit.fragments.Community;
 import com.techies.bsccsit.fragments.Forum;
 import com.techies.bsccsit.fragments.NewsEvents;
@@ -53,8 +54,6 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         }
-        if(!pref.getBoolean("datas",false))
-            downloadFirstDatas();
 
 
         final Toolbar toolbar=(Toolbar) findViewById(R.id.toolbarMain);
@@ -107,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 if(id==previous)
                     return  true;
                 drawerLayout.closeDrawer(findViewById(R.id.naviView));
-                fab.setVisibility(View.GONE);
+                    fab.setVisibility(View.GONE);
                 switch (id){
                     case R.id.newsEvent:
                         setTitle("Home");
@@ -177,10 +176,6 @@ public class MainActivity extends AppCompatActivity {
         Picasso.with(this).load("https://graph.facebook.com/"+getSharedPreferences("loginInfo",MODE_PRIVATE).getString("UserID","")+"/picture?type=large").into(imageView1);
         fab.setVisibility(View.GONE);
         manager.beginTransaction().replace(R.id.fragHolder,new NewsEvents()).commit();
-    }
-
-    private void downloadFirstDatas() {
-
     }
 
     @Override
