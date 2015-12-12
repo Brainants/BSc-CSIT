@@ -65,6 +65,8 @@ public class FbPage extends AppCompatActivity {
 
         final String page_id = getIntent().getStringExtra("id");
         String page_name = getIntent().getStringExtra("name");
+        String page_desc = getIntent().getStringExtra("details");
+        String page_verified = getIntent().getStringExtra("isVerified");
 
 
         errorMsg.setVisibility(View.GONE);
@@ -74,15 +76,20 @@ public class FbPage extends AppCompatActivity {
         TextView pageName = (TextView) findViewById(R.id.page_name);
         pageName.setText(page_name);
 
+        TextView pageDesc = (TextView) findViewById(R.id.page_desc);
+        pageDesc.setText(page_desc);
+
+        CircleImageView pageLogo = (CircleImageView) findViewById(R.id.page_logo);
+        Picasso.with(getApplicationContext()).load("https://graph.facebook.com/" + page_id + "/picture?type=large").into(pageLogo);
+
+
+
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
             getSupportActionBar().setTitle(page_name);
             getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-
-        CircleImageView pageLogo = (CircleImageView) findViewById(R.id.page_logo);
-        Picasso.with(getApplicationContext()).load("https://graph.facebook.com/" + page_id + "/picture?type=large").into(pageLogo);
 
 
         Bundle params = new Bundle();

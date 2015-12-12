@@ -132,7 +132,9 @@ public class FacebookSearchAdapter extends RecyclerView.Adapter<FacebookSearchAd
                 public void onClick(View v) {
                     context.startActivity(new Intent(context, FbPage.class)
                             .putExtra("id",ids.get(getAdapterPosition()))
-                            .putExtra("name",names.get(getAdapterPosition())));
+                            .putExtra("name",names.get(getAdapterPosition()))
+                            .putExtra("details",extra.get(getAdapterPosition()))
+                            .putExtra("isVerified", verified.get(getAdapterPosition())));
                 }
             });
         }

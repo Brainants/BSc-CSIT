@@ -35,7 +35,7 @@
                     android:id="@+id/nameOfPoster"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Aawaz Gyawali"
+                    android:text="Roshan Gautam"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/colorPrimary" />
 
@@ -43,7 +43,7 @@
                     android:id="@+id/timeOfPost"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="5 hours ago"
+                    android:text="few seconds ago "
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/black" />
             </LinearLayout>
