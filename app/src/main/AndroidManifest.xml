@@ -47,7 +47,8 @@
 
         <activity android:name=".activities.FbPage" />
         <activity android:name=".activities.AboutUs" />
-        <activity android:name=".admin.AdminPanel"></activity>
+        <activity android:name=".admin.AdminPanel" />
+        <activity android:name=".adapters.FbPageAdapter"></activity>
     </application>
 
 </manifest>
