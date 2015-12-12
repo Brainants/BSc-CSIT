@@ -50,7 +50,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.VH> {
         holder.monthHolder.setText(getMonth(time.get(position)));
         holder.dayHolder.setText(getDay(time.get(position)));
 
-        holder.hosterHolder.setText("Hosted by:" + hoster.get(position));
+        holder.hosterHolder.setText("Hosted by: " + hoster.get(position));
 
         if (imageURL.get(position).equals(""))
             holder.imageHolder.setVisibility(View.GONE);

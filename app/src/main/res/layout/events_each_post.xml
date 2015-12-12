@@ -10,14 +10,52 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:scaleType="centerCrop"
+                android:id="@+id/eventCoverImage"
+                android:background="@color/colorPrimaryTrans" />
+        <android.support.v7.widget.CardView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="-30dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="5dp"
+            app:cardCornerRadius="10dp">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:id="@+id/eventCoverImage"
-            android:background="@color/colorPrimary" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
 
+                <com.devspark.robototextview.widget.RobotoTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="DEC"
+                    android:id="@+id/monthTxt"
+                    android:textColor="@color/colorAccent" />
 
+                <com.devspark.robototextview.widget.RobotoTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:gravity="center"
+                    android:id="@+id/dayTxt"
+                    android:text="12"
+                    android:textColor="#000" />
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -25,38 +63,6 @@
             android:orientation="horizontal"
             android:paddingLeft="10dp">
 
-            <android.support.v7.widget.CardView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="-30dp"
-                app:cardCornerRadius="10dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-
-                    android:orientation="vertical">
-
-                    <com.devspark.robototextview.widget.RobotoTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="DEC"
-                        android:id="@+id/monthTxt"
-                        android:textColor="@color/colorAccent"
-                        android:textSize="23sp" />
-
-                    <com.devspark.robototextview.widget.RobotoTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:id="@+id/dayTxt"
-                        android:text="12"
-                        android:textColor="#000"
-                        android:textSize="23sp" />
-                </LinearLayout>
-
-            </android.support.v7.widget.CardView>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -95,7 +101,7 @@
                 android:layout_width="48dp"
                 android:layout_height="match_parent"
                 android:id="@+id/addToCalender"
-                android:padding="5dp"
+                android:padding="10dp"
                 android:src="@drawable/calender_plus"/>
         </LinearLayout>
     </LinearLayout>

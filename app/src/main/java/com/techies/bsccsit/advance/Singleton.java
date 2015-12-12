@@ -13,6 +13,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.gcm.GcmNetworkManager;
 
 import org.json.JSONArray;
 
@@ -27,11 +28,13 @@ public class Singleton {
     private static Singleton sInstance = null;
     private RequestQueue mRequestQueue;
     private DatabaseHandler mDatabase;
+    private GcmNetworkManager mScheduler;
 
 
     private Singleton() {
         mDatabase = new DatabaseHandler(MyApp.getContext());
         mRequestQueue = Volley.newRequestQueue(MyApp.getContext());
+        mScheduler = GcmNetworkManager.getInstance(MyApp.getContext());
     }
 
     public static Singleton getInstance() {
@@ -143,5 +146,9 @@ public class Singleton {
         } catch (Exception e) {
             return "Unknown Time";
         }
+    }
+
+    public GcmNetworkManager getGcmScheduler() {
+        return mScheduler;
     }
 }
