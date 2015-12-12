@@ -6,14 +6,18 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.techies.bsccsit.R;
 import com.techies.bsccsit.adapters.FacebookSearchAdapter;
+import com.techies.bsccsit.advance.BackgroundTaskHandler;
 import com.techies.bsccsit.advance.Singleton;
 
 import java.util.ArrayList;
@@ -32,6 +36,9 @@ public class PopularCommunities extends Fragment {
     private ArrayList<Boolean> verified=new ArrayList<>();
     public static FacebookSearchAdapter adapter;
 
+    private ProgressBar progress;
+    private LinearLayout error;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,19 +49,29 @@ public class PopularCommunities extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        fillFromDatabase();
+    }
+
+    private void fillFromDatabase(){
+        int count=0;
         Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM popularCommunities", null);
         while (cursor.moveToNext()) {
+            count++;
             names.add(cursor.getString(cursor.getColumnIndex("Title")));
             extra.add(cursor.getString(cursor.getColumnIndex("ExtraText")));
             ids.add(cursor.getString(cursor.getColumnIndex("FbID")));
             verified.add(cursor.getInt(cursor.getColumnIndex("IsVerified")) == 1);
         }
         cursor.close();
-        fillRecyclerView();
+        if(count==0) {
+            progress.setVisibility(View.VISIBLE);
+            downloadFromInternet();
+        }else
+            fillRecyclerView();
     }
 
-
     private void fillRecyclerView(){
+        recyclerview.setVisibility(View.VISIBLE);
         adapter = new FacebookSearchAdapter(getActivity(),"my", names, extra, ids, verified);
         recyclerview.setAdapter(adapter);
         recyclerview.setLayoutManager(new GridLayoutManager(getActivity(),2));
@@ -89,5 +106,32 @@ public class PopularCommunities extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         this.core=view;
         recyclerview= (RecyclerView) view.findViewById(R.id.popularRecy);
+        progress= (ProgressBar) view.findViewById(R.id.progressCommunities);
+        error= (LinearLayout) view.findViewById(R.id.errorMessageCommunities);
+        recyclerview.setVisibility(View.GONE);
+        error.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                error.setVisibility(View.GONE);
+                progress.setVisibility(View.VISIBLE);
+                downloadFromInternet();
+            }
+        });
+
+    }
+
+    private void downloadFromInternet() {
+        BackgroundTaskHandler.CommunitiesDownloader downloader=new BackgroundTaskHandler.CommunitiesDownloader();
+        downloader.doInBackground();
+        downloader.setTaskCompleteListener(new BackgroundTaskHandler.CommunitiesDownloader.OnTaskCompleted() {
+            @Override
+            public void onTaskCompleted(boolean success) {
+                progress.setVisibility(View.GONE);
+                if(success)
+                    fillFromDatabase();
+                else
+                    error.setVisibility(View.VISIBLE);
+            }
+        });
     }
 }
