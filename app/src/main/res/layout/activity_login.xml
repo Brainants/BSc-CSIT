@@ -9,14 +9,15 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_centerInParent="true"
+        android:layout_above="@+id/loginButton"
         android:layout_height="match_parent">
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/logo"
-        android:layout_centerInParent="true"
-        android:src="@drawable/logo"/>
-    <com.devspark.robototextview.widget.RobotoTextView
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/logo"
+            android:layout_centerInParent="true"
+            android:src="@drawable/logo"/>
+        <com.devspark.robototextview.widget.RobotoTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"

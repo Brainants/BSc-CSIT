@@ -20,6 +20,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE popularCommunities(FbID TEXT,Title TEXT,IsVerified INT,ExtraText TEXT);");
 
         db.execSQL("CREATE TABLE myCommunities(FbID TEXT,Title TEXT,IsVerified INT,ExtraText TEXT);");
+
+        db.execSQL("CREATE TABLE news(names TEXT,posterId TEXT,fullImage TEXT,message TEXT,created_time TEXT);");
+
+        db.execSQL("CREATE TABLE events(names TEXT,created_time TEXT,eventIDs TEXT,hosters TEXT,fullImage TEXT);");
     }
 
     @Override
@@ -30,10 +34,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         db.execSQL("DROP TABLE IF EXISTS myCommunities");
 
+        db.execSQL("DROP TABLE IF EXISTS news");
+
+        db.execSQL("DROP TABLE IF EXISTS events");
+
         db.execSQL("CREATE TABLE eLibrary(Title TEXT,Source TEXT,Tag TEXT,Link TEXT,LinkLink TEXT);");
 
         db.execSQL("CREATE TABLE popularCommunities(FbID TEXT,Title TEXT,IsVerified INT,ExtraText TEXT);");
 
         db.execSQL("CREATE TABLE myCommunities(FbID TEXT,Title TEXT,IsVerified INT,ExtraText TEXT);");
+
+        db.execSQL("CREATE TABLE news(names TEXT,posterId TEXT,fullImage TEXT,message TEXT,created_time TEXT);");
+
+        db.execSQL("CREATE TABLE events(names TEXT,created_time TEXT,eventIDs TEXT,hosters TEXT,fullImage TEXT);");
     }
 }

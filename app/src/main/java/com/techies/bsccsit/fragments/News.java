@@ -1,32 +1,25 @@
 package com.techies.bsccsit.fragments;
 
 
-import android.os.AsyncTask;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
-import com.facebook.AccessToken;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.HttpMethod;
 import com.techies.bsccsit.R;
 import com.techies.bsccsit.adapters.NewsAdapter;
+import com.techies.bsccsit.advance.BackgroundTaskHandler;
 import com.techies.bsccsit.advance.Singleton;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
 public class News extends Fragment {
 
@@ -37,6 +30,9 @@ public class News extends Fragment {
             created_time=new ArrayList<>();
 
     private RecyclerView recyclerView;
+    private ProgressBar progress;
+    private LinearLayout error;
+    private SwipeRefreshLayout swipeLayout;
 
     public News() {
         // Required empty public constructor
@@ -45,7 +41,49 @@ public class News extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        new DataDownloader().execute();
+        fillFromDatabase();
+    }
+
+    private void fillFromDatabase() {
+        names.clear();
+        posterId.clear();
+        fullImage.clear();
+        message.clear();
+        created_time.clear();
+        int count=0;
+        Cursor cursor= Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM news",null);
+        while(cursor.moveToNext()){
+            count++;
+            names.add(cursor.getString(cursor.getColumnIndex("names")));
+            posterId.add(cursor.getString(cursor.getColumnIndex("posterId")));
+            fullImage.add(cursor.getString(cursor.getColumnIndex("fullImage")));
+            message.add(cursor.getString(cursor.getColumnIndex("message")));
+            created_time.add(cursor.getString(cursor.getColumnIndex("created_time")));
+        }
+        cursor.close();
+        if(count==0) {
+            progress.setVisibility(View.VISIBLE);
+            downloadFromInternet();
+        }else
+            setToAdapter();
+    }
+
+    private void downloadFromInternet() {
+        BackgroundTaskHandler.NewsDownloader downloader =
+                new BackgroundTaskHandler.NewsDownloader();
+        downloader.setTaskCompleteListener(new BackgroundTaskHandler.NewsDownloader.OnTaskCompleted() {
+            @Override
+            public void onTaskCompleted(boolean success) {
+                swipeLayout.setRefreshing(false);
+                progress.setVisibility(View.GONE);
+
+                if(success)
+                    fillFromDatabase();
+                else
+                    error.setVisibility(View.VISIBLE);
+            }
+        });
+        downloader.execute();
     }
 
     @Override
@@ -56,6 +94,8 @@ public class News extends Fragment {
     }
 
     private void setToAdapter() {
+        progress.setVisibility(View.GONE);
+        swipeLayout.setVisibility(View.VISIBLE);
         NewsAdapter adapter=new NewsAdapter(getActivity(),names,created_time,posterId,message,fullImage);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -65,124 +105,23 @@ public class News extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView= (RecyclerView) view.findViewById(R.id.recyclerViewNews);
-    }
-
-    public boolean NewsFeedSorter(){
-        for (int i=0;i<names.size();i++){
-            for (int j=i;j<created_time.size();j++)
-                if (convertToSimpleDate(created_time.get(i)).compareTo(convertToSimpleDate(created_time.get(j)))<0)
-                    swap(i,j);
-        }
-        setToAdapter();
-        return true;
-    }
-
-    public void swap(int i,int j){
-        String name,poster,image,newMessage,time;
-        name=names.get(j);
-        poster=posterId.get(j);
-        image=fullImage.get(j);
-        newMessage=message.get(j);
-        time=created_time.get(j);
-
-        names.remove(j);
-        posterId.remove(j);
-        fullImage.remove(j);
-        created_time.remove(j);
-        message.remove(j);
-
-        names.add(j,names.get(i));
-        posterId.add(j,posterId.get(i));
-        fullImage.add(j,fullImage.get(i));
-        created_time.add(j,created_time.get(i));
-        message.add(j,message.get(i));
-
-        names.remove(i);
-        posterId.remove(i);
-        fullImage.remove(i);
-        created_time.remove(i);
-        message.remove(i);
-
-
-        names.add(i,name);
-        posterId.add(i,poster);
-        fullImage.add(i,image);
-        created_time.add(i,time);
-        message.add(i,newMessage);
-    }
-
-    private static Date convertToSimpleDate(String created_time) {
-
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZZZZZ", Locale.US);
-        try {
-            return simpleDateFormat.parse(created_time);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    class DataDownloader extends AsyncTask<Void,Void,Void>{
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            Bundle param=new Bundle();
-            param.putString("ids", Singleton.getFollowingList());
-            param.putString("fields","id,from,created_time,message,story");
-            new GraphRequest(AccessToken.getCurrentAccessToken(), "posts", param, HttpMethod.GET, new GraphRequest.Callback() {
-                @Override
-                public void onCompleted(GraphResponse response) {
-                    if (response.getError()!=null){
-                        Log.d("Debug","Unable " + response.getError().toString());
-                    } else {
-                        Log.d("Debug",response.getJSONObject().toString());
-                        parseTheResponse(response.getJSONObject());
-
-                    }
-                }
-            }).executeAndWait();
-            return null;
-        }
-
-        private void parseTheResponse(JSONObject object) {
-            ArrayList<String> ids=Singleton.getFollowingArray();
-            try {
-                for (int i = 0; i < ids.size(); i++) {
-                    JSONObject eachPage = object.getJSONObject(ids.get(i));
-                    JSONArray array=eachPage.getJSONArray("data");
-                    for (int j=0;j<array.length();j++){
-                        JSONObject eachPost=array.getJSONObject(j);
-                        try {
-                            eachPost.getString("story");
-                        }catch (Exception e){
-                            names.add(eachPost.getJSONObject("from").getString("name"));
-                            posterId.add(eachPost.getJSONObject("from").getString("id"));
-
-                            try {
-                                fullImage.add(eachPost.getString("full_picture"));
-                            }catch (Exception ex) {
-                                fullImage.add("");
-                            }
-
-                            try {
-                                message.add(eachPost.getString("message"));
-                            }catch (Exception ex) {
-                                message.add("");
-                            }
-
-                            created_time.add(eachPost.getString("created_time"));
-                        }
-                    }
-                }
-            } catch (Exception e){
-                e.printStackTrace();
+        progress= (ProgressBar) view.findViewById(R.id.progressNews);
+        error= (LinearLayout) view.findViewById(R.id.errorMessageNews);
+        swipeLayout= (SwipeRefreshLayout) view.findViewById(R.id.swipeNews);
+        swipeLayout.setVisibility(View.GONE);
+        error.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                error.setVisibility(View.GONE);
+                progress.setVisibility(View.VISIBLE);
+                downloadFromInternet();
             }
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            NewsFeedSorter();
-        }
+        });
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                downloadFromInternet();
+            }
+        });
     }
-
 }

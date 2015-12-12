@@ -52,7 +52,6 @@ public class Forum extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        FacebookSdk.sdkInitialize(getActivity());
         fab=MainActivity.fab;
         errorMessage.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
