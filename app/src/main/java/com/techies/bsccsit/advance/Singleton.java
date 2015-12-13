@@ -109,7 +109,7 @@ public class Singleton {
     public static String getLatestEventName(){
         Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT names FROM events",null);
         String string="";
-        if(cursor.moveToLast())
+        if(cursor.moveToNext())
             string= cursor.getString(cursor.getColumnIndex("names"));
         cursor.close();
         return string;
@@ -118,7 +118,7 @@ public class Singleton {
     public static String getLatestEventHost(){
         Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT hosters FROM events",null);
         String string="";
-        if(cursor.moveToLast())
+        if(cursor.moveToNext())
             string= cursor.getString(cursor.getColumnIndex("hosters"));
         cursor.close();
         return string;
@@ -127,7 +127,7 @@ public class Singleton {
     public static String getLatestEventId(){
         Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT eventIDs FROM events",null);
         String string="";
-        if(cursor.moveToLast())
+        if(cursor.moveToNext())
             string= cursor.getString(cursor.getColumnIndex("eventIDs"));
         cursor.close();
         return string;
