@@ -6,7 +6,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PowerManager;
@@ -25,7 +24,6 @@ import com.google.android.gms.gcm.GcmTaskService;
 import com.google.android.gms.gcm.TaskParams;
 import com.techies.bsccsit.R;
 import com.techies.bsccsit.activities.FbEvent;
-import com.techies.bsccsit.activities.MainActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -50,18 +48,20 @@ public class BackgroundTaskHandler extends GcmTaskService {
             }
         });
 
-        final int previous=Singleton.getEventNo();
+        final int previous = Singleton.getEventNo();
         EventsDownloader eventDownloader = new EventsDownloader();
         eventDownloader.execute();
         eventDownloader.setTaskCompleteListener(new EventsDownloader.OnTaskCompleted() {
             @Override
             public void onTaskCompleted(boolean success) {
-                if(success && previous<Singleton.getEventNo()){
+                if (success && previous < Singleton.getEventNo()) {
                     notification(Singleton.getLatestEventName(),
-                            "Hosted by: "+ Singleton.getLatestEventHost(),
-                            "New event found!!!",5,
+                            "Hosted by: " + Singleton.getLatestEventHost(),
+                            "New event found!!!", 5,
                             new Intent(MyApp.getContext(), FbEvent.class)
-                                    .putExtra("eventID",Singleton.getLatestEventId()),
+                                    .putExtra("eventID", Singleton.getLatestEventId())
+                                    .putExtra("eventName", Singleton.getLatestEventName())
+                                    .putExtra("eventHost", "Hosted By: " + Singleton.getLatestEventHost()),
                             BackgroundTaskHandler.this);
                 }
             }
@@ -80,7 +80,7 @@ public class BackgroundTaskHandler extends GcmTaskService {
 
     public static Date convertToSimpleDate(String created_time) {
 
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZZZZZ", Locale.US);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZZZZZ", Locale.US);
         try {
             return simpleDateFormat.parse(created_time);
         } catch (Exception e) {
@@ -90,8 +90,8 @@ public class BackgroundTaskHandler extends GcmTaskService {
 
     public static class CommunitiesDownloader {
         public void doInBackground() {
-            String url="https://slim-bloodskate.c9users.io/app/api/allcomm";
-            final JsonArrayRequest request=new JsonArrayRequest(Request.Method.GET, url, new Response.Listener<JSONArray>() {
+            String url = "https://slim-bloodskate.c9users.io/app/api/allcomm";
+            final JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
                     Singleton.getInstance().getDatabase().execSQL("DELETE FROM popularCommunities");
@@ -136,32 +136,32 @@ public class BackgroundTaskHandler extends GcmTaskService {
 
         private OnTaskCompleted listener;
 
-        public void setTaskCompleteListener(OnTaskCompleted listener){
-            this.listener=listener;
+        public void setTaskCompleteListener(OnTaskCompleted listener) {
+            this.listener = listener;
         }
 
-        public interface OnTaskCompleted{
+        public interface OnTaskCompleted {
             void onTaskCompleted(boolean success);
         }
     }
 
-    public static class NewsDownloader extends AsyncTask<Void,Void,Void> {
-        boolean success=false;
-        ArrayList<String>  names=new ArrayList<>(),
-                posterId=new ArrayList<>(),
-                fullImage=new ArrayList<>(),
-                message=new ArrayList<>(),
-                created_time=new ArrayList<>();
+    public static class NewsDownloader extends AsyncTask<Void, Void, Void> {
+        boolean success = false;
+        ArrayList<String> names = new ArrayList<>(),
+                posterId = new ArrayList<>(),
+                fullImage = new ArrayList<>(),
+                message = new ArrayList<>(),
+                created_time = new ArrayList<>();
 
         @Override
         protected Void doInBackground(Void... params) {
-            Bundle param=new Bundle();
+            Bundle param = new Bundle();
             param.putString("ids", Singleton.getFollowingList());
-            param.putString("fields","id,from,created_time,full_picture,message,story");
+            param.putString("fields", "id,from,created_time,full_picture,message,story");
             new GraphRequest(AccessToken.getCurrentAccessToken(), "posts", param, HttpMethod.GET, new GraphRequest.Callback() {
                 @Override
                 public void onCompleted(GraphResponse response) {
-                    if (response.getError()==null){
+                    if (response.getError() == null) {
                         parseTheResponse(response.getJSONObject());
                     }
                 }
@@ -170,30 +170,30 @@ public class BackgroundTaskHandler extends GcmTaskService {
         }
 
         private void parseTheResponse(JSONObject object) {
-            ArrayList<String> ids=Singleton.getFollowingArray();
+            ArrayList<String> ids = Singleton.getFollowingArray();
 
 
             try {
                 for (int i = 0; i < ids.size(); i++) {
                     JSONObject eachPage = object.getJSONObject(ids.get(i));
-                    JSONArray array=eachPage.getJSONArray("data");
-                    for (int j=0;j<array.length();j++){
-                        JSONObject eachPost=array.getJSONObject(j);
+                    JSONArray array = eachPage.getJSONArray("data");
+                    for (int j = 0; j < array.length(); j++) {
+                        JSONObject eachPost = array.getJSONObject(j);
                         try {
                             eachPost.getString("story");
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             names.add(eachPost.getJSONObject("from").getString("name"));
                             posterId.add(eachPost.getJSONObject("from").getString("id"));
 
                             try {
                                 fullImage.add(eachPost.getString("full_picture"));
-                            }catch (Exception ex) {
+                            } catch (Exception ex) {
                                 fullImage.add("");
                             }
 
                             try {
                                 message.add(eachPost.getString("message"));
-                            }catch (Exception ex) {
+                            } catch (Exception ex) {
                                 message.add("");
                             }
 
@@ -203,21 +203,21 @@ public class BackgroundTaskHandler extends GcmTaskService {
                 }
                 NewsFeedSorter();
                 addToDatabase();
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        public boolean NewsFeedSorter(){
-            for (int i=0;i<names.size();i++){
-                for (int j=i;j<created_time.size();j++)
-                    if (convertToSimpleDate(created_time.get(i)).compareTo(convertToSimpleDate(created_time.get(j)))<0){
-                        String name,poster,image,newMessage,time;
-                        name=names.get(j);
-                        poster=posterId.get(j);
-                        image=fullImage.get(j);
-                        newMessage=message.get(j);
-                        time=created_time.get(j);
+        public boolean NewsFeedSorter() {
+            for (int i = 0; i < names.size(); i++) {
+                for (int j = i; j < created_time.size(); j++)
+                    if (convertToSimpleDate(created_time.get(i)).compareTo(convertToSimpleDate(created_time.get(j))) < 0) {
+                        String name, poster, image, newMessage, time;
+                        name = names.get(j);
+                        poster = posterId.get(j);
+                        image = fullImage.get(j);
+                        newMessage = message.get(j);
+                        time = created_time.get(j);
 
                         names.remove(j);
                         posterId.remove(j);
@@ -225,11 +225,11 @@ public class BackgroundTaskHandler extends GcmTaskService {
                         created_time.remove(j);
                         message.remove(j);
 
-                        names.add(j,names.get(i));
-                        posterId.add(j,posterId.get(i));
-                        fullImage.add(j,fullImage.get(i));
-                        created_time.add(j,created_time.get(i));
-                        message.add(j,message.get(i));
+                        names.add(j, names.get(i));
+                        posterId.add(j, posterId.get(i));
+                        fullImage.add(j, fullImage.get(i));
+                        created_time.add(j, created_time.get(i));
+                        message.add(j, message.get(i));
 
                         names.remove(i);
                         posterId.remove(i);
@@ -238,38 +238,38 @@ public class BackgroundTaskHandler extends GcmTaskService {
                         message.remove(i);
 
 
-                        names.add(i,name);
-                        posterId.add(i,poster);
-                        fullImage.add(i,image);
-                        created_time.add(i,time);
-                        message.add(i,newMessage);
+                        names.add(i, name);
+                        posterId.add(i, poster);
+                        fullImage.add(i, image);
+                        created_time.add(i, time);
+                        message.add(i, newMessage);
                     }
             }
             return true;
         }
 
-        private  void addToDatabase(){
-            ContentValues values=new ContentValues();
+        private void addToDatabase() {
+            ContentValues values = new ContentValues();
             Singleton.getInstance().getDatabase().execSQL("DELETE FROM news;");
-            for (int i=0;i<names.size();i++){
+            for (int i = 0; i < names.size(); i++) {
                 values.clear();
-                values.put("names",names.get(i));
-                values.put("posterId",posterId.get(i));
-                values.put("fullImage",fullImage.get(i));
-                values.put("message",message.get(i));
-                values.put("created_time",created_time.get(i));
-                Singleton.getInstance().getDatabase().insert("news",null,values);
+                values.put("names", names.get(i));
+                values.put("posterId", posterId.get(i));
+                values.put("fullImage", fullImage.get(i));
+                values.put("message", message.get(i));
+                values.put("created_time", created_time.get(i));
+                Singleton.getInstance().getDatabase().insert("news", null, values);
             }
-            success=true;
+            success = true;
         }
 
         private OnTaskCompleted listener;
 
-        public void setTaskCompleteListener(OnTaskCompleted listener){
-            this.listener=listener;
+        public void setTaskCompleteListener(OnTaskCompleted listener) {
+            this.listener = listener;
         }
 
-        public interface OnTaskCompleted{
+        public interface OnTaskCompleted {
             void onTaskCompleted(boolean success);
         }
 
@@ -281,12 +281,13 @@ public class BackgroundTaskHandler extends GcmTaskService {
     }
 
     public static class EventsDownloader extends AsyncTask<Void, Void, Void> {
-        ArrayList<String> names=new ArrayList<>(),
-                created_time=new ArrayList<>(),
-                eventIDs=new ArrayList<>(),
-                hosters=new ArrayList<>(),
-                fullImage=new ArrayList<>();
-        boolean success=false;
+        ArrayList<String> names = new ArrayList<>(),
+                created_time = new ArrayList<>(),
+                eventIDs = new ArrayList<>(),
+                hosters = new ArrayList<>(),
+                fullImage = new ArrayList<>();
+        boolean success = false;
+
         @Override
         protected Void doInBackground(Void... params) {
             Bundle param = new Bundle();
@@ -316,7 +317,7 @@ public class BackgroundTaskHandler extends GcmTaskService {
                         hosters.add(eachPost.getJSONObject("owner").getString("name"));
                         try {
                             fullImage.add(eachPost.getJSONObject("cover").getString("source"));
-                        } catch (Exception e){
+                        } catch (Exception e) {
                             fullImage.add("");
                         }
                         created_time.add(eachPost.getString("start_time"));
@@ -324,13 +325,14 @@ public class BackgroundTaskHandler extends GcmTaskService {
                 }
                 EventsSorter();
                 addToDatabase();
-            } catch (Exception e) {}
+            } catch (Exception e) {
+            }
         }
 
         private void EventsSorter() {
             for (int i = 0; i < names.size(); i++) {
                 for (int j = i; j < created_time.size(); j++)
-                    if (convertToSimpleDate(created_time.get(i)).compareTo(convertToSimpleDate(created_time.get(j))) < 0){
+                    if (convertToSimpleDate(created_time.get(i)).compareTo(convertToSimpleDate(created_time.get(j))) < 0) {
                         String name, hoster, image, id, time;
                         name = names.get(j);
                         time = created_time.get(j);
@@ -366,28 +368,28 @@ public class BackgroundTaskHandler extends GcmTaskService {
             }
         }
 
-        private  void addToDatabase(){
-            ContentValues values=new ContentValues();
+        private void addToDatabase() {
+            ContentValues values = new ContentValues();
             Singleton.getInstance().getDatabase().execSQL("DELETE FROM events;");
-            for (int i=0;i<names.size();i++){
+            for (int i = 0; i < names.size(); i++) {
                 values.clear();
-                values.put("names",names.get(i));
-                values.put("eventIDs",eventIDs.get(i));
-                values.put("fullImage",fullImage.get(i));
-                values.put("hosters",hosters.get(i));
-                values.put("created_time",created_time.get(i));
-                Singleton.getInstance().getDatabase().insert("events",null,values);
+                values.put("names", names.get(i));
+                values.put("eventIDs", eventIDs.get(i));
+                values.put("fullImage", fullImage.get(i));
+                values.put("hosters", hosters.get(i));
+                values.put("created_time", created_time.get(i));
+                Singleton.getInstance().getDatabase().insert("events", null, values);
             }
-            success=true;
+            success = true;
         }
 
         private OnTaskCompleted listener;
 
-        public void setTaskCompleteListener(OnTaskCompleted listener){
-            this.listener=listener;
+        public void setTaskCompleteListener(OnTaskCompleted listener) {
+            this.listener = listener;
         }
 
-        public interface OnTaskCompleted{
+        public interface OnTaskCompleted {
             void onTaskCompleted(boolean success);
         }
 
@@ -398,37 +400,38 @@ public class BackgroundTaskHandler extends GcmTaskService {
         }
     }
 
-    public static class eLibraryDownloader extends AsyncTask<Void,Void,Void>{
-        boolean success=false;
+    public static class eLibraryDownloader extends AsyncTask<Void, Void, Void> {
+        boolean success = false;
+
         @Override
         protected Void doInBackground(Void... params) {
-            JsonArrayRequest request=new JsonArrayRequest(Request.Method.POST, "https://slim-bloodskate.c9users.io/app/api/elibrary", new Response.Listener<JSONArray>() {
+            JsonArrayRequest request = new JsonArrayRequest(Request.Method.POST, "https://slim-bloodskate.c9users.io/app/api/elibrary", new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
-                    SQLiteDatabase database= Singleton.getInstance().getDatabase();
-                    database.delete("eLibrary",null,null);
-                    ContentValues values=new ContentValues();
+                    SQLiteDatabase database = Singleton.getInstance().getDatabase();
+                    database.delete("eLibrary", null, null);
+                    ContentValues values = new ContentValues();
                     try {
-                        for(int i=0;i<response.length();i++){
+                        for (int i = 0; i < response.length(); i++) {
                             values.clear();
                             values.put("Title", response.getJSONObject(i).getString("title"));
                             values.put("Source", response.getJSONObject(i).getString("source"));
                             values.put("Tag", response.getJSONObject(i).getString("tag"));
                             values.put("Link", response.getJSONObject(i).getString("link"));
                             values.put("Link", response.getJSONObject(i).getString("filename"));
-                            database.insert("eLibrary",null,values);
+                            database.insert("eLibrary", null, values);
                         }
                         listener.onTaskCompleted(true);
 
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         listener.onTaskCompleted(false);
                     }
                 }
-            }, null){
+            }, null) {
                 @Override
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<String, String>();
-                    params.put("semester", MyApp.getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getInt("semester",0)+"");
+                    params.put("semester", MyApp.getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getInt("semester", 0) + "");
                     return params;
                 }
 
@@ -445,11 +448,11 @@ public class BackgroundTaskHandler extends GcmTaskService {
 
         private OnTaskCompleted listener;
 
-        public void setTaskCompleteListener(OnTaskCompleted listener){
-            this.listener=listener;
+        public void setTaskCompleteListener(OnTaskCompleted listener) {
+            this.listener = listener;
         }
 
-        public interface OnTaskCompleted{
+        public interface OnTaskCompleted {
             void onTaskCompleted(boolean success);
         }
     }

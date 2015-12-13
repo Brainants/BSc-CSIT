@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import com.devspark.robototextview.widget.RobotoTextView;
 import com.squareup.picasso.Picasso;
 import com.techies.bsccsit.R;
+import com.techies.bsccsit.activities.FbEvent;
 import com.techies.bsccsit.activities.FbPage;
 
 import java.text.SimpleDateFormat;
@@ -133,10 +134,11 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.VH> {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    context.startActivity(new Intent(context, FbPage.class)
-                            .putExtra("id",eventsIds.get(getAdapterPosition()))
-                            .putExtra("name",names.get(getAdapterPosition()))
-                            .putExtra("details","Hosted By: "+hoster.get(getAdapterPosition())));
+                    context.startActivity(new Intent(context, FbEvent.class)
+                            .putExtra("eventID",eventsIds.get(getAdapterPosition()))
+                            .putExtra("eventName",names.get(getAdapterPosition()))
+                            .putExtra("imageURL",imageURL.get(getAdapterPosition()))
+                            .putExtra("eventHost","Hosted By: "+ hoster.get(getAdapterPosition())));
                 }
             });
         }

@@ -18,6 +18,8 @@ import com.techies.bsccsit.activities.FbPage;
 import com.techies.bsccsit.activities.ImageViewActivity;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -89,5 +91,22 @@ public class FbPageAdapter extends RecyclerView.Adapter<FbPageAdapter.VH> {
             imageHolder= (ImageView) itemView.findViewById(R.id.imageOfPost);
             profilePicHolder= (ProfilePictureView) itemView.findViewById(R.id.imageOfPoster);
         }
+    }
+
+    private ArrayList pullLinks(String text) {
+        ArrayList links = new ArrayList();
+        String regex = "\\(?\\b(http://|www[.])[-A-Za-z0-9+&amp;@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&amp;@#/%=~_()|]";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(text);
+        while(m.find()) {
+            String urlStr = m.group();
+            if (urlStr.startsWith("(") && urlStr.endsWith(")"))
+            {
+                urlStr = urlStr.substring(1, urlStr.length() - 1);
+            }
+            links.add(urlStr);
+        }
+        return links;
+
     }
 }
