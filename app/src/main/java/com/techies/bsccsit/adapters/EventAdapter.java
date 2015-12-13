@@ -7,15 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.devspark.robototextview.widget.RobotoTextView;
-import com.facebook.login.widget.ProfilePictureView;
 import com.squareup.picasso.Picasso;
 import com.techies.bsccsit.R;
-import com.techies.bsccsit.activities.ImageViewActivity;
-import com.techies.bsccsit.advance.Singleton;
-import com.techies.bsccsit.fragments.News;
+import com.techies.bsccsit.activities.FbPage;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,14 +22,15 @@ import java.util.Locale;
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.VH> {
     private final Context context;
     LayoutInflater inflater;
-    ArrayList<String> names, time, hoster, imageURL;
+    ArrayList<String> names, time, hoster, imageURL,eventsIds;
 
-    public EventAdapter(Context context, ArrayList<String> names, ArrayList<String> time
+    public EventAdapter(Context context, ArrayList<String> names, ArrayList<String> eventsIds, ArrayList<String> time
             , ArrayList<String> hoster, ArrayList<String> imageURL) {
         inflater = LayoutInflater.from(context);
         this.context = context;
         this.names = names;
         this.time = time;
+        this.eventsIds=eventsIds;
         this.hoster = hoster;
         this.imageURL = imageURL;
     }
@@ -133,6 +130,15 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.VH> {
             hosterHolder = (RobotoTextView) itemView.findViewById(R.id.eventHoster);
             addToSchedule = (ImageView) itemView.findViewById(R.id.imageOfPoster);
             imageHolder= (ImageView) itemView.findViewById(R.id.eventCoverImage);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    context.startActivity(new Intent(context, FbPage.class)
+                            .putExtra("id",eventsIds.get(getAdapterPosition()))
+                            .putExtra("name",names.get(getAdapterPosition()))
+                            .putExtra("details","Hosted By: "+hoster.get(getAdapterPosition())));
+                }
+            });
         }
     }
 }

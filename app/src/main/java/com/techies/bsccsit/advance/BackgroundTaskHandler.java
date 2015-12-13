@@ -1,10 +1,16 @@
 package com.techies.bsccsit.advance;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.support.v7.app.NotificationCompat;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -17,6 +23,9 @@ import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.google.android.gms.gcm.GcmTaskService;
 import com.google.android.gms.gcm.TaskParams;
+import com.techies.bsccsit.R;
+import com.techies.bsccsit.activities.FbEvent;
+import com.techies.bsccsit.activities.MainActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -41,12 +50,20 @@ public class BackgroundTaskHandler extends GcmTaskService {
             }
         });
 
+        final int previous=Singleton.getEventNo();
         EventsDownloader eventDownloader = new EventsDownloader();
         eventDownloader.execute();
         eventDownloader.setTaskCompleteListener(new EventsDownloader.OnTaskCompleted() {
             @Override
             public void onTaskCompleted(boolean success) {
-
+                if(success && previous<Singleton.getEventNo()){
+                    notification(Singleton.getLatestEventName(),
+                            "Hosted by: "+ Singleton.getLatestEventHost(),
+                            "New event found!!!",5,
+                            new Intent(MyApp.getContext(), FbEvent.class)
+                                    .putExtra("eventID",Singleton.getLatestEventId()),
+                            BackgroundTaskHandler.this);
+                }
             }
         });
 
@@ -140,7 +157,7 @@ public class BackgroundTaskHandler extends GcmTaskService {
         protected Void doInBackground(Void... params) {
             Bundle param=new Bundle();
             param.putString("ids", Singleton.getFollowingList());
-            param.putString("fields","id,from,created_time,message,story");
+            param.putString("fields","id,from,created_time,full_picture,message,story");
             new GraphRequest(AccessToken.getCurrentAccessToken(), "posts", param, HttpMethod.GET, new GraphRequest.Callback() {
                 @Override
                 public void onCompleted(GraphResponse response) {
@@ -435,5 +452,27 @@ public class BackgroundTaskHandler extends GcmTaskService {
         public interface OnTaskCompleted{
             void onTaskCompleted(boolean success);
         }
+    }
+
+    public static void notification(String newsTitle, String content, String ticker, int notifyNumber, Intent intent1, Context context) {
+        NotificationCompat.Builder notificationCompat = new NotificationCompat.Builder(context);
+        notificationCompat.setAutoCancel(true)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setTicker(ticker)
+                .setWhen(System.currentTimeMillis())
+                .setContentTitle(newsTitle)
+                .setContentText(content);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
+        notificationCompat.setContentIntent(pendingIntent);
+        NotificationManager notificationManagerCompat = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManagerCompat.notify(notifyNumber, notificationCompat.build());
+        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, context.getClass().getName());
+        wl.acquire();
+        try {
+            Thread.sleep(7000);
+        } catch (InterruptedException ignored) {
+        }
+        wl.release();
     }
 }

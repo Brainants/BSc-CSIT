@@ -20,7 +20,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.squareup.picasso.Picasso;
 import com.techies.bsccsit.R;
 import com.techies.bsccsit.admin.AdminPanel;
-import com.techies.bsccsit.advance.BackgroundTaskHandler;
 import com.techies.bsccsit.fragments.Community;
 import com.techies.bsccsit.fragments.Forum;
 import com.techies.bsccsit.fragments.NewsEvents;
@@ -54,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         }
-
 
         final Toolbar toolbar=(Toolbar) findViewById(R.id.toolbarMain);
 

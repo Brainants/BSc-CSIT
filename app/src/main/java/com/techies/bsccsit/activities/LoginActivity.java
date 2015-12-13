@@ -48,8 +48,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        FacebookSdk.sdkInitialize(this);
-
 
         editor = getSharedPreferences("loginInfo",MODE_PRIVATE).edit();
         preferences=getSharedPreferences("loginInfo",MODE_PRIVATE);

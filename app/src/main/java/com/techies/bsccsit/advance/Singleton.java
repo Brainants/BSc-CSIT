@@ -96,6 +96,43 @@ public class Singleton {
         return names;
     }
 
+    public static int getEventNo(){
+        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT names FROM events",null);
+        int i=0;
+        while(cursor.moveToNext()){
+            i++;
+        }
+        cursor.close();
+        return i;
+    }
+
+    public static String getLatestEventName(){
+        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT names FROM events",null);
+        String string="";
+        if(cursor.moveToLast())
+            string= cursor.getString(cursor.getColumnIndex("names"));
+        cursor.close();
+        return string;
+    }
+
+    public static String getLatestEventHost(){
+        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT hosters FROM events",null);
+        String string="";
+        if(cursor.moveToLast())
+            string= cursor.getString(cursor.getColumnIndex("hosters"));
+        cursor.close();
+        return string;
+    }
+
+    public static String getLatestEventId(){
+        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT eventIDs FROM events",null);
+        String string="";
+        if(cursor.moveToLast())
+            string= cursor.getString(cursor.getColumnIndex("eventIDs"));
+        cursor.close();
+        return string;
+    }
+
     public static CharSequence convertToSimpleDate(String created_time) {
 
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZZZZZ", Locale.US);

@@ -61,7 +61,8 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".activities.CommunityChooser"></activity>
+        <activity android:name=".activities.CommunityChooser" />
+        <activity android:name=".activities.FbEvent"></activity>
     </application>
 
 </manifest>

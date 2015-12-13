@@ -1,65 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     tools:context="com.techies.bsccsit.activities.FbPage">
-
-    <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/rootCoordinator"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/app_bar_layout"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:theme="@style/Theme.AppCompat"
+            app:layout_scrollFlags="scroll|enterAlways" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
             android:layout_height="wrap_content">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/page_logo"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_margin="8dp"
+                android:src="@drawable/logo" />
+
+            <TextView
+                android:id="@+id/page_name"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
-                android:theme="@style/Theme.AppCompat"
-                app:layout_scrollFlags="scroll|enterAlways" />
+                android:layout_marginTop="20dp"
+                android:layout_toRightOf="@id/page_logo"
+                android:text="Page Name"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#fff" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/page_desc"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/page_name"
+                android:layout_toRightOf="@id/page_logo"
+                android:text="Page Description"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#fff" />
+        </RelativeLayout>
 
-                >
+    </android.support.design.widget.AppBarLayout>
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/page_logo"
-                    android:layout_width="90dp"
-                    android:layout_height="90dp"
-                    android:layout_margin="8dp"
-                    android:src="@drawable/logo" />
-
-                <TextView
-                    android:id="@+id/page_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_toRightOf="@id/page_logo"
-                    android:text="Page Name"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="#fff" />
-
-                <TextView
-                    android:id="@+id/page_desc"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/page_name"
-                    android:layout_toRightOf="@id/page_logo"
-                    android:text="Page Description"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="#fff" />
-            </RelativeLayout>
-
-        </android.support.design.widget.AppBarLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <ProgressBar
             android:id="@+id/progressbarFb"
@@ -70,36 +67,34 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyFb"
             android:layout_width="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:layout_height="match_parent">
-
-        </android.support.v7.widget.RecyclerView>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:gravity="center"
-            android:visibility="gone"
-            android:id="@+id/errorMessageFb"
-            android:orientation="vertical"
-            android:layout_height="match_parent">
-            <ImageView
-                android:layout_width="192dp"
-                android:layout_height="192dp"
-                android:padding="16dp"
-                android:src="@drawable/no_connection"/>
-            <com.devspark.robototextview.widget.RobotoTextView
-                android:layout_width="wrap_content"
-                android:text="No Internet Conncetion"
-                android:layout_height="wrap_content" />
-            <com.devspark.robototextview.widget.RobotoTextView
-                android:layout_width="wrap_content"
-                android:text="Tap to retry."
-                android:textColor="@color/colorAccent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+            android:layout_height="match_parent" />
 
 
-    </android.support.design.widget.CoordinatorLayout>
+    </RelativeLayout>
 
+    <LinearLayout
+        android:id="@+id/errorMessageFb"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_marginTop="138dp"
+        android:orientation="vertical">
 
-</RelativeLayout>
+        <ImageView
+            android:layout_width="192dp"
+            android:layout_height="192dp"
+            android:padding="16dp"
+            android:src="@drawable/no_connection" />
+
+        <com.devspark.robototextview.widget.RobotoTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No Internet Conncetion" />
+
+        <com.devspark.robototextview.widget.RobotoTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tap to retry."
+            android:textColor="@color/colorAccent" />
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

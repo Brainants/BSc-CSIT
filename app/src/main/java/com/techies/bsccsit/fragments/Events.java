@@ -121,6 +121,7 @@ public class Events extends Fragment {
     private void setToAdapter() {
         progress.setVisibility(View.GONE);
         swipeLayout.setVisibility(View.VISIBLE);
+        recyclerView.setAdapter(new EventAdapter(getActivity(),names,eventIDs,created_time,hosters,fullImage));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 }

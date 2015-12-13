@@ -2,6 +2,7 @@ package com.techies.bsccsit.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.facebook.login.widget.ProfilePictureView;
 import com.squareup.picasso.Picasso;
 import com.techies.bsccsit.R;
+import com.techies.bsccsit.activities.FbPage;
 import com.techies.bsccsit.activities.ImageViewActivity;
 import com.techies.bsccsit.advance.Singleton;
 
@@ -41,6 +43,13 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.VH>{
     @Override
     public void onBindViewHolder(VH holder, final int position) {
         holder.nameHolder.setText(names.get(position));
+
+        holder.nameHolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openFbPage(position);
+            }
+        });
         holder.timeHolder.setText(Singleton.convertToSimpleDate(time.get(position)));
         if (message.get(position).equals(""))
             holder.messageHolder.setVisibility(View.GONE);
@@ -65,6 +74,28 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.VH>{
         }
 
         holder.profilePicHolder.setProfileId(ids.get(position));
+
+        holder.profilePicHolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openFbPage(position);
+            }
+        });
+    }
+
+    private void openFbPage(int position) {
+        context.startActivity(new Intent(context, FbPage.class)
+                            .putExtra("id",ids.get(position))
+                            .putExtra("name",names.get(position))
+                            .putExtra("details",getPageCategory(position)));
+    }
+
+    private String getPageCategory(int pos) {
+        Cursor cursor= Singleton.getInstance().getDatabase().rawQuery("SELECT ExtraText FROM popularCommunities WHERE FbID = "+ids.get(pos),null);
+        if(cursor.moveToNext())
+            return cursor.getString(cursor.getColumnIndex("ExtraText"));
+        else
+            return "Community";
     }
 
     @Override

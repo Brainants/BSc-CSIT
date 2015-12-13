@@ -1,8 +1,6 @@
 package com.techies.bsccsit.activities;
 
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,66 +33,56 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FbPage extends AppCompatActivity {
 
-    private CoordinatorLayout mCoordinate;
-    private Toolbar mToolbar;
     private ArrayList<String> messages = new ArrayList<>(),
             time = new ArrayList<>(),
             names = new ArrayList<>(),
             posterId = new ArrayList<>(),
-            ids = new ArrayList<>(),
             imageURL = new ArrayList<>();
 
 
     private ProgressBar progressBar;
     private RecyclerView recyclerView;
     private LinearLayout errorMsg;
+    private String page_id;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FacebookSdk.sdkInitialize(getApplicationContext());
-
         setContentView(R.layout.activity_fb_page);
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-
 
         progressBar = (ProgressBar) findViewById(R.id.progressbarFb);
         recyclerView = (RecyclerView) findViewById(R.id.recyFb);
         errorMsg = (LinearLayout) findViewById(R.id.errorMessageFb);
 
-        final String page_id = getIntent().getStringExtra("id");
-        String page_name = getIntent().getStringExtra("name");
-        String page_desc = getIntent().getStringExtra("details");
-        String page_verified = getIntent().getStringExtra("isVerified");
+        page_id = getIntent().getStringExtra("id");
 
+        String page_name = getIntent().getStringExtra("name");
 
         errorMsg.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
 
 
         TextView pageName = (TextView) findViewById(R.id.page_name);
-        pageName.setText(page_name);
+        pageName.setText(getIntent().getStringExtra("name"));
 
         TextView pageDesc = (TextView) findViewById(R.id.page_desc);
-        pageDesc.setText(page_desc);
+        pageDesc.setText(getIntent().getStringExtra("details"));
 
         CircleImageView pageLogo = (CircleImageView) findViewById(R.id.page_logo);
         Picasso.with(getApplicationContext()).load("https://graph.facebook.com/" + page_id + "/picture?type=large").into(pageLogo);
 
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        setTitle(page_name);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        downloadFromInternet();
+    }
 
-        if (mToolbar != null) {
-            setSupportActionBar(mToolbar);
-            getSupportActionBar().setTitle(page_name);
-            getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-
-
+    private void downloadFromInternet() {
         Bundle params = new Bundle();
         params.putString("fields", "message,story,full_picture,from,created_time");
-
         new GraphRequest(AccessToken.getCurrentAccessToken(), page_id + "/posts", params, HttpMethod.GET, new GraphRequest.Callback() {
             @Override
             public void onCompleted(GraphResponse response) {
@@ -107,35 +95,31 @@ public class FbPage extends AppCompatActivity {
                         messages.clear();
                         names.clear();
                         posterId.clear();
-                        ids.clear();
                         imageURL.clear();
-
 
                         JSONArray array = response.getJSONObject().getJSONArray("data");
                         for (int i = 0; i < array.length(); i++) {
                             JSONObject arrayItem = array.getJSONObject(i);
+                            try {
+                                arrayItem.getString("story");
+                            }catch (Exception e){
+                                names.add(arrayItem.getJSONObject("from").getString("name"));
+                                posterId.add(arrayItem.getJSONObject("from").getString("id"));
 
-                                    try {
-                                        arrayItem.getString("story");
+                                try {
+                                    imageURL.add(arrayItem.getString("full_picture"));
+                                }catch (Exception ex) {
+                                    imageURL.add("");
+                                }
 
-                                    } catch (Exception e) {
-                                        names.add(arrayItem.getJSONObject("from").getString("name"));
-                                        posterId.add(arrayItem.getJSONObject("from").getString("id"));
-                                    }
-                                    try {
-                                        messages.add(arrayItem.getString("message"));
-                                    } catch (Exception e) {
-                                        messages.add("");
-                                    }
-                                    try {
-                                        imageURL.add(arrayItem.getString("full_picture"));
-                                    } catch (Exception e) {
-                                        imageURL.add("");
-                                    }
-                                    time.add(Singleton.convertToSimpleDate(arrayItem.getString("created_time")).toString());
+                                try {
+                                    messages.add(arrayItem.getString("message"));
+                                }catch (Exception ex) {
+                                    messages.add("");
+                                }
 
-
-
+                                time.add(Singleton.convertToSimpleDate(arrayItem.getString("created_time")).toString());
+                            }
                         }
                         fillRecy();
 
@@ -148,14 +132,12 @@ public class FbPage extends AppCompatActivity {
                 }
             }
         }).executeAsync();
-
     }
 
     private void fillRecy() {
         progressBar.setVisibility(View.GONE);
         recyclerView.setAdapter(new FbPageAdapter(this, names, time, posterId, messages, imageURL));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
     }
 
     @Override

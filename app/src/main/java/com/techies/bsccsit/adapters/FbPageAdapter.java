@@ -31,6 +31,7 @@ public class FbPageAdapter extends RecyclerView.Adapter<FbPageAdapter.VH> {
         this.names = names;
         this.time = time;
         this.ids = ids;
+        this.context=context;
         this.message = messages;
         this.imageURL = imageURL;
     }
@@ -62,7 +63,7 @@ public class FbPageAdapter extends RecyclerView.Adapter<FbPageAdapter.VH> {
                 public void onClick(View v) {
                     context.startActivity(new Intent(context, ImageViewActivity.class)
                             .putExtra("ImageURL",imageURL.get(position))
-                            .putExtra("des",message.get(position)));
+                            .putExtra("desc",message.get(position)));
                 }
             });
         }
