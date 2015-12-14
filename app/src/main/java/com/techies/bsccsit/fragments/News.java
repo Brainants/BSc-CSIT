@@ -4,6 +4,7 @@ package com.techies.bsccsit.fragments;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,6 +34,7 @@ public class News extends Fragment {
     private ProgressBar progress;
     private LinearLayout error;
     private SwipeRefreshLayout swipeLayout;
+    private View coreView;
 
     public News() {
         // Required empty public constructor
@@ -63,12 +65,12 @@ public class News extends Fragment {
         cursor.close();
         if(count==0) {
             progress.setVisibility(View.VISIBLE);
-            downloadFromInternet();
+            downloadFromInternet(true);
         }else
             setToAdapter();
     }
 
-    private void downloadFromInternet() {
+    private void downloadFromInternet(final boolean first) {
         BackgroundTaskHandler.NewsDownloader downloader =
                 new BackgroundTaskHandler.NewsDownloader();
         downloader.setTaskCompleteListener(new BackgroundTaskHandler.NewsDownloader.OnTaskCompleted() {
@@ -79,6 +81,14 @@ public class News extends Fragment {
 
                 if(success)
                     fillFromDatabase();
+                else if(first)
+                    Snackbar.make(coreView.findViewById(R.id.coreNews),"Unable to update.",Snackbar.LENGTH_SHORT).setAction("Retry", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            downloadFromInternet(false);
+                            swipeLayout.setRefreshing(true);
+                        }
+                    }).show();
                 else
                     error.setVisibility(View.VISIBLE);
             }
@@ -109,18 +119,19 @@ public class News extends Fragment {
         error= (LinearLayout) view.findViewById(R.id.errorMessageNews);
         swipeLayout= (SwipeRefreshLayout) view.findViewById(R.id.swipeNews);
         swipeLayout.setVisibility(View.GONE);
+        this.coreView=view;
         error.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 error.setVisibility(View.GONE);
                 progress.setVisibility(View.VISIBLE);
-                downloadFromInternet();
+                downloadFromInternet(true);
             }
         });
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                downloadFromInternet();
+                downloadFromInternet(false);
             }
         });
     }

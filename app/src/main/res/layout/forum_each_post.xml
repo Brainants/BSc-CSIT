@@ -54,6 +54,7 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:id="@+id/messageOfPost"
+            android:autoLink="web"
             android:text="May the force be with you."
             android:textColor="@color/black" />
 

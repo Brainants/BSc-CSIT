@@ -4,6 +4,7 @@ package com.techies.bsccsit.fragments;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,6 +34,7 @@ public class Events extends Fragment {
     private ProgressBar progress;
     private LinearLayout error;
     private SwipeRefreshLayout swipeLayout;
+    private View view;
 
     public Events() {
         // Required empty public constructor
@@ -52,13 +54,13 @@ public class Events extends Fragment {
             public void onClick(View v) {
                 error.setVisibility(View.GONE);
                 progress.setVisibility(View.VISIBLE);
-                downloadFromInternet();
+                downloadFromInternet(true);
             }
         });
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                downloadFromInternet();
+                downloadFromInternet(false);
             }
         });
     }
@@ -82,12 +84,12 @@ public class Events extends Fragment {
         cursor.close();
         if(count==0) {
             progress.setVisibility(View.VISIBLE);
-            downloadFromInternet();
+            downloadFromInternet(true);
         }else
             setToAdapter();
     }
 
-    private void downloadFromInternet() {
+    private void downloadFromInternet(final boolean first) {
         BackgroundTaskHandler.EventsDownloader downloader =
                 new BackgroundTaskHandler.EventsDownloader();
         downloader.setTaskCompleteListener(new BackgroundTaskHandler.EventsDownloader.OnTaskCompleted() {
@@ -97,8 +99,16 @@ public class Events extends Fragment {
                 swipeLayout.setRefreshing(false);
                 if(success)
                     fillFromDatabase();
-                else
+                else if (first)
                     error.setVisibility(View.VISIBLE);
+                else
+                    Snackbar.make(view.findViewById(R.id.coreEvent),"Unable to update.",Snackbar.LENGTH_SHORT).setAction("Retry", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            swipeLayout.setRefreshing(true);
+                            downloadFromInternet(false);
+                        }
+                    }).show();
 
             }
         });

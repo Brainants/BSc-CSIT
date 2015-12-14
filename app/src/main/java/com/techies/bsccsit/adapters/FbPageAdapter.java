@@ -40,7 +40,7 @@ public class FbPageAdapter extends RecyclerView.Adapter<FbPageAdapter.VH> {
 
     @Override
     public FbPageAdapter.VH onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new VH(inflater.inflate(R.layout.fbpage_each_post,parent,false));
+        return new VH(inflater.inflate(R.layout.news_each_post,parent,false));
     }
 
     @Override

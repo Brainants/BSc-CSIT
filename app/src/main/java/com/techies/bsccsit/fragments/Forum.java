@@ -15,7 +15,6 @@ import android.widget.ProgressBar;
 
 import com.facebook.AccessToken;
 import com.facebook.FacebookRequestError;
-import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
@@ -37,6 +36,7 @@ public class Forum extends Fragment {
             time=new ArrayList<>(),
             names =new ArrayList<>(),
             ids=new ArrayList<>(),
+            postIds=new ArrayList<>(),
             imageURL=new ArrayList<>();
 
     private ArrayList<Integer> comments=new ArrayList<>(),
@@ -92,6 +92,7 @@ public class Forum extends Fragment {
                                     comments.add(arrayItem.getJSONObject("comments").getJSONObject("summary").getInt("total_count"));
                                     names.add(arrayItem.getJSONObject("from").getString("name"));
                                     ids.add(arrayItem.getJSONObject("from").getString("id"));
+                                    postIds.add(arrayItem.getString("id"));
                                 } catch (Exception ignored) {}
                         }
                         fillRecy();
@@ -109,7 +110,7 @@ public class Forum extends Fragment {
     private void fillRecy() {
         fab.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
-        recyclerView.setAdapter(new ForumAdapter(getActivity(), names,time,ids,messages,imageURL,likes,comments));
+        recyclerView.setAdapter(new ForumAdapter(getActivity(), names,time,ids,postIds,messages,imageURL,likes,comments));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

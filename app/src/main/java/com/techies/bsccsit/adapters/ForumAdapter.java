@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.techies.bsccsit.R;
+import com.techies.bsccsit.activities.EachPost;
 import com.techies.bsccsit.activities.ImageViewActivity;
 
 import java.util.ArrayList;
@@ -20,11 +21,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.VH>{
     private final Context context;
     LayoutInflater inflater;
-    ArrayList<String> names, time, ids, message, imageURL;
+    ArrayList<String> names, time, ids,postIds, message, imageURL;
     ArrayList<Integer> likes, comments;
 
     public ForumAdapter(Context context, ArrayList<String> names, ArrayList<String> time
-            , ArrayList<String> ids, ArrayList<String> message, ArrayList<String> imageURL
+            , ArrayList<String> ids, ArrayList<String> postIds, ArrayList<String> message, ArrayList<String> imageURL
             , ArrayList<Integer> likes, ArrayList<Integer> comments){
         inflater=LayoutInflater.from(context);
         this.context=context;
@@ -34,6 +35,7 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.VH>{
         this.message=message;
         this.imageURL=imageURL;
         this.likes=likes;
+        this.postIds=postIds;
         this.comments=comments;
     }
 
@@ -47,8 +49,8 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.VH>{
         holder.nameHolder.setText(names.get(position));
         holder.timeHolder.setText(time.get(position));
         holder.messageHolder.setText(message.get(position));
-        holder.likesHolder.setText(likes.get(position)+"");
-        holder.commentsHolder.setText(comments.get(position)+"");
+        holder.likesHolder.setText(likes.get(position).toString());
+        holder.commentsHolder.setText(comments.get(position).toString());
 
         if(imageURL.get(position).equals(""))
             holder.imageHolder.setVisibility(View.GONE);
@@ -89,6 +91,18 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.VH>{
             commentsHolder= (TextView) itemView.findViewById(R.id.commentOfPost);
             imageHolder= (ImageView) itemView.findViewById(R.id.imageOfPost);
             profilePicHolder= (CircleImageView) itemView.findViewById(R.id.imageOfPoster);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    context.startActivity(new Intent(context, EachPost.class).
+                            putExtra("postID",postIds.get(getAdapterPosition())).
+                            putExtra("userId",ids.get(getAdapterPosition())).
+                            putExtra("message",message.get(getAdapterPosition())).
+                            putExtra("imageURL",imageURL.get(getAdapterPosition())).
+                            putExtra("name",names.get(getAdapterPosition())).
+                            putExtra("time",time.get(getAdapterPosition())));
+                }
+            });
         }
     }
 }

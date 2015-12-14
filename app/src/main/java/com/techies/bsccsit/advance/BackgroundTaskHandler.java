@@ -16,6 +16,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
@@ -142,6 +143,24 @@ public class BackgroundTaskHandler extends GcmTaskService {
 
         public interface OnTaskCompleted {
             void onTaskCompleted(boolean success);
+        }
+    }
+
+    public static class MyCommunitiesUploader {
+
+        public void doInBackground() {
+            String url = "https://slim-bloodskate.c9users.io/app/api/allcomm";
+            final StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                }
+            });
+            Singleton.getInstance().getRequestQueue().add(request);
         }
     }
 

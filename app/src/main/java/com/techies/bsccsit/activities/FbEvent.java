@@ -1,8 +1,8 @@
 package com.techies.bsccsit.activities;
 
+import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.FacebookRequestError;
@@ -19,11 +18,8 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 import com.techies.bsccsit.R;
-import com.techies.bsccsit.advance.Singleton;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -84,59 +80,39 @@ public class FbEvent extends AppCompatActivity {
         new GraphRequest(AccessToken.getCurrentAccessToken(), "/" + eventId, params, HttpMethod.GET, new GraphRequest.Callback() {
             @Override
             public void onCompleted(GraphResponse response) {
-                try {
-                    FacebookRequestError error = response.getError();
-                    if (error != null) {
-                        progressBar.setVisibility(View.GONE);
-                        errorMsg.setVisibility(View.VISIBLE);
+                FacebookRequestError error = response.getError();
+                if (error != null) {
+                    progressBar.setVisibility(View.GONE);
+                    errorMsg.setVisibility(View.VISIBLE);
 
-                    } else {
+                } else {
+                    try {
                         JSONObject details = response.getJSONObject();
                         JSONObject place = details.getJSONObject("place");
                         JSONObject location = place.getJSONObject("location");
 
+                        event_name.setText(details.getString("name"));
+                        event_description.setText(details.getString("description"));
                         try {
-                            event_name.setText(details.getString("name"));
-                            event_description.setText(details.getString("description"));
                             event_time.setText(details.getString("start_time") + "\n" + details.getString("end_time"));
-
-                        } catch (Exception e) {
-                            event_description.setText("");
-                            event_time.setText("");
+                        } catch (Exception e){
+                            event_time.setText(details.getString("start_time"));
                         }
-
-
-
-                        try {
-                            event_place.setText(place.getString("name"));
-                        } catch (JSONException e) {
-                           event_place.setText("");
-                        }
-
-                        try {
-                            event_street.setText(location.getString("street") + ", " + location.getString("zip"));
-                            event_location.setText(location.getString("city") + ", " + location.getString("country"));
-
-
-                        } catch (Exception e) {
-                            event_street.setText("");
-                            event_location.setText("");
-                        }
-                    }
-
-                } catch (Exception e) {
-                    progressBar.setVisibility(View.GONE);
-                    errorMsg.setVisibility(View.VISIBLE);
-                    Log.d("ERror", "Error loading");
+                        event_place.setText(place.getString("name"));
+                        event_street.setText(location.getString("street") + ", " + location.getString("zip"));
+                        event_location.setText(location.getString("city") + ", " + location.getString("country"));
+                    } catch(Exception ignored){}
                 }
+
 
             }
         }).executeAsync();
     }
-        @Override
-        public boolean onOptionsItemSelected (MenuItem item){
-            if(item.getItemId()==android.R.id.home)
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home)
             super.onBackPressed();
-            return true;
-        }
+        return true;
     }
+}
