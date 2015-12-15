@@ -3,10 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.techies.bsccsit.fragments.FollowingCommunities">
+
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recyFollowing"/>
+        android:id="@+id/recyFollowing" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:gravity="center"
@@ -14,15 +16,18 @@
         android:orientation="vertical"
         android:visibility="gone"
         android:layout_height="match_parent">
+
         <ImageView
             android:layout_width="192dp"
             android:layout_height="192dp"
             android:padding="16dp"
-            android:src="@drawable/no_account"/>
+            android:src="@drawable/no_account" />
+
         <com.devspark.robototextview.widget.RobotoTextView
             android:layout_width="wrap_content"
             android:text="No community found."
             android:layout_height="wrap_content" />
+
         <com.devspark.robototextview.widget.RobotoTextView
             android:layout_width="wrap_content"
             android:text="Please add any."

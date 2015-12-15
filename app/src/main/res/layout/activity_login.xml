@@ -6,32 +6,37 @@
     android:background="@color/white"
     xmlns:fancy="http://schemas.android.com/apk/res-auto"
     tools:context="com.techies.bsccsit.activities.LoginActivity">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_centerInParent="true"
         android:layout_above="@+id/loginButton"
         android:layout_height="match_parent">
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/test"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop" />
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/logo"
             android:layout_centerInParent="true"
-            android:src="@drawable/logo"/>
+            android:src="@drawable/logo" />
+
         <com.devspark.robototextview.widget.RobotoTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="10dp"
-        android:layout_below="@+id/logo"
-        android:textColor="@color/colorPrimary"
-        android:textSize="25dp"
-        android:text="Bsc CSIT"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:layout_below="@+id/logo"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"
+            android:text="Bsc CSIT" />
     </RelativeLayout>
+
     <mehdi.sakout.fancybuttons.FancyButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

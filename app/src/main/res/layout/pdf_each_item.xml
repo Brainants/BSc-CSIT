@@ -5,10 +5,12 @@
     android:background="@color/white"
     android:gravity="center"
     android:layout_height="wrap_content">
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:padding="10dp"
         android:layout_height="wrap_content">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -16,13 +18,14 @@
             android:text="Data Structure and Algorithm"
             android:textColor="@color/black"
             android:id="@+id/name" />
+
         <TextView
             android:layout_width="wrap_content"
             android:id="@+id/source"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Source: csitnepal.com"
-            android:layout_below="@+id/name"/>
+            android:layout_below="@+id/name" />
 
         <ImageView
             android:layout_width="24dp"
@@ -32,8 +35,9 @@
             android:id="@+id/icon"
             android:layout_height="24dp" />
     </RelativeLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="#ddd"/>
+        android:background="#ddd" />
 </LinearLayout>

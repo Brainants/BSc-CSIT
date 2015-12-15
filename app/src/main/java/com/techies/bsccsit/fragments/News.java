@@ -81,8 +81,8 @@ public class News extends Fragment {
 
                 if(success)
                     fillFromDatabase();
-                else if(first)
-                    Snackbar.make(coreView.findViewById(R.id.coreNews),"Unable to update.",Snackbar.LENGTH_SHORT).setAction("Retry", new View.OnClickListener() {
+                else if(!first)
+                    Snackbar.make(coreView,"Unable to update.",Snackbar.LENGTH_SHORT).setAction("Retry", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             downloadFromInternet(false);

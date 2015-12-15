@@ -3,6 +3,7 @@ package com.techies.bsccsit.fragments;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,7 @@ import com.techies.bsccsit.advance.BackgroundTaskHandler;
 import com.techies.bsccsit.advance.Singleton;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Events extends Fragment {
 
@@ -35,6 +37,8 @@ public class Events extends Fragment {
     private LinearLayout error;
     private SwipeRefreshLayout swipeLayout;
     private View view;
+    private int noOfUpcoming;
+    private Date current;
 
     public Events() {
         // Required empty public constructor
@@ -49,6 +53,7 @@ public class Events extends Fragment {
         error= (LinearLayout) view.findViewById(R.id.errorMessageEvent);
         swipeLayout= (SwipeRefreshLayout) view.findViewById(R.id.swipeEvents);
         swipeLayout.setVisibility(View.GONE);
+        this.view=view;
         error.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,8 +70,14 @@ public class Events extends Fragment {
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
     private void fillFromDatabase() {
         int count=0;
+        noOfUpcoming=0;
         names.clear();
         eventIDs.clear();
         fullImage.clear();
@@ -80,6 +91,9 @@ public class Events extends Fragment {
             fullImage.add(cursor.getString(cursor.getColumnIndex("fullImage")));
             hosters.add(cursor.getString(cursor.getColumnIndex("hosters")));
             created_time.add(cursor.getString(cursor.getColumnIndex("created_time")));
+            if (BackgroundTaskHandler.convertToSimpleDate(cursor.getString(cursor.getColumnIndex("created_time")))
+                    .compareTo(current)>0)
+                noOfUpcoming++;
         }
         cursor.close();
         if(count==0) {
@@ -102,7 +116,7 @@ public class Events extends Fragment {
                 else if (first)
                     error.setVisibility(View.VISIBLE);
                 else
-                    Snackbar.make(view.findViewById(R.id.coreEvent),"Unable to update.",Snackbar.LENGTH_SHORT).setAction("Retry", new View.OnClickListener() {
+                    Snackbar.make(view,"Unable to update.",Snackbar.LENGTH_SHORT).setAction("Retry", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             swipeLayout.setRefreshing(true);
@@ -118,6 +132,8 @@ public class Events extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        current = new Date();
+        current.setTime(System.currentTimeMillis());
         fillFromDatabase();
     }
 
@@ -131,7 +147,7 @@ public class Events extends Fragment {
     private void setToAdapter() {
         progress.setVisibility(View.GONE);
         swipeLayout.setVisibility(View.VISIBLE);
-        recyclerView.setAdapter(new EventAdapter(getActivity(),names,eventIDs,created_time,hosters,fullImage));
+        recyclerView.setAdapter(new EventAdapter(getActivity(),noOfUpcoming,names,eventIDs,created_time,hosters,fullImage));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 }

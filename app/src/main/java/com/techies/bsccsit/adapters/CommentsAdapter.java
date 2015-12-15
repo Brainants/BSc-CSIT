@@ -39,10 +39,13 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.VH> {
 
     @Override
     public void onBindViewHolder(VH holder, int position) {
-        holder.profilePictureView.setProfileId(posterId.get(position));
-        holder.name.setText(names.get(position));
-        holder.time.setText(Singleton.convertToSimpleDate(times.get(position)));
-        holder.comment.setText(message.get(position));
+        if(position!=0) {
+            position--;
+            holder.profilePictureView.setProfileId(posterId.get(position));
+            holder.name.setText(names.get(position));
+            holder.time.setText(Singleton.convertToSimpleDate(times.get(position)));
+            holder.comment.setText(message.get(position));
+        }
     }
 
     @Override

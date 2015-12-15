@@ -3,16 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.techies.bsccsit.fragments.PopularCommunities">
+
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:id="@+id/popularRecy"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
+
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:id="@+id/progressCommunities"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:gravity="center"
@@ -20,15 +23,18 @@
         android:id="@+id/errorMessageCommunities"
         android:orientation="vertical"
         android:layout_height="match_parent">
+
         <ImageView
             android:layout_width="192dp"
             android:layout_height="192dp"
             android:padding="16dp"
-            android:src="@drawable/no_connection"/>
+            android:src="@drawable/no_connection" />
+
         <com.devspark.robototextview.widget.RobotoTextView
             android:layout_width="wrap_content"
             android:text="No Internet Conncetion"
             android:layout_height="wrap_content" />
+
         <com.devspark.robototextview.widget.RobotoTextView
             android:layout_width="wrap_content"
             android:text="Tap to retry."

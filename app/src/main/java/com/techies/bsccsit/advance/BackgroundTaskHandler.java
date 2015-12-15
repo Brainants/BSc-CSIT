@@ -76,6 +76,9 @@ public class BackgroundTaskHandler extends GcmTaskService {
 
             }
         });
+
+        MyCommunitiesUploader myCommunitiesUploader=new MyCommunitiesUploader();
+        myCommunitiesUploader.doInBackground();
         return 1;
     }
 
@@ -149,18 +152,32 @@ public class BackgroundTaskHandler extends GcmTaskService {
     public static class MyCommunitiesUploader {
 
         public void doInBackground() {
-            String url = "https://slim-bloodskate.c9users.io/app/api/allcomm";
-            final StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            String url = "https://slim-bloodskate.c9users.io/app/api/postcomm";
+            final StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-
+                    MyApp.getContext().getSharedPreferences("datas",MODE_PRIVATE).edit().putBoolean("communityUpdated",false).apply();
                 }
-            }, new Response.ErrorListener() {
+            },null){
                 @Override
-                public void onErrorResponse(VolleyError error) {
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("fbid", MyApp.getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getString("UserID",""));
+                    params.put("communities",Singleton.getFollowingList().replace(",bsccsitapp",""));
+                    return params;
                 }
-            });
-            Singleton.getInstance().getRequestQueue().add(request);
+
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Content-Type", "application/x-www-form-urlencoded");
+                    return params;
+                }
+            };
+
+            boolean changed=MyApp.getContext().getSharedPreferences("datas",MODE_PRIVATE).getBoolean("communityUpdated",false);
+            if(changed)
+                Singleton.getInstance().getRequestQueue().add(request);
         }
     }
 

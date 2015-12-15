@@ -1,18 +1,24 @@
 package com.techies.bsccsit.adapters;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.devspark.robototextview.widget.RobotoTextView;
 import com.squareup.picasso.Picasso;
 import com.techies.bsccsit.R;
 import com.techies.bsccsit.activities.FbEvent;
 import com.techies.bsccsit.activities.FbPage;
+import com.techies.bsccsit.activities.MainActivity;
+import com.techies.bsccsit.advance.Singleton;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,14 +29,17 @@ import java.util.Locale;
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.VH> {
     private final Context context;
     LayoutInflater inflater;
+    private int noOfUpcomming;
     ArrayList<String> names, time, hoster, imageURL,eventsIds;
+    int header=1,card=0;
 
-    public EventAdapter(Context context, ArrayList<String> names, ArrayList<String> eventsIds, ArrayList<String> time
+    public EventAdapter(Context context,int noOfUpcomming, ArrayList<String> names, ArrayList<String> eventsIds, ArrayList<String> time
             , ArrayList<String> hoster, ArrayList<String> imageURL) {
         inflater = LayoutInflater.from(context);
         this.context = context;
         this.names = names;
         this.time = time;
+        this.noOfUpcomming=noOfUpcomming;
         this.eventsIds=eventsIds;
         this.hoster = hoster;
         this.imageURL = imageURL;
@@ -38,11 +47,30 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.VH> {
 
     @Override
     public VH onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new VH(inflater.inflate(R.layout.events_each_post, parent, false));
+        if (viewType==header)
+            return new VH((inflater.inflate(R.layout.header_text_view,parent,false)));
+        else
+            return new VH(inflater.inflate(R.layout.events_each_post, parent, false));
     }
 
     @Override
     public void onBindViewHolder(VH holder, final int position) {
+        if (position==0 && noOfUpcomming!=0)
+            holder.headerText.setText("Upcoming events");
+        else if(position==0 && noOfUpcomming==0)
+            holder.headerText.setText("No upcoming events");
+        else if (position==(noOfUpcomming+1) && names.size()>noOfUpcomming)
+            holder.headerText.setText("Past events");
+        else if (position==(noOfUpcomming+1) && names.size()==noOfUpcomming)
+            holder.headerText.setText("No Past events");
+        else if(position<=noOfUpcomming)
+            fillCard(holder,position-1,true);
+        else if (position>noOfUpcomming)
+            fillCard(holder,position-2,false);
+    }
+
+    public void fillCard(final VH holder, final int position,boolean isUpcoming){
+
         holder.nameHolder.setText(names.get(position));
 
         holder.monthHolder.setText(getMonth(time.get(position)));
@@ -56,8 +84,48 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.VH> {
             Picasso.with(context).load(imageURL.get(position)).into(holder.imageHolder);
             holder.imageHolder.setVisibility(View.VISIBLE);
         }
-    }
 
+        if(isUpcoming)
+            holder.addToSchedule.setVisibility(View.VISIBLE);
+        else
+            holder.addToSchedule.setVisibility(View.GONE);
+
+        if(Singleton.isScheduledEvent(eventsIds.get(position))){
+            holder.addToSchedule.setImageResource(R.drawable.calender_check);
+            holder.addToSchedule.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Snackbar.make(MainActivity.drawerLayout,"Remainder removed.",Snackbar.LENGTH_SHORT).show();
+                    Singleton.getInstance().getDatabase().execSQL("DELETE FROM remainder WHERE eventID = "+eventsIds.get(position));
+                    notifyItemChanged(position+1);
+                }
+            });
+        } else {
+            holder.addToSchedule.setImageResource(R.drawable.calender_plus);
+            holder.addToSchedule.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Snackbar.make(MainActivity.drawerLayout,"Remainder scheduled.",Snackbar.LENGTH_SHORT).show();
+                    ContentValues values=new  ContentValues();
+                    values.put("eventID",eventsIds.get(position));
+                    values.put("created_time",time.get(position));
+                    Singleton.getInstance().getDatabase().insert("remainder",null,values);
+                    notifyItemChanged(position+1);
+                }
+            });
+        }
+        holder.eachEventCore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                context.startActivity(new Intent(context, FbEvent.class)
+                        .putExtra("eventID",eventsIds.get(position))
+                        .putExtra("eventName",names.get(position))
+                        .putExtra("imageURL",imageURL.get(position))
+                        .putExtra("eventTime",time.get(position))
+                        .putExtra("eventHost","Hosted By: "+ hoster.get(position)));
+            }
+        });
+    }
 
     public String getMonth(String created_time) {
         Date date = convertToSimpleDate(created_time);
@@ -113,15 +181,25 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.VH> {
         }
     }
 
-
     @Override
     public int getItemCount() {
-        return names.size();
+        return names.size()+2;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if(position==0)
+            return header;
+        else if (position==(noOfUpcomming+1))
+            return header;
+        return card;
     }
 
     public class VH extends RecyclerView.ViewHolder {
-        RobotoTextView nameHolder, monthHolder, dayHolder, hosterHolder;
+        RobotoTextView nameHolder, monthHolder, dayHolder, hosterHolder,headerText;
         ImageView imageHolder, addToSchedule;
+        LinearLayout eachEventCore;
+
 
         public VH(View itemView) {
             super(itemView);
@@ -129,18 +207,10 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.VH> {
             monthHolder = (RobotoTextView) itemView.findViewById(R.id.monthTxt);
             dayHolder = (RobotoTextView) itemView.findViewById(R.id.dayTxt);
             hosterHolder = (RobotoTextView) itemView.findViewById(R.id.eventHoster);
-            addToSchedule = (ImageView) itemView.findViewById(R.id.imageOfPoster);
+            addToSchedule = (ImageView) itemView.findViewById(R.id.addToCalender);
             imageHolder= (ImageView) itemView.findViewById(R.id.eventCoverImage);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    context.startActivity(new Intent(context, FbEvent.class)
-                            .putExtra("eventID",eventsIds.get(getAdapterPosition()))
-                            .putExtra("eventName",names.get(getAdapterPosition()))
-                            .putExtra("imageURL",imageURL.get(getAdapterPosition()))
-                            .putExtra("eventHost","Hosted By: "+ hoster.get(getAdapterPosition())));
-                }
-            });
+            headerText= (RobotoTextView) itemView.findViewById(R.id.headerTextView);
+            eachEventCore= (LinearLayout) itemView.findViewById(R.id.eachEventCore);
         }
     }
 }

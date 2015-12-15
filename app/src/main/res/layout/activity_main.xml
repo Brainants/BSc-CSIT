@@ -15,6 +15,7 @@
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
+            android:id="@+id/mainAppBar"
             android:layout_height="wrap_content">
 
             <android.support.v7.widget.Toolbar
@@ -40,7 +41,7 @@
             android:id="@+id/mainFab"
             app:layout_anchor="@id/fragHolder"
             app:layout_anchorGravity="bottom|right|end"
-            android:layout_margin="16dp"/>
+            android:layout_margin="16dp" />
 
     </android.support.design.widget.CoordinatorLayout>
 

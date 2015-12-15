@@ -27,51 +27,51 @@
             android:scaleType="centerCrop" />
 
 
-            <LinearLayout
-                android:id="@+id/nameHolder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <com.devspark.robototextview.widget.RobotoTextView
-                    android:id="@+id/nameSearch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Aawaz Gyawali"
-                    android:maxLines="2"
-                    android:gravity="center"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/colorPrimary" />
-
-                <ImageView
-                    android:id="@+id/isVerified"
-                    android:src="@drawable/verified"
-                    android:layout_width="25dp"
-                    android:padding="5dp"
-                    android:layout_height="25dp" />
-            </LinearLayout>
+        <LinearLayout
+            android:id="@+id/nameHolder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <com.devspark.robototextview.widget.RobotoTextView
-                android:id="@+id/extraDetail"
-                android:gravity="center"
+                android:id="@+id/nameSearch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:layout_below="@+id/nameHolder"
-                android:text="150 Likes"
-                android:textColor="@color/black"/>
+                android:text="Aawaz Gyawali"
+                android:maxLines="2"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorPrimary" />
+
+            <ImageView
+                android:id="@+id/isVerified"
+                android:src="@drawable/verified"
+                android:layout_width="25dp"
+                android:padding="5dp"
+                android:layout_height="25dp" />
+        </LinearLayout>
+
+        <com.devspark.robototextview.widget.RobotoTextView
+            android:id="@+id/extraDetail"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_below="@+id/nameHolder"
+            android:text="150 Likes"
+            android:textColor="@color/black" />
 
         <mehdi.sakout.fancybuttons.FancyButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:padding="5dp"
-                android:id="@+id/viewProfile"
-                fancy:fb_defaultColor="@color/colorPrimary"
-                fancy:fb_focusColor="@color/colorPrimaryTrans"
-                fancy:fb_iconResource="@drawable/plus"
-                fancy:fb_text="Follow"
-                fancy:fb_radius="0dp" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:padding="5dp"
+            android:id="@+id/viewProfile"
+            fancy:fb_defaultColor="@color/colorPrimary"
+            fancy:fb_focusColor="@color/colorPrimaryTrans"
+            fancy:fb_iconResource="@drawable/plus"
+            fancy:fb_text="Follow"
+            fancy:fb_radius="0dp" />
     </LinearLayout>
 </android.support.v7.widget.CardView>

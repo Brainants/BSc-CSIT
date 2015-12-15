@@ -43,7 +43,7 @@
             android:layout_centerVertical="true"
             android:layout_margin="10dp"
             android:padding="5dp"
-            android:src="@drawable/open"/>
+            android:src="@drawable/open" />
     </RelativeLayout>
 
     <View

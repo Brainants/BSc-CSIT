@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/eventCoordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -18,6 +17,7 @@
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/eventCollapse"
             android:layout_width="match_parent"
+            app:contentScrim="@color/colorPrimary"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
@@ -44,36 +44,21 @@
     </android.support.design.widget.AppBarLayout>
 
 
-
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior = "@string/appbar_scrolling_view_behavior">
+        android:id="@+id/nestedScrollEvent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="24dp"
             android:orientation="vertical">
-
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginLeft="8dp"
-                >
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <ProgressBar
-                        android:id="@+id/progressbarFbEvent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true" />
-                </RelativeLayout>
+                android:layout_margin="5dp">
                 <LinearLayout
                     style="@style/Widget.CardContent"
                     android:layout_width="match_parent"
@@ -84,37 +69,34 @@
                         android:layout_height="wrap_content"
                         android:textSize="19sp"
                         android:textColor="@color/colorPrimary"
-                        android:text="Event Name"
-                        />
+                        android:text="Event Name" />
+
                     <TextView
                         android:id="@+id/eventName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Name of the event here"
-                        />
+                        android:text="Name of the event here" />
 
                     <TextView
                         android:id="@+id/eventPlace"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Place Name"
-                        />
+                        android:text="Place Name" />
+
                     <TextView
                         android:id="@+id/eventLocation"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="City Country"
-                        />
+                        android:text="City Country" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/eventStreet"
-                        android:text="Street Name"
-                        />
+                        android:text="Street Name" />
 
 
-                        />
+                    />
 
                 </LinearLayout>
 
@@ -126,8 +108,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginLeft="8dp"
-                >
+                android:layout_marginLeft="8dp">
 
                 <LinearLayout
                     style="@style/Widget.CardContent"
@@ -140,21 +121,20 @@
                         android:layout_height="wrap_content"
                         android:text="Details"
                         android:textSize="19sp"
-                        android:textColor="@color/colorPrimary"
-                        />
+                        android:textColor="@color/colorPrimary" />
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/eventDate"
-                        android:text="Event Date"
-                        />
+                        android:text="Event Date" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/eventTime"
-                        android:text="Event Time"
-                        />
+                        android:text="Event Time" />
+
                     <TextView
                         android:id="@+id/eventHost"
                         android:layout_width="match_parent"
@@ -186,17 +166,15 @@
                         android:layout_height="wrap_content"
                         android:text="Description"
                         android:textSize="19sp"
-                        android:textColor="@color/colorPrimary"
-                        />
+                        android:textColor="@color/colorPrimary" />
+
                     <TextView
                         android:id="@+id/eventDesc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Event description"
-                        />
+                        android:text="Event description" />
 
                 </LinearLayout>
-
 
 
             </android.support.v7.widget.CardView>
@@ -205,22 +183,34 @@
 
     </android.support.v4.widget.NestedScrollView>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/progressbarFbEvent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+
     <android.support.design.widget.FloatingActionButton
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:id="@+id/eachEventFab"
         app:layout_anchor="@id/eventAppbar"
         app:layout_anchorGravity="bottom|right|end"
         android:src="@drawable/calender_plus"
         app:backgroundTint="@color/white"
         android:layout_margin="16dp"
-        android:clickable="true"/>
+        android:clickable="true" />
 
     <LinearLayout
         android:id="@+id/errorMessagePageEvent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:layout_marginTop="138dp"
+        android:layout_marginTop="220dp"
         android:orientation="vertical">
 
         <ImageView

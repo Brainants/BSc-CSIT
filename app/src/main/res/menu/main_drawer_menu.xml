@@ -1,53 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:id="@+id/coreMenu" android:checkableBehavior="single">
+    <group
+        android:id="@+id/coreMenu"
+        android:checkableBehavior="single">
 
-        <item android:id="@+id/newsEvent"
+        <item
+            android:id="@+id/newsEvent"
             android:icon="@drawable/news"
             android:checked="true"
-            android:title="News/Events"/>
+            android:title="News/Events" />
 
-        <item android:id="@+id/TUNotices"
+        <item
+            android:id="@+id/TUNotices"
             android:icon="@drawable/notice"
-            android:title="TU Notices"/>
+            android:title="TU Notices" />
 
-        <item android:id="@+id/elibrary"
+        <item
+            android:id="@+id/elibrary"
             android:icon="@drawable/elibrary"
-            android:title="E-library"/>
+            android:title="E-library" />
 
-        <item android:id="@+id/projects"
+        <item
+            android:id="@+id/projects"
             android:icon="@drawable/projects"
-            android:title="Projects"/>
+            android:title="Projects" />
 
-        <item android:id="@+id/community"
+        <item
+            android:id="@+id/community"
             android:icon="@drawable/community"
-            android:title="Communities"/>
+            android:title="Communities" />
 
-        <item android:id="@+id/fourm"
+        <item
+            android:id="@+id/fourm"
             android:icon="@drawable/forum"
-            android:title="Forum"/>
+            android:title="Forum" />
     </group>
 
     <group android:checkableBehavior="none">
-            <item android:id="@+id/setting"
-                android:icon="@drawable/setting"
-                android:checkable="false"
-                android:title="Settings"/>
+        <item
+            android:id="@+id/setting"
+            android:icon="@drawable/setting"
+            android:checkable="false"
+            android:title="Settings" />
 
-            <item android:id="@+id/adminPanel"
-                android:icon="@drawable/admin_panel"
-                android:checkable="false"
-                android:title="Admin Panel"/>
+        <item
+            android:id="@+id/adminPanel"
+            android:icon="@drawable/admin_panel"
+            android:checkable="false"
+            android:title="Admin Panel" />
 
-            <item android:id="@+id/about"
-                android:icon="@drawable/about"
-                android:checkable="false"
-                android:title="About Us"/>
+        <item
+            android:id="@+id/about"
+            android:icon="@drawable/about"
+            android:checkable="false"
+            android:title="About Us" />
 
-            <item android:id="@+id/rate_us"
-                android:checkable="false"
-                android:icon="@drawable/rate"
-                android:title="Rate Us"/>
-        </group>
+        <item
+            android:id="@+id/rate_us"
+            android:checkable="false"
+            android:icon="@drawable/rate"
+            android:title="Rate Us" />
+    </group>
 
 </menu>

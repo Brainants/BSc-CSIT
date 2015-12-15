@@ -2,8 +2,10 @@ package com.techies.bsccsit.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -35,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private FragmentManager manager;
     private int previous;
     public static FloatingActionButton fab;
-    private DrawerLayout drawerLayout;
+    public static DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         final Toolbar toolbar=(Toolbar) findViewById(R.id.toolbarMain);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            AppBarLayout appBarLayout= (AppBarLayout) findViewById(R.id.mainAppBar);
+            toolbar.setElevation(0);
+            appBarLayout.setElevation(0);
+        }
 
         NavigationView navigationView= (NavigationView) findViewById(R.id.naviView);
         drawerLayout= (DrawerLayout) findViewById(R.id.drawerLayout);
@@ -101,10 +108,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
                 int id= item.getItemId();
+                drawerLayout.closeDrawer(findViewById(R.id.naviView));
                 if(id==previous)
                     return  true;
-                drawerLayout.closeDrawer(findViewById(R.id.naviView));
-                    fab.setVisibility(View.GONE);
+                fab.setVisibility(View.GONE);
                 switch (id){
                     case R.id.newsEvent:
                         setTitle("Home");
