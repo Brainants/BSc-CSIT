@@ -156,9 +156,7 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(new Intent(LoginActivity.this,CompleteLogin.class));
                         finish();
                     }
-                } catch (Exception ignored){
-                }
-
+                } catch (Exception ignored){}
             }
         }, new Response.ErrorListener() {
             @Override

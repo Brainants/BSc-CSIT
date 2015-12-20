@@ -1,10 +1,13 @@
 package com.techies.bsccsit.fragments;
 
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,9 +15,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.techies.bsccsit.R;
+import com.techies.bsccsit.activities.MainActivity;
 import com.techies.bsccsit.adapters.FacebookSearchAdapter;
 import com.techies.bsccsit.advance.BackgroundTaskHandler;
 import com.techies.bsccsit.advance.Singleton;
@@ -23,10 +28,12 @@ import java.util.ArrayList;
 
 import mehdi.sakout.fancybuttons.FancyButton;
 
-public class PopularCommunities extends Fragment {
+public class BasicCommunityChooser extends Fragment {
 
-    private RecyclerView recyclerview;
-    private View core;
+    private RecyclerView recyclerView;
+    private FloatingActionButton fab;
+    private int following=Singleton.getFollowingArray().size()-1;
+    private MaterialDialog dialog;
 
 
     private ArrayList<String> names=new ArrayList<>(),
@@ -35,23 +42,38 @@ public class PopularCommunities extends Fragment {
     private ArrayList<Boolean> verified=new ArrayList<>();
     public static FacebookSearchAdapter adapter;
 
-    private ProgressBar progress;
     private LinearLayout error;
+    private SharedPreferences.Editor editor;
 
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_popular_communities, container, false);
+    public BasicCommunityChooser(){
+        
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        editor =getActivity().getSharedPreferences("loginInfo", Context.MODE_PRIVATE).edit();
+
+        dialog=new MaterialDialog.Builder(getActivity())
+                .content("Loading...")
+                .progress(true,0)
+                .build();
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.putBoolean("loggedIn",true);
+                editor.apply();
+                Toast.makeText(getActivity(), "Welcome "+getActivity().getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getString("FirstName","")+"!", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getContext(), MainActivity.class));
+                getActivity().finish();
+            }
+        });
         fillFromDatabase();
     }
 
-    private void fillFromDatabase(){
+    private void fillFromDatabase() {
         int count=0;
         Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM popularCommunities", null);
         while (cursor.moveToNext()) {
@@ -62,75 +84,80 @@ public class PopularCommunities extends Fragment {
             verified.add(cursor.getInt(cursor.getColumnIndex("IsVerified")) == 1);
         }
         cursor.close();
-        if(count==0) {
-            progress.setVisibility(View.VISIBLE);
+        if(count==0)
             downloadFromInternet();
-        }else
+        else
             fillRecyclerView();
     }
 
-    private void fillRecyclerView(){
-        recyclerview.setVisibility(View.VISIBLE);
-        adapter = new FacebookSearchAdapter(getActivity(),"my", names, extra, ids, verified);
-        recyclerview.setAdapter(adapter);
-        recyclerview.setLayoutManager(new GridLayoutManager(getActivity(),2));
-        adapter.setOnClickListener(new FacebookSearchAdapter.ClickListener() {
-            @Override
-            public void onClick(FancyButton view, int position) {
-                if (Singleton.checkExistInFollowing(ids.get(position))){
-                    Singleton.getInstance().getDatabase().execSQL("DELETE FROM myCommunities WHERE FbID = "+ids.get(position));
-                    Snackbar.make(core,names.get(position)+" removed Successfully.",Snackbar.LENGTH_SHORT).show();
-                    FollowingCommunities.adapter.removeBySearch(ids.get(position));
-                    if (FollowingCommunities.adapter.getItemCount()==0)
-                        FollowingCommunities.errorLayout.setVisibility(View.VISIBLE);
-                }else {
-                    ContentValues values=new ContentValues();
-                    values.put("Title",names.get(position));
-                    values.put("FbID",ids.get(position));
-                    values.put("isVerified",verified.get(position)?1:0);
-                    values.put("ExtraText",extra.get(position));
-                    Singleton.getInstance().getDatabase().insert("myCommunities",null,values);
-                    Snackbar.make(core,names.get(position)+" added Successfully.",Snackbar.LENGTH_SHORT).show();
-                    if (FollowingCommunities.adapter.getItemCount()>0)
-                        FollowingCommunities.errorLayout.setVisibility(View.GONE);
-                    FollowingCommunities.adapter.addItem(names.get(position),ids.get(position),extra.get(position),verified.get(position));
-                }
-                adapter.notifyItemChanged(position);
-            }
-        });
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        this.core=view;
-        recyclerview= (RecyclerView) view.findViewById(R.id.popularRecy);
-        progress= (ProgressBar) view.findViewById(R.id.progressCommunities);
-        error= (LinearLayout) view.findViewById(R.id.errorMessageCommunities);
-        recyclerview.setVisibility(View.GONE);
-        error.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                error.setVisibility(View.GONE);
-                progress.setVisibility(View.VISIBLE);
-                downloadFromInternet();
-            }
-        });
-
-    }
-
     private void downloadFromInternet() {
+        dialog.show();
         BackgroundTaskHandler.PopularCommunitiesDownloader downloader=new BackgroundTaskHandler.PopularCommunitiesDownloader();
         downloader.doInBackground();
         downloader.setTaskCompleteListener(new BackgroundTaskHandler.PopularCommunitiesDownloader.OnTaskCompleted() {
             @Override
             public void onTaskCompleted(boolean success) {
-                progress.setVisibility(View.GONE);
+                dialog.dismiss();
                 if(success)
                     fillFromDatabase();
                 else
                     error.setVisibility(View.VISIBLE);
             }
         });
+    }
+
+    private void fillRecyclerView(){
+        recyclerView.setVisibility(View.VISIBLE);
+        adapter = new FacebookSearchAdapter(getActivity(),"my", names, extra, ids, verified);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
+        adapter.setOnClickListener(new FacebookSearchAdapter.ClickListener() {
+            @Override
+            public void onClick(FancyButton view, int position) {
+                if (Singleton.checkExistInFollowing(ids.get(position))){
+                    following--;
+                    Singleton.getInstance().getDatabase().execSQL("DELETE FROM myCommunities WHERE FbID = "+ids.get(position));
+                }else {
+                    ContentValues values=new ContentValues();
+                    values.put("Title",names.get(position));
+                    values.put("FbID",ids.get(position));
+                    following++;
+                    values.put("isVerified",verified.get(position)?1:0);
+                    values.put("ExtraText",extra.get(position));
+                    Singleton.getInstance().getDatabase().insert("myCommunities",null,values);
+                }
+                finilizeFAB();
+                adapter.notifyItemChanged(position);
+            }
+        });
+    }
+
+    private void finilizeFAB() {
+        if (following>=5)
+            fab.show();
+        else
+            fab.hide();
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        recyclerView= (RecyclerView) view.findViewById(R.id.rectChooseCommu);
+        fab= (FloatingActionButton) view.findViewById(R.id.doneRegButton);
+        error= (LinearLayout) view.findViewById(R.id.errorMessageReg);
+        fab.hide();
+        error.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                downloadFromInternet();
+            }
+        });
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_basic_community_chooser, container, false);
     }
 }

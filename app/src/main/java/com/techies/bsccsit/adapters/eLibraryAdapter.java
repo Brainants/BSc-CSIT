@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import com.devspark.robototextview.widget.RobotoTextView;
 import com.techies.bsccsit.R;
+import com.techies.bsccsit.advance.Singleton;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -22,7 +23,8 @@ public class eLibraryAdapter extends RecyclerView.Adapter<eLibraryAdapter.VH> {
     ClickListener clickListener;
     private String fileType;
 
-    public eLibraryAdapter(Context context,String fileType, ArrayList<String> titles,ArrayList<String> source,ArrayList<String> fileName){
+    public eLibraryAdapter(Context context,String fileType, ArrayList<String> titles,
+                           ArrayList<String> source,ArrayList<String> fileName){
         inflater=LayoutInflater.from(context);
         this.titles=titles;
         this.source=source;
@@ -47,7 +49,7 @@ public class eLibraryAdapter extends RecyclerView.Adapter<eLibraryAdapter.VH> {
     }
 
     public static boolean checkExistance(String fileType,String fileName) {
-        File file = new File(Environment.getExternalStorageDirectory() + "/"+fileType+"/"+fileName);
+        File file = new File(Environment.getExternalStorageDirectory() + "/"+ Singleton.getSemester()+ "/"+fileType+"/"+fileName);
         return file.exists();
     }
 

@@ -27,12 +27,16 @@ import com.techies.bsccsit.R;
 import com.techies.bsccsit.activities.FbEvent;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -68,9 +72,9 @@ public class BackgroundTaskHandler extends GcmTaskService {
             }
         });
 
-        CommunitiesDownloader communityDownloader = new CommunitiesDownloader();
+        PopularCommunitiesDownloader communityDownloader = new PopularCommunitiesDownloader();
         communityDownloader.doInBackground();
-        communityDownloader.setTaskCompleteListener(new CommunitiesDownloader.OnTaskCompleted() {
+        communityDownloader.setTaskCompleteListener(new PopularCommunitiesDownloader.OnTaskCompleted() {
             @Override
             public void onTaskCompleted(boolean success) {
 
@@ -92,7 +96,8 @@ public class BackgroundTaskHandler extends GcmTaskService {
         }
     }
 
-    public static class CommunitiesDownloader {
+    public static class PopularCommunitiesDownloader {
+
         public void doInBackground() {
             String url = "https://slim-bloodskate.c9users.io/app/api/allcomm";
             final JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, new Response.Listener<JSONArray>() {
@@ -179,6 +184,80 @@ public class BackgroundTaskHandler extends GcmTaskService {
             if(changed)
                 Singleton.getInstance().getRequestQueue().add(request);
         }
+    }
+
+    public static class MyCommunitiesDownloader {
+        boolean success = false;
+
+        public void doInBackground() {
+            String url = "https://slim-bloodskate.c9users.io/app/api/getcomm";
+            final StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    List<String> list = Arrays.asList(response.split(","));
+                    fillMyCommFromResponse(response,list);
+                }
+            }, null) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("fbid", MyApp.getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getString("UserID", ""));
+                    return params;
+                }
+
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Content-Type", "application/x-www-form-urlencoded");
+                    return params;
+                }
+            };
+
+            Singleton.getInstance().getRequestQueue().add(request);
+        }
+
+        private void fillMyCommFromResponse(String response, final List<String> pages) {
+            Bundle param = new Bundle();
+            param.putString("fields","name,is_verified,category");
+            param.putString("ids",response);
+            new GraphRequest(AccessToken.getCurrentAccessToken(), "", param, HttpMethod.GET, new GraphRequest.Callback() {
+                @Override
+                public void onCompleted(GraphResponse response) {
+                    if(response.getError()!=null){
+                        listener.onTaskCompleted(false);
+                        response.getError().getException().printStackTrace();
+                    } else{
+                        JSONObject object=response.getJSONObject();
+                        ContentValues values=new ContentValues();
+                        try {
+                            for (int i = 0; i < pages.size(); i++) {
+                                values.clear();
+                                JSONObject eachPage = object.getJSONObject(pages.get(i));
+                                values.put("FbID",eachPage.getString("id"));
+                                values.put("Title",eachPage.getString("name"));
+                                values.put("IsVerified",eachPage.getBoolean("is_verified")?1:0);
+                                values.put("ExtraText",eachPage.getString("category"));
+                                Singleton.getInstance().getDatabase().insert("myCommunities",null,values);
+                            }
+                        } catch (Exception e){
+                            e.printStackTrace();
+                            listener.onTaskCompleted(false);
+                        }
+                    }
+                }
+            }).executeAsync();
+        }
+
+        private OnTaskCompleted listener;
+
+        public void setTaskCompleteListener(OnTaskCompleted listener) {
+            this.listener = listener;
+        }
+
+        public interface OnTaskCompleted {
+            void onTaskCompleted(boolean success);
+        }
+
     }
 
     public static class NewsDownloader extends AsyncTask<Void, Void, Void> {

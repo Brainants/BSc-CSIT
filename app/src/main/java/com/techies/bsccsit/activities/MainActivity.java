@@ -22,6 +22,8 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.squareup.picasso.Picasso;
 import com.techies.bsccsit.R;
 import com.techies.bsccsit.admin.AdminPanel;
+import com.techies.bsccsit.advance.BackgroundTaskHandler;
+import com.techies.bsccsit.advance.Singleton;
 import com.techies.bsccsit.fragments.Community;
 import com.techies.bsccsit.fragments.Forum;
 import com.techies.bsccsit.fragments.NewsEvents;
@@ -38,12 +40,14 @@ public class MainActivity extends AppCompatActivity {
     private int previous;
     public static FloatingActionButton fab;
     public static DrawerLayout drawerLayout;
+    private MaterialDialog loadFirstTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         SharedPreferences pref = getSharedPreferences("loginInfo", MODE_PRIVATE);
+        manager = getSupportFragmentManager();
 
         //Login chaina vane login activity ma lanchha
         if (!pref.getBoolean("loggedIn",false)){
@@ -54,6 +58,45 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(this, LoginActivity.class));
                 finish();
             }
+            return;
+        }
+
+
+        if(Singleton.getFollowingArray().size()-1==0){
+           loadFirstTime= new MaterialDialog.Builder(this)
+                    .content("Loading data for the first time...")
+                    .progress(true,0)
+                    .cancelable(false)
+                   .build();
+            loadFirstTime.show();
+
+            BackgroundTaskHandler.MyCommunitiesDownloader downloader = new BackgroundTaskHandler.MyCommunitiesDownloader();
+            downloader.doInBackground();
+            downloader.setTaskCompleteListener(new BackgroundTaskHandler.MyCommunitiesDownloader.OnTaskCompleted() {
+                @Override
+                public void onTaskCompleted(boolean success) {
+                    if(success) {
+                        loadFirstTime.dismiss();
+                        manager.beginTransaction().replace(R.id.fragHolder,new NewsEvents()).commit();
+                    } else {
+                        loadFirstTime.getBuilder()
+                                .positiveText("Retry")
+                                .content("Unable to update data.")
+                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        loadFirstTime.getBuilder()
+                                                .positiveText("")
+                                                .progress(true,0)
+                                                .build()
+                                                .show();
+                                    }
+                                })
+                                .build()
+                                .show();
+                    }
+                }
+            });
         }
 
         final Toolbar toolbar=(Toolbar) findViewById(R.id.toolbarMain);
@@ -102,7 +145,6 @@ public class MainActivity extends AppCompatActivity {
         //checkAdmin
         navigationView.getMenu().getItem(7).setVisible(pref.getBoolean("admin",false));
 
-        manager = getSupportFragmentManager();
         previous=R.id.newsEvent;
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override

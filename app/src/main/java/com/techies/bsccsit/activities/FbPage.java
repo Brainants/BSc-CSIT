@@ -1,6 +1,7 @@
 package com.techies.bsccsit.activities;
 
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +19,7 @@ import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
+import com.facebook.login.widget.ProfilePictureView;
 import com.squareup.picasso.Picasso;
 import com.techies.bsccsit.R;
 import com.techies.bsccsit.adapters.FbPageAdapter;
@@ -54,33 +56,37 @@ public class FbPage extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.progressbarFb);
         recyclerView = (RecyclerView) findViewById(R.id.recyFb);
         errorMsg = (LinearLayout) findViewById(R.id.errorMessageFb);
+        errorMsg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                downloadFromInternet();
+            }
+        });
 
         page_id = getIntent().getStringExtra("id");
 
-        String page_name = getIntent().getStringExtra("name");
 
-        errorMsg.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
+        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.pageCollapse);
+        collapsingToolbarLayout.setTitle(getIntent().getStringExtra("name"));
 
+        ProfilePictureView pageLogo = (ProfilePictureView) findViewById(R.id.page_logo);
+        pageLogo.setProfileId(page_id);
 
-        TextView pageName = (TextView) findViewById(R.id.page_name);
-        pageName.setText(getIntent().getStringExtra("name"));
+        Toolbar toolbar= (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        TextView pageDesc = (TextView) findViewById(R.id.page_desc);
-        pageDesc.setText(getIntent().getStringExtra("details"));
-
-        CircleImageView pageLogo = (CircleImageView) findViewById(R.id.page_logo);
-        Picasso.with(getApplicationContext()).load("https://graph.facebook.com/" + page_id + "/picture?type=large").into(pageLogo);
-
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-        setTitle(page_name);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+
+        getSupportActionBar().setSubtitle(getIntent().getStringExtra("details"));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         downloadFromInternet();
     }
 
     private void downloadFromInternet() {
+        errorMsg.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+
         Bundle params = new Bundle();
         params.putString("fields", "message,story,full_picture,from,created_time");
         new GraphRequest(AccessToken.getCurrentAccessToken(), page_id + "/posts", params, HttpMethod.GET, new GraphRequest.Callback() {
@@ -122,11 +128,8 @@ public class FbPage extends AppCompatActivity {
                             }
                         }
                         fillRecy();
-
-
                     }
                 } catch (JSONException e) {
-                    Log.d("ERror", "Error Loading something ");
                     progressBar.setVisibility(View.GONE);
                     errorMsg.setVisibility(View.VISIBLE);
                 }
