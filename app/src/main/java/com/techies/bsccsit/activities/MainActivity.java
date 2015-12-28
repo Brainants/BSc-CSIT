@@ -105,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
             toolbar.setElevation(0);
             appBarLayout.setElevation(0);
         }
-
         NavigationView navigationView= (NavigationView) findViewById(R.id.naviView);
         drawerLayout= (DrawerLayout) findViewById(R.id.drawerLayout);
         View view= navigationView.getHeaderView(0);

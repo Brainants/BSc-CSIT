@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.v7.app.NotificationCompat;
+import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -196,6 +197,7 @@ public class BackgroundTaskHandler extends GcmTaskService {
                 public void onResponse(String response) {
                     List<String> list = Arrays.asList(response.split(","));
                     fillMyCommFromResponse(response,list);
+                    Log.d("Debug",response);
                 }
             }, null) {
                 @Override
@@ -223,6 +225,7 @@ public class BackgroundTaskHandler extends GcmTaskService {
             new GraphRequest(AccessToken.getCurrentAccessToken(), "", param, HttpMethod.GET, new GraphRequest.Callback() {
                 @Override
                 public void onCompleted(GraphResponse response) {
+                    Log.d("Debug",response.toString());
                     if(response.getError()!=null){
                         listener.onTaskCompleted(false);
                         response.getError().getException().printStackTrace();
