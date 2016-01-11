@@ -83,7 +83,9 @@ public class BackgroundTaskHandler extends GcmTaskService {
         });
 
         MyCommunitiesUploader myCommunitiesUploader=new MyCommunitiesUploader();
-        myCommunitiesUploader.doInBackground();
+
+        if(getSharedPreferences("community", Context.MODE_PRIVATE).getBoolean("changedComm",false))
+            myCommunitiesUploader.doInBackground();
         return 1;
     }
 
@@ -162,9 +164,14 @@ public class BackgroundTaskHandler extends GcmTaskService {
             final StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    MyApp.getContext().getSharedPreferences("datas",MODE_PRIVATE).edit().putBoolean("communityUpdated",false).apply();
+                   MyApp.getContext().getSharedPreferences("community", Context.MODE_PRIVATE).edit().putBoolean("changedComm",false).apply();
                 }
-            },null){
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                }
+            }){
                 @Override
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<String, String>();
@@ -181,25 +188,25 @@ public class BackgroundTaskHandler extends GcmTaskService {
                 }
             };
 
-            boolean changed=MyApp.getContext().getSharedPreferences("datas",MODE_PRIVATE).getBoolean("communityUpdated",false);
-            if(changed)
                 Singleton.getInstance().getRequestQueue().add(request);
         }
     }
 
     public static class MyCommunitiesDownloader {
-        boolean success = false;
-
         public void doInBackground() {
             String url = "https://slim-bloodskate.c9users.io/app/api/getcomm";
             final StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     List<String> list = Arrays.asList(response.split(","));
-                    fillMyCommFromResponse(response,list);
-                    Log.d("Debug",response);
+                    fillMyCommFromResponse(response, list);
                 }
-            }, null) {
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                }
+            }) {
                 @Override
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<String, String>();
@@ -225,10 +232,8 @@ public class BackgroundTaskHandler extends GcmTaskService {
             new GraphRequest(AccessToken.getCurrentAccessToken(), "", param, HttpMethod.GET, new GraphRequest.Callback() {
                 @Override
                 public void onCompleted(GraphResponse response) {
-                    Log.d("Debug",response.toString());
                     if(response.getError()!=null){
                         listener.onTaskCompleted(false);
-                        response.getError().getException().printStackTrace();
                     } else{
                         JSONObject object=response.getJSONObject();
                         ContentValues values=new ContentValues();
@@ -242,8 +247,8 @@ public class BackgroundTaskHandler extends GcmTaskService {
                                 values.put("ExtraText",eachPage.getString("category"));
                                 Singleton.getInstance().getDatabase().insert("myCommunities",null,values);
                             }
+                            listener.onTaskCompleted(true);
                         } catch (Exception e){
-                            e.printStackTrace();
                             listener.onTaskCompleted(false);
                         }
                     }

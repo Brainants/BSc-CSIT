@@ -1,5 +1,6 @@
 package com.techies.bsccsit.fragments;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -24,14 +25,13 @@ import mehdi.sakout.fancybuttons.FancyButton;
 public class FollowingCommunities extends Fragment {
 
     private RecyclerView recy;
-    public static LinearLayout errorLayout;
     public static FacebookSearchAdapter adapter;
     private View core;
 
-    final ArrayList<String> names=new ArrayList<>(),
-            extra=new ArrayList<>(),
-            ids=new ArrayList<>();
-    ArrayList<Boolean> verified=new ArrayList<>();
+    final ArrayList<String> names = new ArrayList<>(),
+            extra = new ArrayList<>(),
+            ids = new ArrayList<>();
+    ArrayList<Boolean> verified = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,45 +43,42 @@ public class FollowingCommunities extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Cursor cursor=Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM myCommunities",null);
+        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM myCommunities", null);
 
-        adapter=new FacebookSearchAdapter(getActivity(),"my", names, extra, ids, verified);
+        adapter = new FacebookSearchAdapter(getActivity(), "my", names, extra, ids, verified);
         recy.setAdapter(adapter);
 
-        if(cursor.getCount()!=0) {
-            errorLayout.setVisibility(View.GONE);
-
-            while (cursor.moveToNext()) {
-                names.add(cursor.getString(cursor.getColumnIndex("Title")));
-                extra.add(cursor.getString(cursor.getColumnIndex("ExtraText")));
-                ids.add(cursor.getString(cursor.getColumnIndex("FbID")));
-                verified.add(cursor.getInt(cursor.getColumnIndex("IsVerified")) == 1);
-            }
-            adapter=new FacebookSearchAdapter(getActivity(),"my", names, extra, ids, verified);
-            recy.setAdapter(adapter);
-            recy.setLayoutManager(new GridLayoutManager(getActivity(),2));
-            adapter.setOnClickListener(new FacebookSearchAdapter.ClickListener() {
-                @Override
-                public void onClick(FancyButton view, int position) {
-                    Singleton.getInstance().getDatabase().execSQL("DELETE FROM myCommunities WHERE FbID = "+ids.get(position));
-                    Snackbar.make(core,names.get(position)+" removed Successfully.",Snackbar.LENGTH_SHORT).show();
-                    adapter.removeItem(position);
-                    if(adapter.getItemCount()==0)
-                        errorLayout.setVisibility(View.VISIBLE);
-                    PopularCommunities.adapter.notifyDataSetChanged();
-                }
-            });
-        }else {
-            errorLayout.setVisibility(View.VISIBLE);
+        while (cursor.moveToNext()) {
+            names.add(cursor.getString(cursor.getColumnIndex("Title")));
+            extra.add(cursor.getString(cursor.getColumnIndex("ExtraText")));
+            ids.add(cursor.getString(cursor.getColumnIndex("FbID")));
+            verified.add(cursor.getInt(cursor.getColumnIndex("IsVerified")) == 1);
         }
+        adapter = new FacebookSearchAdapter(getActivity(), "my", names, extra, ids, verified);
+        recy.setAdapter(adapter);
+        recy.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        adapter.setOnClickListener(new FacebookSearchAdapter.ClickListener() {
+            @Override
+            public void onClick(FancyButton view, int position) {
+                if (Singleton.getFollowingArray().size() <= 6) {
+                    Snackbar.make(core, "You must follow any 5 communities.", Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Singleton.getInstance().getDatabase().execSQL("DELETE FROM myCommunities WHERE FbID = " + ids.get(position));
+                Snackbar.make(core, names.get(position) + " removed Successfully.", Snackbar.LENGTH_SHORT).show();
+                adapter.removeItem(position);
+                PopularCommunities.adapter.notifyDataSetChanged();
+                getActivity().getSharedPreferences("community", Context.MODE_PRIVATE).edit().putBoolean("changedComm", true).apply();
+            }
+        });
         cursor.close();
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recy= (RecyclerView) view.findViewById(R.id.recyFollowing);
-        errorLayout= (LinearLayout) view.findViewById(R.id.errorMessageFollowing);
-        this.core=view;
+        recy = (RecyclerView) view.findViewById(R.id.recyFollowing);
+        this.core = view;
     }
 }

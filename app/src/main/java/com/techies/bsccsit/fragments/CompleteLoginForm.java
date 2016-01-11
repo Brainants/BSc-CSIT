@@ -26,8 +26,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.LoginEvent;
 import com.techies.bsccsit.R;
 import com.techies.bsccsit.activities.MainActivity;
 import com.techies.bsccsit.advance.Singleton;
@@ -116,10 +114,10 @@ public class CompleteLoginForm extends Fragment implements AdapterView.OnItemSel
                     editor.putBoolean("formFilled",true);
                     editor.apply();
 
-                    Answers.getInstance().logLogin(new LoginEvent()
+/*                    Answers.getInstance().logLogin(new LoginEvent()
                             .putMethod("Facebook")
                             .putSuccess(true));
-
+*/
                     getActivity().getSupportFragmentManager().beginTransaction()
                             .replace(R.id.completeFragHolder,new BasicCommunityChooser())
                             .commit();
@@ -129,9 +127,10 @@ public class CompleteLoginForm extends Fragment implements AdapterView.OnItemSel
             @Override
             public void onErrorResponse(VolleyError error) {
                 dialog.dismiss();
-                Answers.getInstance().logLogin(new LoginEvent()
+                /*Answers.getInstance().logLogin(new LoginEvent()
                         .putMethod("Facebook")
                         .putSuccess(false));
+                */
                 Snackbar.make(view.findViewById(R.id.CompleteCore),"Unable to connect.",Snackbar.LENGTH_SHORT).setAction("Retry", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

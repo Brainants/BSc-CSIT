@@ -62,41 +62,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        if(Singleton.getFollowingArray().size()-1==0){
-           loadFirstTime= new MaterialDialog.Builder(this)
-                    .content("Loading data for the first time...")
-                    .progress(true,0)
-                    .cancelable(false)
-                   .build();
-            loadFirstTime.show();
-
-            BackgroundTaskHandler.MyCommunitiesDownloader downloader = new BackgroundTaskHandler.MyCommunitiesDownloader();
-            downloader.doInBackground();
-            downloader.setTaskCompleteListener(new BackgroundTaskHandler.MyCommunitiesDownloader.OnTaskCompleted() {
-                @Override
-                public void onTaskCompleted(boolean success) {
-                    if(success) {
-                        loadFirstTime.dismiss();
-                        manager.beginTransaction().replace(R.id.fragHolder,new NewsEvents()).commit();
-                    } else {
-                        loadFirstTime.getBuilder()
-                                .positiveText("Retry")
-                                .content("Unable to update data.")
-                                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                    @Override
-                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                        loadFirstTime.getBuilder()
-                                                .positiveText("")
-                                                .progress(true,0)
-                                                .build()
-                                                .show();
-                                    }
-                                })
-                                .build()
-                                .show();
-                    }
-                }
-            });
+        if (Singleton.getFollowingArray().size() - 1 == 0) {
+            finish();
+            startActivity(new Intent(this,LoadingActivity.class));
         }
 
         final Toolbar toolbar=(Toolbar) findViewById(R.id.toolbarMain);

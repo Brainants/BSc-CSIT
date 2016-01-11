@@ -8,31 +8,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/recyFollowing" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:gravity="center"
-        android:id="@+id/errorMessageFollowing"
-        android:orientation="vertical"
-        android:visibility="gone"
-        android:layout_height="match_parent">
-
-        <ImageView
-            android:layout_width="192dp"
-            android:layout_height="192dp"
-            android:padding="16dp"
-            android:src="@drawable/no_account" />
-
-        <com.devspark.robototextview.widget.RobotoTextView
-            android:layout_width="wrap_content"
-            android:text="No community found."
-            android:layout_height="wrap_content" />
-
-        <com.devspark.robototextview.widget.RobotoTextView
-            android:layout_width="wrap_content"
-            android:text="Please add any."
-            android:textColor="@color/colorAccent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
 </RelativeLayout>

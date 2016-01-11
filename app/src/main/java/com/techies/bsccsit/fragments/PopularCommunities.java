@@ -1,6 +1,7 @@
 package com.techies.bsccsit.fragments;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -78,11 +79,13 @@ public class PopularCommunities extends Fragment {
             @Override
             public void onClick(FancyButton view, int position) {
                 if (Singleton.checkExistInFollowing(ids.get(position))){
+                    if (Singleton.getFollowingArray().size() <= 6) {
+                        Snackbar.make(core, "You must follow any 5 communities.", Snackbar.LENGTH_SHORT).show();
+                        return;
+                    }
                     Singleton.getInstance().getDatabase().execSQL("DELETE FROM myCommunities WHERE FbID = "+ids.get(position));
                     Snackbar.make(core,names.get(position)+" removed Successfully.",Snackbar.LENGTH_SHORT).show();
                     FollowingCommunities.adapter.removeBySearch(ids.get(position));
-                    if (FollowingCommunities.adapter.getItemCount()==0)
-                        FollowingCommunities.errorLayout.setVisibility(View.VISIBLE);
                 }else {
                     ContentValues values=new ContentValues();
                     values.put("Title",names.get(position));
@@ -91,9 +94,8 @@ public class PopularCommunities extends Fragment {
                     values.put("ExtraText",extra.get(position));
                     Singleton.getInstance().getDatabase().insert("myCommunities",null,values);
                     Snackbar.make(core,names.get(position)+" added Successfully.",Snackbar.LENGTH_SHORT).show();
-                    if (FollowingCommunities.adapter.getItemCount()>0)
-                        FollowingCommunities.errorLayout.setVisibility(View.GONE);
                     FollowingCommunities.adapter.addItem(names.get(position),ids.get(position),extra.get(position),verified.get(position));
+                    getActivity().getSharedPreferences("community", Context.MODE_PRIVATE).edit().putBoolean("changedComm",true).apply();
                 }
                 adapter.notifyItemChanged(position);
             }

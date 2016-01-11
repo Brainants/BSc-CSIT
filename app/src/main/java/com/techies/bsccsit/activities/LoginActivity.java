@@ -2,9 +2,14 @@ package com.techies.bsccsit.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -30,6 +35,8 @@ import com.techies.bsccsit.advance.Singleton;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,23 +56,23 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        editor = getSharedPreferences("loginInfo",MODE_PRIVATE).edit();
-        preferences=getSharedPreferences("loginInfo",MODE_PRIVATE);
+        editor = getSharedPreferences("loginInfo", MODE_PRIVATE).edit();
+        preferences = getSharedPreferences("loginInfo", MODE_PRIVATE);
 
         final FancyButton button = (FancyButton) findViewById(R.id.loginButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (AccessToken.getCurrentAccessToken()==null)
+                if (AccessToken.getCurrentAccessToken() == null)
                     loginButton.callOnClick();
                 else
                     postFbLoginWork();
             }
         });
 
-        loginButton=new LoginButton(this);
+        loginButton = new LoginButton(this);
 
-        loginButton.setReadPermissions("public_profile", "email","user_hometown","user_about_me");
+        loginButton.setReadPermissions("public_profile", "email", "user_hometown", "user_about_me");
 
         callbackManager = CallbackManager.Factory.create();
 
@@ -83,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onError(FacebookException e) {
-                Snackbar.make(findViewById(R.id.LoginCore), "Unable to connect.",Snackbar.LENGTH_SHORT).setAction("Retry", new View.OnClickListener() {
+                Snackbar.make(findViewById(R.id.LoginCore), "Unable to connect.", Snackbar.LENGTH_SHORT).setAction("Retry", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         button.callOnClick();
@@ -94,17 +101,17 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void postFbLoginWork() {
-        if(dialog==null)
+        if (dialog == null)
             dialog = new MaterialDialog.Builder(this)
                     .content("Logging in...")
-                    .progress(true,0)
+                    .progress(true, 0)
                     .cancelable(false)
                     .build();
 
         dialog.show();
-        Bundle bundle= new Bundle();
+        Bundle bundle = new Bundle();
         bundle.putString("fields", "id,name,email,hometown,gender,first_name,last_name");
-        if (preferences.getString("FirstName","").equals("")) {
+        if (preferences.getString("FirstName", "").equals("")) {
             new GraphRequest(AccessToken.getCurrentAccessToken(), "me", bundle, HttpMethod.GET, new GraphRequest.Callback() {
                 @Override
                 public void onCompleted(GraphResponse response) {
@@ -119,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
                         return;
                     }
                     try {
-                        JSONObject object=response.getJSONObject();
+                        JSONObject object = response.getJSONObject();
                         //email save garera complete login activity ma name ani email pass gareko
                         editor.putString("email", object.getString("email"));
                         editor.putString("FirstName", object.getString("first_name"));
@@ -137,26 +144,27 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        StringRequest request=new StringRequest(Request.Method.POST, "https://slim-bloodskate.c9users.io/app/api/checkUser", new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.POST, "https://slim-bloodskate.c9users.io/app/api/checkUser", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
                     dialog.dismiss();
-                    JSONObject object=new JSONObject(response);
+                    JSONObject object = new JSONObject(response);
                     if (object.getBoolean("exists")) {
                         addEveryThingToSp(object.getJSONObject("data"));
                         editor.putBoolean("loggedIn", true);
                         editor.apply();
-                        Toast.makeText(LoginActivity.this,"Welcome back "+preferences.getString("FirstName",""),Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                        Toast.makeText(LoginActivity.this, "Welcome back " + preferences.getString("FirstName", ""), Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(LoginActivity.this, LoadingActivity.class));
                         finish();
-                    }else {
+                    } else {
                         editor.putBoolean("loggedFirstIn", true);
                         editor.apply();
-                        startActivity(new Intent(LoginActivity.this,CompleteLogin.class));
+                        startActivity(new Intent(LoginActivity.this, CompleteLogin.class));
                         finish();
                     }
-                } catch (Exception ignored){}
+                } catch (Exception ignored) {
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -169,11 +177,11 @@ public class LoginActivity extends AppCompatActivity {
                 }).show();
                 dialog.dismiss();
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("fbid", preferences.getString("UserID",""));
+                params.put("fbid", preferences.getString("UserID", ""));
                 return params;
             }
 
@@ -193,7 +201,7 @@ public class LoginActivity extends AppCompatActivity {
             editor.putString("college", response.getString("college"));
             editor.putString("phone_number", response.getString("phone_number"));
             editor.apply();
-        } catch (Exception ignored){
+        } catch (Exception ignored) {
         }
     }
 
