@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.devspark.robototextview.widget.RobotoTextView;
 import com.facebook.AccessToken;
 import com.facebook.FacebookRequestError;
 import com.facebook.GraphRequest;
@@ -27,9 +28,12 @@ import com.techies.bsccsit.R;
 import com.techies.bsccsit.advance.BackgroundTaskHandler;
 import com.techies.bsccsit.advance.Singleton;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class FbEvent extends AppCompatActivity {
 
@@ -40,7 +44,7 @@ public class FbEvent extends AppCompatActivity {
     private FloatingActionButton fab;
     private NestedScrollView nestedScrollEvent;
 
-    private TextView event_name, event_description, event_place, event_location, event_street, event_time,hosted_by;
+    private RobotoTextView event_name, event_description, event_place, event_location, event_street, event_time, hosted_by;
     private String time;
 
     @Override
@@ -48,13 +52,13 @@ public class FbEvent extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fb_event);
 
-        event_name = (TextView) findViewById(R.id.eventName);
-        event_description = (TextView) findViewById(R.id.eventDesc);
-        event_place = (TextView) findViewById(R.id.eventPlace);
-        event_location = (TextView) findViewById(R.id.eventLocation);
-        event_street = (TextView) findViewById(R.id.eventStreet);
-        event_time = (TextView) findViewById(R.id.eventTime);
-        hosted_by = (TextView) findViewById(R.id.eventHost);
+        event_name = (RobotoTextView) findViewById(R.id.eventName);
+        event_description = (RobotoTextView) findViewById(R.id.eventDesc);
+        event_place = (RobotoTextView) findViewById(R.id.eventPlace);
+        event_location = (RobotoTextView) findViewById(R.id.eventLocation);
+        event_street = (RobotoTextView) findViewById(R.id.eventStreet);
+        event_time = (RobotoTextView) findViewById(R.id.eventTime);
+        hosted_by = (RobotoTextView) findViewById(R.id.eventHost);
 
         ImageView event_photo = (ImageView) findViewById(R.id.eventPhoto);
         fab = (FloatingActionButton) findViewById(R.id.eachEventFab);
@@ -145,30 +149,54 @@ public class FbEvent extends AppCompatActivity {
                         JSONObject location = null;
 
 
-                        try {
-                             place = details.getJSONObject("place");
-                        }catch (Exception e) {
+                        event_name.setText(details.getString("name"));
 
+                        try {
+                            place = details.getJSONObject("place");
+                        } catch (Exception e) {
                         }
 
                         try {
                             location = place.getJSONObject("location");
-                        }catch (Exception e) {
-
+                        } catch (Exception e) {
                         }
-
-                        event_name.setText(details.getString("name"));
 
                         try {
                             event_description.setText(details.getString("description"));
-                        }catch (Exception e) {
+                        } catch (Exception e) {
                             event_description.setText("No event description available for now!!");
                         }
 
+
+                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZZZZZ", Locale.US);
+                        String startTime=null,endTime=null;
+
                         try {
-                            event_time.setText(details.getString("start_time") + "\n" + details.getString("end_time"));
-                        } catch (Exception e) {
-                            event_time.setText(details.getString("start_time"));
+                             startTime = details.getString("start_time");
+                             endTime = details.getString("end_time");
+
+
+                            String strMonthStart = (String) android.text.format.DateFormat.format("MMM", format.parse(startTime));
+                            String dayStart = (String) android.text.format.DateFormat.format("dd", format.parse(startTime));
+                            String yearStart = (String) android.text.format.DateFormat.format("yyy", format.parse(startTime));
+                            String dayWeekStart = (String) android.text.format.DateFormat.format("EEEE", format.parse(startTime));
+
+                            String strMonthEnd = (String) android.text.format.DateFormat.format("MMM", format.parse(endTime));
+                            String dayEnd = (String) android.text.format.DateFormat.format("dd", format.parse(endTime));
+                            String yearEnd = (String) android.text.format.DateFormat.format("yyy", format.parse(endTime));
+                            String dayWeekEnd = (String) android.text.format.DateFormat.format("EEEE", format.parse(endTime));
+
+                            event_time.setText(dayStart + " " + strMonthStart + " " + yearStart + " (" + dayWeekStart + ")" +
+                                    " to \n" + dayEnd + " " + strMonthEnd + " " + yearEnd + " (" + dayWeekEnd + ")");
+
+
+                        } catch (JSONException e) {
+                            String strMonthStart = (String) android.text.format.DateFormat.format("MMM", format.parse(startTime));
+                            String dayStart = (String) android.text.format.DateFormat.format("dd", format.parse(startTime));
+                            String yearStart = (String) android.text.format.DateFormat.format("yyy", format.parse(startTime));
+                            String dayWeekStart = (String) android.text.format.DateFormat.format("EEEE", format.parse(startTime));
+
+                            event_time.setText(dayStart + " " + strMonthStart + ", " + yearStart + " (" + dayWeekStart + ")");
                         }
 
 
@@ -179,7 +207,7 @@ public class FbEvent extends AppCompatActivity {
                         }
 
                         try {
-                            event_location.setText(location.getString("city")+ ", " + location.getString("country")  );
+                            event_location.setText(location.getString("city") + ", " + location.getString("country"));
                         } catch (Exception e) {
                             event_location.setVisibility(View.GONE);
                         }
@@ -195,9 +223,14 @@ public class FbEvent extends AppCompatActivity {
                     } catch (Exception ignored) {
                     }
                 }
+
+
             }
+
+
         }).executeAsync();
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

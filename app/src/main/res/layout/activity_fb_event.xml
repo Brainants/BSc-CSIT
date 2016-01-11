@@ -60,32 +60,32 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <TextView
+                    <com.devspark.robototextview.widget.RobotoTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="19sp"
                         android:textColor="@color/colorPrimary"
                         android:text="Event Name" />
 
-                    <TextView
+                    <com.devspark.robototextview.widget.RobotoTextView
                         android:id="@+id/eventName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Name of the event here" />
 
-                    <TextView
+                    <com.devspark.robototextview.widget.RobotoTextView
                         android:id="@+id/eventPlace"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Place Name" />
 
-                    <TextView
+                    <com.devspark.robototextview.widget.RobotoTextView
                         android:id="@+id/eventLocation"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="City Country" />
 
-                    <TextView
+                    <com.devspark.robototextview.widget.RobotoTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/eventStreet"
@@ -111,7 +111,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <TextView
+                    <com.devspark.robototextview.widget.RobotoTextView
 
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -119,19 +119,15 @@
                         android:textSize="19sp"
                         android:textColor="@color/colorPrimary" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/eventDate"
-                        android:text="Event Date" />
 
-                    <TextView
+
+                    <com.devspark.robototextview.widget.RobotoTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/eventTime"
                         android:text="Event Time" />
 
-                    <TextView
+                    <com.devspark.robototextview.widget.RobotoTextView
                         android:id="@+id/eventHost"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -156,7 +152,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <TextView
+                    <com.devspark.robototextview.widget.RobotoTextView
 
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -164,7 +160,7 @@
                         android:textSize="19sp"
                         android:textColor="@color/colorPrimary" />
 
-                    <TextView
+                    <com.devspark.robototextview.widget.RobotoTextView
                         android:id="@+id/eventDesc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

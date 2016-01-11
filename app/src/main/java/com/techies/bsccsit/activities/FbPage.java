@@ -71,6 +71,7 @@ public class FbPage extends AppCompatActivity {
 
         ProfilePictureView pageLogo = (ProfilePictureView) findViewById(R.id.page_logo);
         pageLogo.setProfileId(page_id);
+        pageLogo.bringToFront();
 
         Toolbar toolbar= (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -125,6 +126,7 @@ public class FbPage extends AppCompatActivity {
                                 }
 
                                 time.add(Singleton.convertToSimpleDate(arrayItem.getString("created_time")).toString());
+
                             }
                         }
                         fillRecy();

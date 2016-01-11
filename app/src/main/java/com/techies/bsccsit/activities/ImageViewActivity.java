@@ -2,10 +2,9 @@ package com.techies.bsccsit.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.devspark.robototextview.widget.RobotoTextView;
 import com.squareup.picasso.Picasso;
@@ -18,20 +17,28 @@ public class ImageViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_view);
-        ImageView imageView= (ImageView) findViewById(R.id.imageViewerImage);
-        TextView likeNo= (TextView) findViewById(R.id.likeNo),
-                commentNo= (TextView) findViewById(R.id.commentNo);
-        RobotoTextView desc= (RobotoTextView) findViewById(R.id.decsOfImage);
-        LinearLayout comntNlike= (LinearLayout) findViewById(R.id.commentNlike);
+        ImageView imageView = (ImageView) findViewById(R.id.imageViewerImage);
+        RobotoTextView desc = (RobotoTextView) findViewById(R.id.decsOfImage);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarImageView);
+
+        setSupportActionBar(toolbar);
+        setTitle("Feed");
+
+
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Picasso.with(this).load(getIntent().getStringExtra("ImageURL")).into(imageView);
 
         desc.setText(getIntent().getStringExtra("desc"));
-        if(getIntent().getStringExtra("like")==null)
-            comntNlike.setVisibility(View.GONE);
-        else{
-            likeNo.setText(getIntent().getStringExtra("like"));
-            commentNo.setText(getIntent().getStringExtra("comment"));
-        }
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()==android.R.id.home)
+            super.onBackPressed();
+        return true;
     }
 }

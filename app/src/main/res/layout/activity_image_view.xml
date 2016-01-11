@@ -3,61 +3,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#9E9E9E"
+    android:background="#000"
     tools:context="com.techies.bsccsit.activities.ImageViewActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbarImageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.AppCompat"
+
+         />
 
     <ImageView
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
         android:id="@+id/imageViewerImage"
-        android:layout_height="match_parent" />
+        android:layout_centerInParent="true"
+        />
 
     <com.devspark.robototextview.widget.RobotoTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:background="@drawable/gradient_black"
+        android:layout_alignParentBottom="true"
         android:id="@+id/decsOfImage"
         android:textColor="@color/white"
         android:maxLines="2"
         android:ellipsize="end"
+        android:paddingBottom="10dp"
         android:text="Description of the text." />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/commentNlike"
-        android:gravity="center_vertical"
-        android:background="@drawable/gradient_black"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:src="@drawable/like"
-            android:layout_margin="5dp"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:text="21"
-            android:id="@+id/likeNo"
-            android:layout_margin="5dp"
-            android:textColor="@color/white"
-            android:layout_height="wrap_content" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:src="@drawable/comment"
-            android:layout_margin="5dp"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:textColor="@color/white"
-            android:text="12"
-            android:id="@+id/commentNo"
-            android:layout_margin="5dp"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
 
 </RelativeLayout>
