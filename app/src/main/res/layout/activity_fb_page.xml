@@ -10,12 +10,15 @@
         android:id="@+id/appBarPage"
         android:layout_width="match_parent"
         android:layout_height="@dimen/detail_backdrop_height"
-        app:contentScrim="@color/colorPrimary">
+        app:contentScrim="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:fitsSystemWindows="true">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/pageCollapse"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:contentScrim="@color/colorPrimary"
             android:fitsSystemWindows="true"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
@@ -87,6 +90,7 @@
         android:layout_margin="16dp"
         android:src="@drawable/logo"
         app:layout_anchor="@id/appBarPage"
-        app:layout_anchorGravity="bottom" />
+        app:layout_anchorGravity="bottom|left|end"
+         />
 
 </android.support.design.widget.CoordinatorLayout>
