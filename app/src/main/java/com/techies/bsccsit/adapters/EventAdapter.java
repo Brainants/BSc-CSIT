@@ -78,9 +78,10 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.VH> {
 
         holder.hosterHolder.setText("Hosted by: " + hoster.get(position));
 
-        if (imageURL.get(position).equals(""))
-            holder.imageHolder.setVisibility(View.GONE);
-        else {
+        if (imageURL.get(position).equals("")) {
+            Picasso.with(context).load(R.drawable.header).into(holder.imageHolder);
+            holder.imageHolder.setVisibility(View.VISIBLE);
+        }else {
             Picasso.with(context).load(imageURL.get(position)).into(holder.imageHolder);
             holder.imageHolder.setVisibility(View.VISIBLE);
         }

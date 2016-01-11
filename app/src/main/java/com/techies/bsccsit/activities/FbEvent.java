@@ -40,7 +40,7 @@ public class FbEvent extends AppCompatActivity {
     private FloatingActionButton fab;
     private NestedScrollView nestedScrollEvent;
 
-    private TextView event_name, event_description, event_place, event_location, event_street, event_time;
+    private TextView event_name, event_description, event_place, event_location, event_street, event_time,hosted_by;
     private String time;
 
     @Override
@@ -54,15 +54,19 @@ public class FbEvent extends AppCompatActivity {
         event_location = (TextView) findViewById(R.id.eventLocation);
         event_street = (TextView) findViewById(R.id.eventStreet);
         event_time = (TextView) findViewById(R.id.eventTime);
+        hosted_by = (TextView) findViewById(R.id.eventHost);
+
         ImageView event_photo = (ImageView) findViewById(R.id.eventPhoto);
         fab = (FloatingActionButton) findViewById(R.id.eachEventFab);
-        nestedScrollEvent= (NestedScrollView) findViewById(R.id.nestedScrollEvent);
+        nestedScrollEvent = (NestedScrollView) findViewById(R.id.nestedScrollEvent);
         CollapsingToolbarLayout mCollapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.eventCollapse);
 
         eventId = getIntent().getStringExtra("eventID");
         String eventName = getIntent().getStringExtra("eventName");
         String eventImage = getIntent().getStringExtra("imageURL");
-        time= getIntent().getStringExtra("eventTime");
+        time = getIntent().getStringExtra("eventTime");
+
+        hosted_by.setText(getIntent().getStringExtra("eventHost"));
 
         progressBar = (ProgressBar) findViewById(R.id.progressbarFbEvent);
         errorMsg = (LinearLayout) findViewById(R.id.errorMessagePageEvent);
@@ -77,14 +81,14 @@ public class FbEvent extends AppCompatActivity {
         current.setTime(System.currentTimeMillis());
 
         if (BackgroundTaskHandler.convertToSimpleDate(time)
-                .compareTo(current)>0)
+                .compareTo(current) > 0)
             fab.setVisibility(View.VISIBLE);
         else
             fab.setVisibility(View.GONE);
 
         if (Singleton.isScheduledEvent(eventId)) {
             fab.setImageResource(R.drawable.calender_check_white);
-            fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this,R.color.colorAccent)));
+            fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorAccent)));
         }
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +105,7 @@ public class FbEvent extends AppCompatActivity {
                     Snackbar.make(MainActivity.drawerLayout, "Remainder scheduled.", Snackbar.LENGTH_SHORT).show();
                     ContentValues values = new ContentValues();
                     values.put("eventID", eventId);
-                    values.put("created_time",time);
+                    values.put("created_time", time);
                     Singleton.getInstance().getDatabase().insert("remainder", null, values);
                 }
             }
@@ -114,7 +118,8 @@ public class FbEvent extends AppCompatActivity {
 
         mCollapsingToolbar.setTitle(eventName);
 
-        Picasso.with(this).load(eventImage).into(event_photo);
+        if (!eventImage.equals(""))
+            Picasso.with(this).load(eventImage).into(event_photo);
 
         downloadFromInternet();
     }
@@ -136,22 +141,59 @@ public class FbEvent extends AppCompatActivity {
                 } else {
                     try {
                         JSONObject details = response.getJSONObject();
-                        JSONObject place = details.getJSONObject("place");
-                        JSONObject location = place.getJSONObject("location");
+                        JSONObject place = null;
+                        JSONObject location = null;
+
+
+                        try {
+                             place = details.getJSONObject("place");
+                        }catch (Exception e) {
+
+                        }
+
+                        try {
+                            location = place.getJSONObject("location");
+                        }catch (Exception e) {
+
+                        }
 
                         event_name.setText(details.getString("name"));
-                        event_description.setText(details.getString("description"));
-                        time = details.getString("start_time");
+
+                        try {
+                            event_description.setText(details.getString("description"));
+                        }catch (Exception e) {
+                            event_description.setText("No event description available for now!!");
+                        }
+
                         try {
                             event_time.setText(details.getString("start_time") + "\n" + details.getString("end_time"));
                         } catch (Exception e) {
                             event_time.setText(details.getString("start_time"));
                         }
-                        event_place.setText(place.getString("name"));
-                        event_street.setText(location.getString("street") + ", " + location.getString("zip"));
-                        event_location.setText(location.getString("city") + ", " + location.getString("country"));
+
+
+                        try {
+                            event_place.setText(place.getString("name"));
+                        } catch (Exception e) {
+                            event_place.setVisibility(View.GONE);
+                        }
+
+                        try {
+                            event_location.setText(location.getString("city")+ ", " + location.getString("country")  );
+                        } catch (Exception e) {
+                            event_location.setVisibility(View.GONE);
+                        }
+
+                        try {
+                            event_street.setText(location.getString("street") + ", " + location.getString("zip"));
+
+                        } catch (Exception e) {
+                            event_street.setVisibility(View.GONE);
+                        }
+
                         nestedScrollEvent.setVisibility(View.VISIBLE);
-                    } catch (Exception ignored) {}
+                    } catch (Exception ignored) {
+                    }
                 }
             }
         }).executeAsync();
