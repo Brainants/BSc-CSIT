@@ -11,13 +11,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.techies.bsccsit.R;
+import com.techies.bsccsit.advance.BackgroundTaskHandler;
+import com.techies.bsccsit.advance.Singleton;
 
 
 public class eLibrary extends Fragment {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
+
     public eLibrary() {
         // Required empty public constructor
     }
@@ -26,6 +30,32 @@ public class eLibrary extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        if (Singleton.eLibraryCount() == 0) {
+            final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
+                    .progress(true, 0)
+                    .content("Fetching data...")
+                    .cancelable(false)
+                    .build();
+            dialog.show();
+
+            BackgroundTaskHandler.eLibraryDownloader downloader = new BackgroundTaskHandler.eLibraryDownloader();
+            downloader.execute();
+            downloader.setTaskCompleteListener(new BackgroundTaskHandler.eLibraryDownloader.OnTaskCompleted() {
+                @Override
+                public void onTaskCompleted(boolean success) {
+                    if (success) {
+                        viewPager.setAdapter(new PagerAdapter(getChildFragmentManager()));
+                        dialog.dismiss();
+                    } else {
+                        dialog.dismiss();
+                        new MaterialDialog.Builder(getActivity())
+                                .content("Unable to retrieve data. Please try in a little bit.")
+                                .title("Connection Error")
+                                .show();
+                    }
+                }
+            });
+        }
         viewPager.setAdapter(new PagerAdapter(getChildFragmentManager()));
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
@@ -35,8 +65,8 @@ public class eLibrary extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tabLayout= (TabLayout) view.findViewById(R.id.tabLayoutLibrary);
-        viewPager= (ViewPager) view.findViewById(R.id.viewPagerLibrary);
+        tabLayout = (TabLayout) view.findViewById(R.id.tabLayoutLibrary);
+        viewPager = (ViewPager) view.findViewById(R.id.viewPagerLibrary);
     }
 
     class PagerAdapter extends FragmentStatePagerAdapter {
@@ -47,13 +77,13 @@ public class eLibrary extends Fragment {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            if(position==0)
+            if (position == 0)
                 return "Syllabus";
-            else if (position==1)
+            else if (position == 1)
                 return "Notes";
-            else if (position==2)
+            else if (position == 2)
                 return "Old Questions";
-            else if (position==3)
+            else if (position == 3)
                 return "Solutions";
             return super.getPageTitle(position);
         }

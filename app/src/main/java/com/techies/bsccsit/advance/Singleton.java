@@ -96,6 +96,16 @@ public class Singleton {
         return names;
     }
 
+    public static int eLibraryCount(){
+        int i=0;
+        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT Title FROM eLibrary", null);
+        while (cursor.moveToNext()) {
+            i++;
+        }
+        cursor.close();
+        return i;
+    }
+
     public static int getEventNo() {
         Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT names FROM events", null);
         int i = 0;

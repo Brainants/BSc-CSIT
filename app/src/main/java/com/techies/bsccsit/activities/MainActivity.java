@@ -19,6 +19,8 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.gms.gcm.GcmNetworkManager;
+import com.google.android.gms.gcm.PeriodicTask;
 import com.squareup.picasso.Picasso;
 import com.techies.bsccsit.R;
 import com.techies.bsccsit.admin.AdminPanel;
@@ -61,12 +63,6 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-
-        if (Singleton.getFollowingArray().size() - 1 == 0) {
-            finish();
-            startActivity(new Intent(this,LoadingActivity.class));
-        }
-
         final Toolbar toolbar=(Toolbar) findViewById(R.id.toolbarMain);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             AppBarLayout appBarLayout= (AppBarLayout) findViewById(R.id.mainAppBar);
@@ -106,11 +102,10 @@ public class MainActivity extends AppCompatActivity {
         //calling sync state is necessay or else your hamburger icon wont show up
         actionBarDrawerToggle.syncState();
 
-        //todo remove
-        pref.edit().putBoolean("admin",true).apply();
-
         //checkAdmin
         navigationView.getMenu().getItem(7).setVisible(pref.getBoolean("admin",false));
+
+        constructJob();
 
         previous=R.id.newsEvent;
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -200,4 +195,24 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+    private void constructJob() {
+
+        String tag = "periodic";
+
+        GcmNetworkManager mScheduler = Singleton.getInstance().getGcmScheduler();
+
+        long periodSecs = 1800L;
+
+        PeriodicTask periodic = new PeriodicTask.Builder()
+                .setService(BackgroundTaskHandler.class)
+                .setPeriod(periodSecs)
+                .setTag(tag)
+                .setFlex(periodSecs)
+                .setPersisted(true)
+                .setUpdateCurrent(true)
+                .setRequiredNetwork(com.google.android.gms.gcm.Task.NETWORK_STATE_CONNECTED)
+                .build();
+        mScheduler.schedule(periodic);
+    }
+
 }

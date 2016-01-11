@@ -30,6 +30,7 @@ import com.facebook.HttpMethod;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.techies.bsccsit.R;
+import com.techies.bsccsit.advance.BackgroundTaskHandler;
 import com.techies.bsccsit.advance.Singleton;
 
 import org.json.JSONException;
@@ -143,56 +144,82 @@ public class LoginActivity extends AppCompatActivity {
             }).executeAsync();
             return;
         }
-
-        StringRequest request = new StringRequest(Request.Method.POST, "https://slim-bloodskate.c9users.io/app/api/checkUser", new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
+        if (!preferences.getBoolean("checked", false)) {
+            StringRequest request = new StringRequest(Request.Method.POST, "https://slim-bloodskate.c9users.io/app/api/checkUser", new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        dialog.dismiss();
+                        JSONObject object = new JSONObject(response);
+                        if (object.getBoolean("exists")) {
+                            addEveryThingToSp(object.getJSONObject("data"));
+                            editor.putBoolean("checked", true);
+                            editor.apply();
+                            postFbLoginWork();
+                        } else {
+                            editor.putBoolean("loggedFirstIn", true);
+                            editor.apply();
+                            startActivity(new Intent(LoginActivity.this, CompleteLogin.class));
+                            finish();
+                        }
+                    } catch (Exception ignored) {
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Snackbar.make(findViewById(R.id.LoginCore), "Unable to connect.", Snackbar.LENGTH_SHORT).setAction("Retry", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            postFbLoginWork();
+                        }
+                    }).show();
                     dialog.dismiss();
-                    JSONObject object = new JSONObject(response);
-                    if (object.getBoolean("exists")) {
-                        addEveryThingToSp(object.getJSONObject("data"));
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("fbid", preferences.getString("UserID", ""));
+                    return params;
+                }
+
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("Content-Type", "application/x-www-form-urlencoded");
+                    return params;
+                }
+            };
+            Singleton.getInstance().getRequestQueue().add(request);
+            return;
+        }
+
+        if (Singleton.getFollowingArray().size() - 1 == 0) {
+            BackgroundTaskHandler.MyCommunitiesDownloader downloader = new BackgroundTaskHandler.MyCommunitiesDownloader();
+            downloader.doInBackground();
+            downloader.setTaskCompleteListener(new BackgroundTaskHandler.MyCommunitiesDownloader.OnTaskCompleted() {
+                @Override
+                public void onTaskCompleted(boolean success) {
+                    if (success) {
                         editor.putBoolean("loggedIn", true);
                         editor.apply();
                         Toast.makeText(LoginActivity.this, "Welcome back " + preferences.getString("FirstName", ""), Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(LoginActivity.this, LoadingActivity.class));
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         finish();
                     } else {
-                        editor.putBoolean("loggedFirstIn", true);
-                        editor.apply();
-                        startActivity(new Intent(LoginActivity.this, CompleteLogin.class));
-                        finish();
+                        Snackbar.make(findViewById(R.id.LoginCore), "Unable to connect.", Snackbar.LENGTH_SHORT).setAction("Retry", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                postFbLoginWork();
+                            }
+                        }).show();
+                        dialog.dismiss();
                     }
-                } catch (Exception ignored) {
                 }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Snackbar.make(findViewById(R.id.LoginCore), "Unable to connect.", Snackbar.LENGTH_SHORT).setAction("Retry", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        postFbLoginWork();
-                    }
-                }).show();
-                dialog.dismiss();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("fbid", preferences.getString("UserID", ""));
-                return params;
-            }
+            });
+        }
 
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("Content-Type", "application/x-www-form-urlencoded");
-                return params;
-            }
-        };
-        Singleton.getInstance().getRequestQueue().add(request);
     }
 
     private void addEveryThingToSp(JSONObject response) {
@@ -200,6 +227,7 @@ public class LoginActivity extends AppCompatActivity {
             editor.putString("semester", response.getString("semester"));
             editor.putString("college", response.getString("college"));
             editor.putString("phone_number", response.getString("phone_number"));
+            editor.putBoolean("admin", response.getInt("admin") == 1);
             editor.apply();
         } catch (Exception ignored) {
         }

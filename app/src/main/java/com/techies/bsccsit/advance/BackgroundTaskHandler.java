@@ -82,9 +82,9 @@ public class BackgroundTaskHandler extends GcmTaskService {
             }
         });
 
-        MyCommunitiesUploader myCommunitiesUploader=new MyCommunitiesUploader();
+        MyCommunitiesUploader myCommunitiesUploader = new MyCommunitiesUploader();
 
-        if(getSharedPreferences("community", Context.MODE_PRIVATE).getBoolean("changedComm",false))
+        if (getSharedPreferences("community", Context.MODE_PRIVATE).getBoolean("changedComm", false))
             myCommunitiesUploader.doInBackground();
         return 1;
     }
@@ -164,19 +164,19 @@ public class BackgroundTaskHandler extends GcmTaskService {
             final StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                   MyApp.getContext().getSharedPreferences("community", Context.MODE_PRIVATE).edit().putBoolean("changedComm",false).apply();
+                    MyApp.getContext().getSharedPreferences("community", Context.MODE_PRIVATE).edit().putBoolean("changedComm", false).apply();
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     error.printStackTrace();
                 }
-            }){
+            }) {
                 @Override
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<String, String>();
-                    params.put("fbid", MyApp.getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getString("UserID",""));
-                    params.put("communities",Singleton.getFollowingList().replace(",bsccsitapp",""));
+                    params.put("fbid", MyApp.getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getString("UserID", ""));
+                    params.put("communities", Singleton.getFollowingList().replace(",bsccsitapp", ""));
                     return params;
                 }
 
@@ -187,7 +187,7 @@ public class BackgroundTaskHandler extends GcmTaskService {
                     return params;
                 }
             };
-
+            if (MyApp.getContext().getSharedPreferences("community", Context.MODE_PRIVATE).getBoolean("changedComm", false))
                 Singleton.getInstance().getRequestQueue().add(request);
         }
     }
@@ -204,6 +204,7 @@ public class BackgroundTaskHandler extends GcmTaskService {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    listener.onTaskCompleted(false);
                     error.printStackTrace();
                 }
             }) {
@@ -227,28 +228,29 @@ public class BackgroundTaskHandler extends GcmTaskService {
 
         private void fillMyCommFromResponse(String response, final List<String> pages) {
             Bundle param = new Bundle();
-            param.putString("fields","name,is_verified,category");
-            param.putString("ids",response);
+            param.putString("fields", "name,is_verified,category");
+            param.putString("ids", response);
             new GraphRequest(AccessToken.getCurrentAccessToken(), "", param, HttpMethod.GET, new GraphRequest.Callback() {
                 @Override
                 public void onCompleted(GraphResponse response) {
-                    if(response.getError()!=null){
+                    if (response.getError() != null) {
+                        response.getError().getException().printStackTrace();
                         listener.onTaskCompleted(false);
-                    } else{
-                        JSONObject object=response.getJSONObject();
-                        ContentValues values=new ContentValues();
+                    } else {
+                        JSONObject object = response.getJSONObject();
+                        ContentValues values = new ContentValues();
                         try {
                             for (int i = 0; i < pages.size(); i++) {
                                 values.clear();
                                 JSONObject eachPage = object.getJSONObject(pages.get(i));
-                                values.put("FbID",eachPage.getString("id"));
-                                values.put("Title",eachPage.getString("name"));
-                                values.put("IsVerified",eachPage.getBoolean("is_verified")?1:0);
-                                values.put("ExtraText",eachPage.getString("category"));
-                                Singleton.getInstance().getDatabase().insert("myCommunities",null,values);
+                                values.put("FbID", eachPage.getString("id"));
+                                values.put("Title", eachPage.getString("name"));
+                                values.put("IsVerified", eachPage.getBoolean("is_verified") ? 1 : 0);
+                                values.put("ExtraText", eachPage.getString("category"));
+                                Singleton.getInstance().getDatabase().insert("myCommunities", null, values);
                             }
                             listener.onTaskCompleted(true);
-                        } catch (Exception e){
+                        } catch (Exception e) {
                             listener.onTaskCompleted(false);
                         }
                     }
@@ -541,7 +543,7 @@ public class BackgroundTaskHandler extends GcmTaskService {
                             values.put("Source", response.getJSONObject(i).getString("source"));
                             values.put("Tag", response.getJSONObject(i).getString("tag"));
                             values.put("Link", response.getJSONObject(i).getString("link"));
-                            values.put("Link", response.getJSONObject(i).getString("filename"));
+                            values.put("FileName", response.getJSONObject(i).getString("filename"));
                             database.insert("eLibrary", null, values);
                         }
                         listener.onTaskCompleted(true);

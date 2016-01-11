@@ -64,6 +64,8 @@ public class BasicCommunityChooser extends Fragment {
             @Override
             public void onClick(View v) {
                 editor.putBoolean("loggedIn",true);
+                BackgroundTaskHandler.MyCommunitiesUploader uploader=new BackgroundTaskHandler.MyCommunitiesUploader();
+                uploader.doInBackground();
                 editor.apply();
                 Toast.makeText(getActivity(), "Welcome "+getActivity().getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getString("FirstName","")+"!", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getContext(), MainActivity.class));
