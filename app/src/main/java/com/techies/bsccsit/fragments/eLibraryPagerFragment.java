@@ -1,9 +1,18 @@
 package com.techies.bsccsit.fragments;
 
 
+import android.app.DownloadManager;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,19 +25,21 @@ import com.techies.bsccsit.R;
 import com.techies.bsccsit.adapters.eLibraryAdapter;
 import com.techies.bsccsit.advance.Singleton;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class eLibraryPagerFragment extends Fragment {
 
-    private ArrayList<String> Title=new ArrayList<>(),
-            Source=new ArrayList<>(),
-            Link=new ArrayList<>(),
-            FileName=new ArrayList<>();
+    private ArrayList<String> Title = new ArrayList<>(),
+            Source = new ArrayList<>(),
+            Link = new ArrayList<>(),
+            FileName = new ArrayList<>();
     private RecyclerView recy;
-    private String[] types={"syllabus","notes","old_question","solutions"};
+    private String[] types = {"syllabus", "notes", "old_question", "solutions"};
 
 
-    public eLibraryPagerFragment(){
+    public eLibraryPagerFragment() {
         // Required empty public constructor
     }
 
@@ -43,7 +54,7 @@ public class eLibraryPagerFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recy= (RecyclerView) view.findViewById(R.id.recyELibrary);
+        recy = (RecyclerView) view.findViewById(R.id.recyELibrary);
     }
 
     @Override
@@ -53,8 +64,8 @@ public class eLibraryPagerFragment extends Fragment {
     }
 
     private void filFromDatabase(String type) {
-        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM eLibrary WHERE Tag = '"+type+"';",null);
-        while (cursor.moveToNext()){
+        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM eLibrary WHERE Tag = '" + type + "';", null);
+        while (cursor.moveToNext()) {
             Title.add(cursor.getString(cursor.getColumnIndex("Title")));
             Source.add(cursor.getString(cursor.getColumnIndex("Source")));
             Link.add(cursor.getString(cursor.getColumnIndex("Link")));
@@ -66,16 +77,48 @@ public class eLibraryPagerFragment extends Fragment {
 
     private void fillAdapter() {
         recy.setLayoutManager(new LinearLayoutManager(getActivity()));
-        eLibraryAdapter adapter=new eLibraryAdapter(getActivity(),types[getArguments().getInt("position")],Title,Source,FileName);
+        eLibraryAdapter adapter = new eLibraryAdapter(getActivity(), types[getArguments().getInt("position")], Title, Source, FileName);
         recy.setAdapter(adapter);
         adapter.setOnCLickListener(new eLibraryAdapter.ClickListener() {
             @Override
             public void onIconClick(View view, int position) {
-                MaterialDialog dialog= new MaterialDialog.Builder(getActivity())
-                        .title("Downloading...")
-                        .progress(false,100)
-                        .build();
-                //// TODO: 12/15/2015 downloader
+                if (eLibraryAdapter.checkExistance(types[getArguments().getInt("position")], FileName.get(position))) {
+
+                    File file = new File(Environment.getExternalStorageDirectory() + "/" + Singleton.getSemester() + "/" + types[getArguments().getInt("position")] +
+                            "/"+ FileName.get(position));
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setDataAndType(Uri.fromFile(file), "application/pdf");
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    try {
+                        startActivity(intent);
+                    } catch (Exception e){
+                        Snackbar.make(view.findViewById(R.id.coreLibrary),"No reader found.",Snackbar.LENGTH_LONG).setAction("Download", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String appPackageName="com.adobe.reader";
+                                try {
+                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                                } catch (android.content.ActivityNotFoundException anfe) {
+                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                                }
+                            }
+                        }).show();
+                    }
+
+                } else {
+                    String url = Link.get(position);
+                    DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+                    request.setDescription("Source: " + Source.get(position));
+                    request.setTitle(FileName.get(position));
+
+                    request.allowScanningByMediaScanner();
+                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                    request.setDestinationInExternalPublicDir(Singleton.getSemester() + "/" + types[getArguments().getInt("position")],
+                            FileName.get(position));
+
+                    DownloadManager manager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
+                    manager.enqueue(request);
+                }
             }
         });
     }

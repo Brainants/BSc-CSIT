@@ -171,7 +171,7 @@ public class Singleton {
     }
 
     public static String getSemester() {
-       return MyApp.getContext().getSharedPreferences("loginInfo",Context.MODE_PRIVATE).getString("semester","")+"sem";
+       return MyApp.getContext().getSharedPreferences("loginInfo",Context.MODE_PRIVATE).getInt("semester",0)+"sem";
     }
 }
 

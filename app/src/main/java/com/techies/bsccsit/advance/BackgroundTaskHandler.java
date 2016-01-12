@@ -530,13 +530,15 @@ public class BackgroundTaskHandler extends GcmTaskService {
 
         @Override
         protected Void doInBackground(Void... params) {
-            JsonArrayRequest request = new JsonArrayRequest(Request.Method.POST, "https://slim-bloodskate.c9users.io/app/api/elibrary", new Response.Listener<JSONArray>() {
+            Log.d("Debug",MyApp.getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getInt("semester", 0)+"");
+            StringRequest request = new StringRequest(Request.Method.POST, "https://slim-bloodskate.c9users.io/app/api/elibrary", new Response.Listener<String>() {
                 @Override
-                public void onResponse(JSONArray response) {
+                public void onResponse(String res) {
                     SQLiteDatabase database = Singleton.getInstance().getDatabase();
                     database.delete("eLibrary", null, null);
                     ContentValues values = new ContentValues();
                     try {
+                        JSONArray response=new JSONArray(res);
                         for (int i = 0; i < response.length(); i++) {
                             values.clear();
                             values.put("Title", response.getJSONObject(i).getString("title"));
@@ -547,7 +549,6 @@ public class BackgroundTaskHandler extends GcmTaskService {
                             database.insert("eLibrary", null, values);
                         }
                         listener.onTaskCompleted(true);
-
                     } catch (Exception e) {
                         listener.onTaskCompleted(false);
                     }
