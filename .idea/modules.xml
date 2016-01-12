@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/BSc-CSIT.iml" filepath="$PROJECT_DIR$/BSc-CSIT.iml" />
-      <module fileurl="file://$PROJECT_DIR$/BSc-CSIT2.iml" filepath="$PROJECT_DIR$/BSc-CSIT2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BScCSIT.iml" filepath="$PROJECT_DIR$/BScCSIT.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

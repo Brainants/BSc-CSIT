@@ -53,7 +53,7 @@ public class eLibraryPagerFragment extends Fragment {
     }
 
     private void filFromDatabase(String type) {
-        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM eLibrary WHERE Tag = "+type,null);
+        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM eLibrary WHERE Tag = '"+type+"';",null);
         while (cursor.moveToNext()){
             Title.add(cursor.getString(cursor.getColumnIndex("Title")));
             Source.add(cursor.getString(cursor.getColumnIndex("Source")));

@@ -33,11 +33,13 @@ import com.techies.bsccsit.advance.Singleton;
 import java.util.HashMap;
 import java.util.Map;
 
+import fr.ganfra.materialspinner.MaterialSpinner;
+
 public class CompleteLoginForm extends Fragment implements AdapterView.OnItemSelectedListener, TextWatcher {
 
     private EditText name,email, phoneNo;
     private FloatingActionButton loginBtn;
-    private AppCompatSpinner semester,college;
+    private MaterialSpinner semester,college;
     private SharedPreferences.Editor editor;
     private View view;
 
@@ -182,9 +184,9 @@ public class CompleteLoginForm extends Fragment implements AdapterView.OnItemSel
         this.view=view;
         name= (EditText) view.findViewById(R.id.inputName);
         email= (EditText) view.findViewById(R.id.inputEmail);
-        college= (AppCompatSpinner) view.findViewById(R.id.inputCollege);
+        college= (MaterialSpinner) view.findViewById(R.id.inputCollege);
         phoneNo= (EditText) view.findViewById(R.id.inputPhone);
-        semester= (AppCompatSpinner) view.findViewById(R.id.inputSemester);
+        semester= (MaterialSpinner) view.findViewById(R.id.inputSemester);
         loginBtn= (FloatingActionButton) view.findViewById(R.id.continueButton);
         loginBtn.show();
         loginBtn.hide();
