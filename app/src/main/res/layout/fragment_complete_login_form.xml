@@ -1,5 +1,4 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/CompleteCore"
     android:layout_width="match_parent"
@@ -76,36 +75,31 @@
                     android:layout_marginBottom="5dp"
                     android:inputType="phone" />
 
-                <fr.ganfra.materialspinner.MaterialSpinner
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="College"
+                    android:textColor="@color/black" />
+
+                <android.support.v7.widget.AppCompatSpinner
                     android:id="@+id/inputCollege"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    app:ms_alignLabels="false"
-                    app:ms_arrowColor="@color/colorAccent"
-                    app:ms_arrowSize="16dp"
-                    app:ms_floatingLabelColor="@color/black"
-                    app:ms_floatingLabelText="College"
-                    app:ms_highlightColor="@color/colorAccent"
-                    app:ms_hint="Select College"
-                    app:ms_hintColor="@color/black" />
+                    android:layout_marginTop="5dp" />
 
-                <fr.ganfra.materialspinner.MaterialSpinner
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Semester"
+                    android:textColor="@color/black" />
+
+                <android.support.v7.widget.AppCompatSpinner
                     android:id="@+id/inputSemester"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    app:ms_alignLabels="false"
-                    app:ms_arrowColor="@color/colorAccent"
-                    app:ms_arrowSize="16dp"
-                    app:ms_floatingLabelColor="@color/black"
-                    app:ms_floatingLabelText="Semester"
-                    app:ms_highlightColor="@color/colorAccent"
-                    app:ms_hint="Select Semester"
-                    app:ms_hintColor="@color/black"
- />
+                    android:layout_marginTop="5dp" />
 
             </LinearLayout>
         </ScrollView>
