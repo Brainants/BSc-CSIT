@@ -6,16 +6,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
+import com.devspark.robototextview.widget.RobotoTextView;
 import com.facebook.AccessToken;
 import com.facebook.FacebookRequestError;
-import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
@@ -65,19 +63,12 @@ public class FbPage extends AppCompatActivity {
 
         page_id = getIntent().getStringExtra("id");
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.pageCollapse);
-        collapsingToolbarLayout.setTitle(getIntent().getStringExtra("name"));
-
-        ProfilePictureView pageLogo = (ProfilePictureView) findViewById(R.id.page_logo);
-        pageLogo.setProfileId(page_id);
-        pageLogo.bringToFront();
-
-        Toolbar toolbar= (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
 
+        getSupportActionBar().setTitle(getIntent().getStringExtra("name"));
         getSupportActionBar().setSubtitle(getIntent().getStringExtra("details"));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -109,19 +100,19 @@ public class FbPage extends AppCompatActivity {
                             JSONObject arrayItem = array.getJSONObject(i);
                             try {
                                 arrayItem.getString("story");
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 names.add(arrayItem.getJSONObject("from").getString("name"));
                                 posterId.add(arrayItem.getJSONObject("from").getString("id"));
 
                                 try {
                                     imageURL.add(arrayItem.getString("full_picture"));
-                                }catch (Exception ex) {
+                                } catch (Exception ex) {
                                     imageURL.add("");
                                 }
 
                                 try {
                                     messages.add(arrayItem.getString("message"));
-                                }catch (Exception ex) {
+                                } catch (Exception ex) {
                                     messages.add("");
                                 }
 

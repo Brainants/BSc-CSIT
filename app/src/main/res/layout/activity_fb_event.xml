@@ -10,16 +10,16 @@
         android:id="@+id/eventAppbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/detail_backdrop_height"
-        app:contentScrim="@color/colorPrimary"
+        android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        android:fitsSystemWindows="true">
+        app:contentScrim="@color/colorPrimary">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/eventCollapse"
             android:layout_width="match_parent"
-            app:contentScrim="@color/colorPrimary"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
+            app:contentScrim="@color/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
@@ -33,17 +33,17 @@
                 android:id="@+id/eventToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:layout_collapseMode="pin"/>
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
 
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nestedScrollEvent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/nestedScrollEvent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -54,111 +54,102 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp">
-                <LinearLayout
-                    style="@style/Widget.CardContent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                android:layout_margin="3dp"
+                app:cardCornerRadius="0dp">
 
-                    <com.devspark.robototextview.widget.RobotoTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="19sp"
-                        android:textColor="@color/colorPrimary"
-                        android:text="Event Name" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
                     <com.devspark.robototextview.widget.RobotoTextView
                         android:id="@+id/eventName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Name of the event here" />
-
-                    <com.devspark.robototextview.widget.RobotoTextView
-                        android:id="@+id/eventPlace"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Place Name" />
-
-                    <com.devspark.robototextview.widget.RobotoTextView
-                        android:id="@+id/eventLocation"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="City Country" />
-
-                    <com.devspark.robototextview.widget.RobotoTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/eventStreet"
-                        android:text="Street Name" />
-
-
-                    />
-
-                </LinearLayout>
-
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginLeft="8dp">
-
-                <LinearLayout
-                    style="@style/Widget.CardContent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.devspark.robototextview.widget.RobotoTextView
-
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Details"
-                        android:textSize="19sp"
-                        android:textColor="@color/colorPrimary" />
-
-
-
-                    <com.devspark.robototextview.widget.RobotoTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/eventTime"
-                        android:text="Event Time" />
+                        android:text="Name of the event here"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="19sp" />
 
                     <com.devspark.robototextview.widget.RobotoTextView
                         android:id="@+id/eventHost"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="" />
+                        android:text=""
+                        android:textColor="#ccc"
+                        app:typeface="roboto_italic" />
 
-                </LinearLayout>
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="16dp"
-
-                >
-
-                <LinearLayout
-                    style="@style/Widget.CardContent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.devspark.robototextview.widget.RobotoTextView
-
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Description"
-                        android:textSize="19sp"
-                        android:textColor="@color/colorPrimary" />
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/place" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:orientation="vertical">
+
+                            <com.devspark.robototextview.widget.RobotoTextView
+                                android:id="@+id/eventPlace"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Place Name" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <com.devspark.robototextview.widget.RobotoTextView
+                                    android:id="@+id/eventStreet"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:maxLines="1"
+                                    android:text="Street Name" />
+
+                                <com.devspark.robototextview.widget.RobotoTextView
+                                    android:id="@+id/eventLocation"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:maxLines="1"
+                                    android:text="City Country" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/clock" />
+
+                        <com.devspark.robototextview.widget.RobotoTextView
+                            android:id="@+id/eventTime"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:text="Event Time" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:background="#ddd" />
 
                     <com.devspark.robototextview.widget.RobotoTextView
                         android:id="@+id/eventDesc"
@@ -187,23 +178,24 @@
     </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
         android:id="@+id/eachEventFab"
-        app:layout_anchor="@id/eventAppbar"
-        app:layout_anchorGravity="bottom|right|end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:clickable="true"
         android:src="@drawable/calender_plus"
         app:backgroundTint="@color/white"
-        android:layout_margin="16dp"
-        android:clickable="true" />
+        app:layout_anchor="@id/eventAppbar"
+        app:layout_anchorGravity="bottom|right|end" />
 
     <LinearLayout
         android:id="@+id/errorMessagePageEvent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
         android:layout_marginTop="220dp"
-        android:orientation="vertical">
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="192dp"
