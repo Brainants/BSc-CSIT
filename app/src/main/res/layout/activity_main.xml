@@ -48,7 +48,7 @@
     <android.support.design.widget.NavigationView
         android:id="@+id/naviView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="start"
         app:headerLayout="@layout/layout_header"
         app:menu="@menu/main_drawer_menu" />

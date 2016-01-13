@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
-    private static final int version=6;
+    private static final int version=7;
     private static final String name="bsccsitDB";
 
     public DatabaseHandler(Context context) {
@@ -17,15 +17,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE eLibrary(Title TEXT,Source TEXT,Tag TEXT,Link TEXT,FileName TEXT);");
 
-        db.execSQL("CREATE TABLE popularCommunities(FbID TEXT,Title TEXT,IsVerified INT,ExtraText TEXT);");
+        db.execSQL("CREATE TABLE popularCommunities(FbID TEXT,Title TEXT,ExtraText TEXT);");
 
-        db.execSQL("CREATE TABLE myCommunities(FbID TEXT,Title TEXT,IsVerified INT,ExtraText TEXT);");
+        db.execSQL("CREATE TABLE myCommunities(FbID TEXT,Title TEXT,ExtraText TEXT);");
 
         db.execSQL("CREATE TABLE news(names TEXT,posterId TEXT,fullImage TEXT,message TEXT,created_time TEXT);");
 
         db.execSQL("CREATE TABLE events(names TEXT,created_time TEXT,eventIDs TEXT,hosters TEXT,fullImage TEXT);");
-
-        db.execSQL("CREATE TABLE remainder(created_time TEXT,eventID TEXT);");
     }
 
     @Override
@@ -40,18 +38,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         db.execSQL("DROP TABLE IF EXISTS events");
 
-        db.execSQL("DROP TABLE IF EXISTS remainder");
-
         db.execSQL("CREATE TABLE eLibrary(Title TEXT,Source TEXT,Tag TEXT,Link TEXT,LinkLink TEXT);");
 
-        db.execSQL("CREATE TABLE popularCommunities(FbID TEXT,Title TEXT,IsVerified INT,ExtraText TEXT);");
+        db.execSQL("CREATE TABLE popularCommunities(FbID TEXT,Title TEXT,ExtraText TEXT);");
 
-        db.execSQL("CREATE TABLE myCommunities(FbID TEXT,Title TEXT,IsVerified INT,ExtraText TEXT);");
+        db.execSQL("CREATE TABLE myCommunities(FbID TEXT,Title TEXT,ExtraText TEXT);");
 
         db.execSQL("CREATE TABLE news(names TEXT,posterId TEXT,fullImage TEXT,message TEXT,created_time TEXT);");
 
         db.execSQL("CREATE TABLE events(names TEXT,created_time TEXT,eventIDs TEXT,hosters TEXT,fullImage TEXT);");
-
-        db.execSQL("CREATE TABLE remainder(created_time TEXT,eventID TEXT);");
     }
 }

@@ -27,13 +27,6 @@
             android:scaleType="centerCrop" />
 
 
-        <LinearLayout
-            android:id="@+id/nameHolder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
             <com.devspark.robototextview.widget.RobotoTextView
                 android:id="@+id/nameSearch"
                 android:layout_width="wrap_content"
@@ -44,13 +37,6 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/colorPrimary" />
 
-            <ImageView
-                android:id="@+id/isVerified"
-                android:src="@drawable/verified"
-                android:layout_width="25dp"
-                android:padding="5dp"
-                android:layout_height="25dp" />
-        </LinearLayout>
 
         <com.devspark.robototextview.widget.RobotoTextView
             android:id="@+id/extraDetail"

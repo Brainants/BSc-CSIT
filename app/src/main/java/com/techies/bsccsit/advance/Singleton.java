@@ -2,6 +2,7 @@ package com.techies.bsccsit.advance;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.format.DateUtils;
@@ -96,8 +97,8 @@ public class Singleton {
         return names;
     }
 
-    public static int eLibraryCount(){
-        int i=0;
+    public static int eLibraryCount() {
+        int i = 0;
         Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT Title FROM eLibrary", null);
         while (cursor.moveToNext()) {
             i++;
@@ -159,19 +160,36 @@ public class Singleton {
     }
 
     public static boolean isScheduledEvent(String eventId) {
-        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM remainder WHERE eventID = " + eventId, null);
+        return false;
+        /*Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM remainder WHERE eventID = " + eventId, null);
         if (cursor.moveToNext()) {
             cursor.close();
             return true;
         } else {
             cursor.close();
             return false;
-        }
-
+        }*/
     }
 
     public static String getSemester() {
-       return MyApp.getContext().getSharedPreferences("loginInfo",Context.MODE_PRIVATE).getInt("semester",0)+"sem";
+        return MyApp.getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getInt("semester", 0) + "sem";
+    }
+    public static int getSizeName(Context context) {
+        int screenLayout = context.getResources().getConfiguration().screenLayout;
+        screenLayout &= Configuration.SCREENLAYOUT_SIZE_MASK;
+
+        switch (screenLayout) {
+            case Configuration.SCREENLAYOUT_SIZE_SMALL:
+                return 1;
+            case Configuration.SCREENLAYOUT_SIZE_NORMAL:
+                return 1;
+            case Configuration.SCREENLAYOUT_SIZE_LARGE:
+                return 2;
+            case 4: // Configuration.SCREENLAYOUT_SIZE_XLARGE is API >= 9
+                return 2;
+            default:
+                return 1;
+        }
     }
 }
 

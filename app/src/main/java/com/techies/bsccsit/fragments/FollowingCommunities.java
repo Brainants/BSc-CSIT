@@ -31,7 +31,6 @@ public class FollowingCommunities extends Fragment {
     final ArrayList<String> names = new ArrayList<>(),
             extra = new ArrayList<>(),
             ids = new ArrayList<>();
-    ArrayList<Boolean> verified = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,23 +44,22 @@ public class FollowingCommunities extends Fragment {
         super.onActivityCreated(savedInstanceState);
         Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM myCommunities", null);
 
-        adapter = new FacebookSearchAdapter(getActivity(), "my", names, extra, ids, verified);
+        adapter = new FacebookSearchAdapter(getActivity(), "my", names, extra, ids);
         recy.setAdapter(adapter);
 
         while (cursor.moveToNext()) {
             names.add(cursor.getString(cursor.getColumnIndex("Title")));
             extra.add(cursor.getString(cursor.getColumnIndex("ExtraText")));
             ids.add(cursor.getString(cursor.getColumnIndex("FbID")));
-            verified.add(cursor.getInt(cursor.getColumnIndex("IsVerified")) == 1);
         }
-        adapter = new FacebookSearchAdapter(getActivity(), "my", names, extra, ids, verified);
+        adapter = new FacebookSearchAdapter(getActivity(), "my", names, extra, ids);
         recy.setAdapter(adapter);
         recy.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         adapter.setOnClickListener(new FacebookSearchAdapter.ClickListener() {
             @Override
             public void onClick(FancyButton view, int position) {
                 if (Singleton.getFollowingArray().size() <= 6) {
-                    Snackbar.make(core, "You must follow any 5 communities.", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(core, "You must follow at least 5 communities.", Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 

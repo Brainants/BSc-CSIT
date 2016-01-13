@@ -39,7 +39,6 @@ public class BasicCommunityChooser extends Fragment {
     private ArrayList<String> names=new ArrayList<>(),
             extra=new ArrayList<>(),
             ids=new ArrayList<>();
-    private ArrayList<Boolean> verified=new ArrayList<>();
     public static FacebookSearchAdapter adapter;
 
     private LinearLayout error;
@@ -85,8 +84,7 @@ public class BasicCommunityChooser extends Fragment {
             names.add(cursor.getString(cursor.getColumnIndex("Title")));
             extra.add(cursor.getString(cursor.getColumnIndex("ExtraText")));
             ids.add(cursor.getString(cursor.getColumnIndex("FbID")));
-            verified.add(cursor.getInt(cursor.getColumnIndex("IsVerified")) == 1);
-        }
+            }
         cursor.close();
         if(count==0)
             downloadFromInternet();
@@ -112,7 +110,7 @@ public class BasicCommunityChooser extends Fragment {
 
     private void fillRecyclerView(){
         recyclerView.setVisibility(View.VISIBLE);
-        adapter = new FacebookSearchAdapter(getActivity(),"my", names, extra, ids, verified);
+        adapter = new FacebookSearchAdapter(getActivity(),"my", names, extra, ids);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
         adapter.setOnClickListener(new FacebookSearchAdapter.ClickListener() {
@@ -126,7 +124,6 @@ public class BasicCommunityChooser extends Fragment {
                     values.put("Title",names.get(position));
                     values.put("FbID",ids.get(position));
                     following++;
-                    values.put("isVerified",verified.get(position)?1:0);
                     values.put("ExtraText",extra.get(position));
                     Singleton.getInstance().getDatabase().insert("myCommunities",null,values);
                 }

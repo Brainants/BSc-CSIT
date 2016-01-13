@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import com.devspark.robototextview.widget.RobotoTextView;
 import com.squareup.picasso.Picasso;
 import com.techies.bsccsit.R;
+import com.techies.bsccsit.widget.TouchImageView;
 
 public class ImageViewActivity extends AppCompatActivity {
 
@@ -17,13 +18,13 @@ public class ImageViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_view);
-        ImageView imageView = (ImageView) findViewById(R.id.imageViewerImage);
+        TouchImageView imageView = (TouchImageView) findViewById(R.id.imageViewerImage);
         RobotoTextView desc = (RobotoTextView) findViewById(R.id.decsOfImage);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarImageView);
 
         setSupportActionBar(toolbar);
-        setTitle("Feed");
+        setTitle("");
 
 
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
@@ -38,7 +39,7 @@ public class ImageViewActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()==android.R.id.home)
-            super.onBackPressed();
+            finish();
         return true;
     }
 }

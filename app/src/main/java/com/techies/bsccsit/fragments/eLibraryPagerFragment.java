@@ -2,6 +2,7 @@ package com.techies.bsccsit.fragments;
 
 
 import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -19,6 +20,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.techies.bsccsit.R;
@@ -37,6 +39,7 @@ public class eLibraryPagerFragment extends Fragment {
             FileName = new ArrayList<>();
     private RecyclerView recy;
     private String[] types = {"syllabus", "notes", "old_question", "solutions"};
+    private View core;
 
 
     public eLibraryPagerFragment() {
@@ -54,6 +57,7 @@ public class eLibraryPagerFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        core=view;
         recy = (RecyclerView) view.findViewById(R.id.recyELibrary);
     }
 
@@ -92,7 +96,7 @@ public class eLibraryPagerFragment extends Fragment {
                     try {
                         startActivity(intent);
                     } catch (Exception e){
-                        Snackbar.make(view.findViewById(R.id.coreLibrary),"No reader found.",Snackbar.LENGTH_LONG).setAction("Download", new View.OnClickListener() {
+                        Snackbar.make(core.findViewById(R.id.coreLibrary),"No reader found.",Snackbar.LENGTH_LONG).setAction("Download", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 String appPackageName="com.adobe.reader";
@@ -118,6 +122,8 @@ public class eLibraryPagerFragment extends Fragment {
 
                     DownloadManager manager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
                     manager.enqueue(request);
+
+                    Snackbar.make(core.findViewById(R.id.coreLibrary),"Download has begun.",Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
@@ -128,6 +134,18 @@ public class eLibraryPagerFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_e_library_pager, container, false);
+    }
+
+    public static class Receiver extends BroadcastReceiver{
+
+        public Receiver(){
+
+        }
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Toast.makeText(context,"Download Completed.",Toast.LENGTH_SHORT).show();
+        }
     }
 }
 

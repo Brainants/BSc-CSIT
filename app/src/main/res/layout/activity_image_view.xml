@@ -10,17 +10,14 @@
         android:id="@+id/toolbarImageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/Theme.AppCompat"
+        android:theme="@style/Theme.AppCompat"/>
 
-         />
-
-    <ImageView
+    <com.techies.bsccsit.widget.TouchImageView
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:scaleType="centerCrop"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"
         android:id="@+id/imageViewerImage"
-        android:layout_centerInParent="true"
-        />
+        android:layout_centerInParent="true" />
 
     <com.devspark.robototextview.widget.RobotoTextView
         android:layout_width="match_parent"

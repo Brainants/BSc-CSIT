@@ -29,16 +29,14 @@ public class FacebookSearchAdapter extends RecyclerView.Adapter<FacebookSearchAd
     ArrayList<String> names=new ArrayList<>(),
             ids=new ArrayList<>(),
             extra=new ArrayList<>();
-    ArrayList<Boolean> verified=new ArrayList<>();
     ClickListener clickListener;
 
 
-    public FacebookSearchAdapter(Context context,String appOrmy ,ArrayList<String> names,ArrayList<String> extra,ArrayList<String> ids,ArrayList<Boolean> verified){
+    public FacebookSearchAdapter(Context context,String appOrmy ,ArrayList<String> names,ArrayList<String> extra,ArrayList<String> ids){
         this.context=context;
         this.names=names;
         this.ids=ids;
         this.extra=extra;
-        this.verified=verified;
         this.allOrmy=appOrmy;
         inflater=LayoutInflater.from(context);
     }
@@ -52,11 +50,6 @@ public class FacebookSearchAdapter extends RecyclerView.Adapter<FacebookSearchAd
     public void onBindViewHolder(ViewHolder holder, final int position) {
         Picasso.with(context).load("https://graph.facebook.com/"+ids.get(position)+"/picture?type=large").into(holder.profilePictureView);
         holder.nameView.setText(names.get(position));
-
-        if(verified.get(position))
-            holder.isVerified.setVisibility(View.VISIBLE);
-        else
-            holder.isVerified.setVisibility(View.GONE);
 
             holder.extraDetail.setText(extra.get(position));
         if ((allOrmy.equals("my") && Singleton.checkExistInFollowing(ids.get(position))) ||
@@ -81,15 +74,13 @@ public class FacebookSearchAdapter extends RecyclerView.Adapter<FacebookSearchAd
         names.remove(position);
         ids.remove(position);
         extra.remove(position);
-        verified.remove(position);
         notifyItemRemoved(position);
     }
 
-    public void addItem(String name,String id,String extr,boolean verify) {
+    public void addItem(String name,String id,String extr) {
         names.add(name);
         ids.add(id);
         extra.add(extr);
-        verified.add(verify);
         notifyItemInserted(extra.size()-1);
     }
     public void removeBySearch(String id){
@@ -112,13 +103,11 @@ public class FacebookSearchAdapter extends RecyclerView.Adapter<FacebookSearchAd
     public class ViewHolder extends RecyclerView.ViewHolder {
         CircleImageView profilePictureView;
         RobotoTextView nameView,extraDetail;
-        ImageView isVerified;
         FancyButton addToDB;
         public ViewHolder(View itemView) {
             super(itemView);
             profilePictureView= (CircleImageView) itemView.findViewById(R.id.profileImage);
             nameView= (RobotoTextView) itemView.findViewById(R.id.nameSearch);
-            isVerified= (ImageView) itemView.findViewById(R.id.isVerified);
             addToDB= (FancyButton) itemView.findViewById(R.id.viewProfile);
             extraDetail= (RobotoTextView) itemView.findViewById(R.id.extraDetail);
             addToDB.setOnClickListener(new View.OnClickListener() {
@@ -133,8 +122,7 @@ public class FacebookSearchAdapter extends RecyclerView.Adapter<FacebookSearchAd
                     context.startActivity(new Intent(context, FbPage.class)
                             .putExtra("id",ids.get(getAdapterPosition()))
                             .putExtra("name",names.get(getAdapterPosition()))
-                            .putExtra("details",extra.get(getAdapterPosition()))
-                            .putExtra("isVerified", verified.get(getAdapterPosition())));
+                            .putExtra("details",extra.get(getAdapterPosition())));
                 }
             });
         }

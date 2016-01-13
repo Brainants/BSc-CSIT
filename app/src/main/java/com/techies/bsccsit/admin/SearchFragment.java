@@ -45,7 +45,6 @@ public class SearchFragment extends Fragment {
     final ArrayList<String> names = new ArrayList<>(),
             ids = new ArrayList<>(),
             extras = new ArrayList<>();
-    final ArrayList<Boolean> verified = new ArrayList<>();
     private FacebookSearchAdapter adapter;
 
     @Nullable
@@ -77,7 +76,7 @@ public class SearchFragment extends Fragment {
      private void searchUsingFacebook() {
         Bundle bundle = new Bundle();
         Toast.makeText(getActivity(), "Searching...", Toast.LENGTH_SHORT).show();
-        bundle.putString("fields", "is_verified,id,category,name");
+        bundle.putString("fields", "id,category,name");
          bundle.putString("q", searchText.getText().toString());
          bundle.putString("type","page");
         new GraphRequest(AccessToken.getCurrentAccessToken(), "search", bundle, HttpMethod.GET, new GraphRequest.Callback() {
@@ -91,11 +90,10 @@ public class SearchFragment extends Fragment {
                             JSONObject object = array.getJSONObject(i);
                             names.add(object.getString("name"));
                             ids.add(object.getString("id"));
-                            verified.add(object.getBoolean("is_verified"));
                             extras.add(object.getString("category"));
                         }
 
-                        adapter = new FacebookSearchAdapter(getActivity(),"all", names, extras, ids, verified);
+                        adapter = new FacebookSearchAdapter(getActivity(),"all", names, extras, ids);
                         recyclerView.setAdapter(adapter);
                         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
                         adapter.setOnClickListener(new FacebookSearchAdapter.ClickListener() {
@@ -171,7 +169,6 @@ public class SearchFragment extends Fragment {
                 ContentValues values=new ContentValues();
                 values.put("FbID",ids.get(position));
                 values.put("Title",names.get(position));
-                values.put("IsVerified",verified.get(position)?1:0);
                 values.put("ExtraText",extras.get(position));
                 Singleton.getInstance().getDatabase().insert("popularCommunities",null,values);
                 dialog.dismiss();
@@ -189,7 +186,6 @@ public class SearchFragment extends Fragment {
                 Map<String, String> params = new HashMap<>();
                 params.put("fbid", ids.get(position));
                 params.put("title", names.get(position));
-                params.put("isVerified", verified.get(position).toString()  );
                 params.put("extraText", extras.get(position));
                 return params;
             }

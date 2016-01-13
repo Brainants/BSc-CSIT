@@ -8,8 +8,10 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -148,6 +150,20 @@ public class Events extends Fragment {
         progress.setVisibility(View.GONE);
         swipeLayout.setVisibility(View.VISIBLE);
         recyclerView.setAdapter(new EventAdapter(getActivity(),noOfUpcoming,names,eventIDs,created_time,hosters,fullImage));
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
+        layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                if(position==0)
+                    return 2;
+                else if(position<=noOfUpcoming)
+                    return 1;
+                else if(position==(noOfUpcoming+1))
+                    return 2;
+                else
+                    return 1;
+            }
+        });
+        recyclerView.setLayoutManager(layoutManager);
     }
 }

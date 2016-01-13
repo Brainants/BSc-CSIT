@@ -110,11 +110,9 @@ public class BackgroundTaskHandler extends GcmTaskService {
                     ArrayList<String> ids = new ArrayList<>(),
                             names = new ArrayList<>(),
                             extra = new ArrayList<>();
-                    ArrayList<Boolean> verified = new ArrayList<>();
 
                     ids.clear();
                     names.clear();
-                    verified.clear();
                     extra.clear();
                     try {
                         ContentValues values = new ContentValues();
@@ -123,13 +121,11 @@ public class BackgroundTaskHandler extends GcmTaskService {
                             JSONObject object = response.getJSONObject(i);
                             ids.add(object.getString("fbid"));
                             names.add(object.getString("title"));
-                            verified.add(Integer.parseInt(object.getString("isverified")) == 1);
                             extra.add(object.getString("extra"));
 
                             values.clear();
                             values.put("FbID", ids.get(i));
                             values.put("Title", names.get(i));
-                            values.put("IsVerified", verified.get(i) ? 1 : 0);
                             values.put("ExtraText", extra.get(i));
                             Singleton.getInstance().getDatabase().insert("popularCommunities", null, values);
                         }
@@ -228,7 +224,7 @@ public class BackgroundTaskHandler extends GcmTaskService {
 
         private void fillMyCommFromResponse(String response, final List<String> pages) {
             Bundle param = new Bundle();
-            param.putString("fields", "name,is_verified,category");
+            param.putString("fields", "name,category");
             param.putString("ids", response);
             new GraphRequest(AccessToken.getCurrentAccessToken(), "", param, HttpMethod.GET, new GraphRequest.Callback() {
                 @Override
@@ -245,7 +241,6 @@ public class BackgroundTaskHandler extends GcmTaskService {
                                 JSONObject eachPage = object.getJSONObject(pages.get(i));
                                 values.put("FbID", eachPage.getString("id"));
                                 values.put("Title", eachPage.getString("name"));
-                                values.put("IsVerified", eachPage.getBoolean("is_verified") ? 1 : 0);
                                 values.put("ExtraText", eachPage.getString("category"));
                                 Singleton.getInstance().getDatabase().insert("myCommunities", null, values);
                             }

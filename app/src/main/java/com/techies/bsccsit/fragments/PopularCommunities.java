@@ -33,7 +33,6 @@ public class PopularCommunities extends Fragment {
     private ArrayList<String> names=new ArrayList<>(),
             extra=new ArrayList<>(),
             ids=new ArrayList<>();
-    private ArrayList<Boolean> verified=new ArrayList<>();
     public static FacebookSearchAdapter adapter;
 
     private ProgressBar progress;
@@ -60,7 +59,6 @@ public class PopularCommunities extends Fragment {
             names.add(cursor.getString(cursor.getColumnIndex("Title")));
             extra.add(cursor.getString(cursor.getColumnIndex("ExtraText")));
             ids.add(cursor.getString(cursor.getColumnIndex("FbID")));
-            verified.add(cursor.getInt(cursor.getColumnIndex("IsVerified")) == 1);
         }
         cursor.close();
         if(count==0) {
@@ -72,7 +70,7 @@ public class PopularCommunities extends Fragment {
 
     private void fillRecyclerView(){
         recyclerview.setVisibility(View.VISIBLE);
-        adapter = new FacebookSearchAdapter(getActivity(),"my", names, extra, ids, verified);
+        adapter = new FacebookSearchAdapter(getActivity(),"my", names, extra, ids);
         recyclerview.setAdapter(adapter);
         recyclerview.setLayoutManager(new GridLayoutManager(getActivity(),2));
         adapter.setOnClickListener(new FacebookSearchAdapter.ClickListener() {
@@ -80,7 +78,7 @@ public class PopularCommunities extends Fragment {
             public void onClick(FancyButton view, int position) {
                 if (Singleton.checkExistInFollowing(ids.get(position))){
                     if (Singleton.getFollowingArray().size() <= 6) {
-                        Snackbar.make(core, "You must follow any 5 communities.", Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(core, "You must follow at least 5 communities.", Snackbar.LENGTH_SHORT).show();
                         return;
                     }
                     Singleton.getInstance().getDatabase().execSQL("DELETE FROM myCommunities WHERE FbID = "+ids.get(position));
@@ -90,11 +88,10 @@ public class PopularCommunities extends Fragment {
                     ContentValues values=new ContentValues();
                     values.put("Title",names.get(position));
                     values.put("FbID",ids.get(position));
-                    values.put("isVerified",verified.get(position)?1:0);
                     values.put("ExtraText",extra.get(position));
                     Singleton.getInstance().getDatabase().insert("myCommunities",null,values);
                     Snackbar.make(core,names.get(position)+" added Successfully.",Snackbar.LENGTH_SHORT).show();
-                    FollowingCommunities.adapter.addItem(names.get(position),ids.get(position),extra.get(position),verified.get(position));
+                    FollowingCommunities.adapter.addItem(names.get(position),ids.get(position),extra.get(position));
                     getActivity().getSharedPreferences("community", Context.MODE_PRIVATE).edit().putBoolean("changedComm",true).apply();
                 }
                 adapter.notifyItemChanged(position);

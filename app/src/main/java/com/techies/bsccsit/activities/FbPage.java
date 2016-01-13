@@ -1,7 +1,13 @@
 package com.techies.bsccsit.activities;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +28,7 @@ import com.squareup.picasso.Picasso;
 import com.techies.bsccsit.R;
 import com.techies.bsccsit.adapters.FbPageAdapter;
 import com.techies.bsccsit.advance.Singleton;
+import com.techies.bsccsit.fragments.FollowingCommunities;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,7 +51,7 @@ public class FbPage extends AppCompatActivity {
     private RecyclerView recyclerView;
     private LinearLayout errorMsg;
     private String page_id;
-
+    private FloatingActionButton followFAB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +80,46 @@ public class FbPage extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         downloadFromInternet();
+
+        followFAB= (FloatingActionButton) findViewById(R.id.pageFollowFAB);
+
+        if ( Singleton.checkExistInFollowing(page_id)){
+            followFAB.setImageResource(R.drawable.cross);
+            followFAB.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this,R.color.unfollowColor)));
+        }else {
+            followFAB.setImageResource(R.drawable.plus);
+            followFAB.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this,R.color.colorPrimary)));
+        }
+
+        followFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Singleton.checkExistInFollowing(page_id)){
+                    if (Singleton.getFollowingArray().size() <= 6) {
+                        Snackbar.make(findViewById(R.id.fbPageCore), "You must follow at least 5 communities.", Snackbar.LENGTH_SHORT).show();
+                        return;
+                    }
+                    Singleton.getInstance().getDatabase().execSQL("DELETE FROM myCommunities WHERE FbID = "+page_id);
+                    Snackbar.make(findViewById(R.id.fbPageCore),getIntent().getStringExtra("name")+" removed Successfully.",Snackbar.LENGTH_SHORT).show();
+                }else {
+                    ContentValues values=new ContentValues();
+                    values.put("Title",getIntent().getStringExtra("name"));
+                    values.put("FbID",page_id);
+                    values.put("ExtraText",getIntent().getStringExtra("details"));
+                    Singleton.getInstance().getDatabase().insert("myCommunities",null,values);
+                    Snackbar.make(findViewById(R.id.fbPageCore),getIntent().getStringExtra("name")+" added Successfully.",Snackbar.LENGTH_SHORT).show();
+                    getSharedPreferences("community", Context.MODE_PRIVATE).edit().putBoolean("changedComm",true).apply();
+                }
+
+                if ( Singleton.checkExistInFollowing(page_id)){
+                    followFAB.setImageResource(R.drawable.cross);
+                    followFAB.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(FbPage.this,R.color.unfollowColor)));
+                }else {
+                    followFAB.setImageResource(R.drawable.plus);
+                    followFAB.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(FbPage.this,R.color.colorPrimary)));
+                }
+            }
+        });
     }
 
     private void downloadFromInternet() {
