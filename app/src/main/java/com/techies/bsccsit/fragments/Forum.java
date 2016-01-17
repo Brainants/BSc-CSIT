@@ -1,6 +1,7 @@
 package com.techies.bsccsit.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -32,6 +33,14 @@ public class Forum extends Fragment {
 
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
+    private String semTag;
+    private ArrayList<String> messagesEach=new ArrayList<>(),
+            timeEach=new ArrayList<>(),
+            namesEach =new ArrayList<>(),
+            idsEach=new ArrayList<>(),
+            postIdsEach=new ArrayList<>(),
+            imageURLEach=new ArrayList<>();
+
     private ArrayList<String> messages=new ArrayList<>(),
             time=new ArrayList<>(),
             names =new ArrayList<>(),
@@ -41,6 +50,9 @@ public class Forum extends Fragment {
 
     private ArrayList<Integer> comments=new ArrayList<>(),
             likes=new ArrayList<>();
+
+    private ArrayList<Integer> commentsEach=new ArrayList<>(),
+            likesEach=new ArrayList<>();
 
     private LinearLayout errorMessage;
     private FloatingActionButton fab;
@@ -95,6 +107,7 @@ public class Forum extends Fragment {
                                     postIds.add(arrayItem.getString("id"));
                                 } catch (Exception ignored) {}
                         }
+                        forumSemesterWise();
                         fillRecy();
                     }
 
@@ -106,11 +119,29 @@ public class Forum extends Fragment {
         }).executeAsync();
     }
 
+    private void forumSemesterWise() {
+        int sem = getActivity().getSharedPreferences("loginInfo",Context.MODE_PRIVATE).getInt("semester",1);
+
+        for(int i=0;i<messages.size();i++) {
+            if(messages.get(i).contains("#"+ sem + "sem" )) {
+                messagesEach.add(messages.get(i));
+                timeEach.add(time.get(i));
+                namesEach.add(names.get(i));
+                idsEach.add(ids.get(i));
+                postIdsEach.add(postIds.get(i));
+                imageURLEach.add(imageURL.get(i));
+                likesEach.add(likes.get(i));
+                commentsEach.add(comments.get(i));
+            }
+        }
+
+    }
 
     private void fillRecy() {
         fab.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
-        recyclerView.setAdapter(new ForumAdapter(getActivity(), names,time,ids,postIds,messages,imageURL,likes,comments));
+
+        recyclerView.setAdapter(new ForumAdapter(getActivity(), namesEach,timeEach,idsEach,postIdsEach,messagesEach,imageURLEach,likesEach,commentsEach));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

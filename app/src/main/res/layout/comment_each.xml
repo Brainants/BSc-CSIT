@@ -29,7 +29,7 @@
 
                 <com.devspark.robototextview.widget.RobotoTextView
                     android:id="@+id/commenter"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/colorPrimary"
                     android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
 
                 <com.devspark.robototextview.widget.RobotoTextView
                     android:id="@+id/time"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:textColor="@color/black"
                     android:layout_height="wrap_content"
                     android:text="2 hours ago" />
