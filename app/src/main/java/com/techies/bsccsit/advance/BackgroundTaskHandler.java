@@ -161,6 +161,7 @@ public class BackgroundTaskHandler extends GcmTaskService {
                 @Override
                 public void onResponse(String response) {
                     MyApp.getContext().getSharedPreferences("community", Context.MODE_PRIVATE).edit().putBoolean("changedComm", false).apply();
+                    Log.d("POST Comm",response.toString());
                 }
             }, new Response.ErrorListener() {
                 @Override
