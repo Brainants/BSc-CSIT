@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
 
         loginButton = new LoginButton(this);
 
-        loginButton.setReadPermissions("public_profile", "email", "user_hometown", "user_about_me");
+        loginButton.setReadPermissions("public_profile", "email", "user_hometown");
 
         callbackManager = CallbackManager.Factory.create();
 

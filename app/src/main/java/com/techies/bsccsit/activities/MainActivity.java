@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static FloatingActionButton fab;
     public static DrawerLayout drawerLayout;
+    public static CoordinatorLayout coordinatorLayout;
     private FragmentManager manager;
     private int previous;
     private MaterialDialog loadFirstTime;
@@ -71,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         }
         NavigationView navigationView= (NavigationView) findViewById(R.id.naviView);
         drawerLayout= (DrawerLayout) findViewById(R.id.drawerLayout);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.mainCood);
         View view= navigationView.getHeaderView(0);
         final CircleImageView imageView1= (CircleImageView) view.findViewById(R.id.profilePicture);
         TextView name= (TextView) view.findViewById(R.id.nameHeader);
@@ -183,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         Picasso.with(this).load("https://graph.facebook.com/"+getSharedPreferences("loginInfo",MODE_PRIVATE).getString("UserID","")+"/picture?type=large").into(imageView1);
-        fab.setVisibility(View.GONE);
+        fab.hide();
         manager.beginTransaction().replace(R.id.fragHolder,new NewsEvents()).commit();
     }
 

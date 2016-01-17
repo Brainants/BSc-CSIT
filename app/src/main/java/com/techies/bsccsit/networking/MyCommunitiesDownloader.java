@@ -69,6 +69,8 @@ public class MyCommunitiesDownloader {
             public void onCompleted(GraphResponse response) {
                 if (response.getError() != null) {
                     listener.onTaskCompleted(false);
+                    response.getError().getException().printStackTrace();
+                    ;
                 } else {
                     JSONObject object = response.getJSONObject();
                     ContentValues values = new ContentValues();
@@ -83,6 +85,7 @@ public class MyCommunitiesDownloader {
                         }
                         listener.onTaskCompleted(true);
                     } catch (Exception e) {
+                        e.printStackTrace();
                         listener.onTaskCompleted(false);
                     }
                 }

@@ -47,8 +47,9 @@
         <com.devspark.robototextview.widget.RobotoTextView
             android:id="@+id/projectDetail"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_margin="3dp"
+            android:layout_weight="1"
             android:ellipsize="end"
             android:maxLines="3"
             android:text="App to create route to tourism area,show nearby services and convert nepali language to their home language and viceversa." />
@@ -56,6 +57,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
             android:layout_marginTop="2dp"
             android:gravity="end"
             android:orientation="horizontal">
