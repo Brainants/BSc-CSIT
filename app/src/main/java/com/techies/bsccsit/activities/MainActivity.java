@@ -38,10 +38,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MainActivity extends AppCompatActivity {
 
 
-    private FragmentManager manager;
-    private int previous;
     public static FloatingActionButton fab;
     public static DrawerLayout drawerLayout;
+    private FragmentManager manager;
+    private int previous;
     private MaterialDialog loadFirstTime;
 
     @Override
@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
                 drawerLayout.closeDrawer(findViewById(R.id.naviView));
                 if(id==previous)
                     return  true;
-                fab.setVisibility(View.GONE);
+                fab.hide();
                 switch (id){
                     case R.id.newsEvent:
                         setTitle("Home");

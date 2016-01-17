@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.techies.bsccsit.R;
 import com.techies.bsccsit.adapters.FacebookSearchAdapter;
@@ -24,13 +23,12 @@ import mehdi.sakout.fancybuttons.FancyButton;
 
 public class FollowingCommunities extends Fragment {
 
-    private RecyclerView recy;
     public static FacebookSearchAdapter adapter;
-    private View core;
-
     final ArrayList<String> names = new ArrayList<>(),
             extra = new ArrayList<>(),
             ids = new ArrayList<>();
+    private RecyclerView recy;
+    private View core;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -2,7 +2,7 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="3dp"
+    android:layout_margin="1.5dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -17,8 +17,8 @@
             android:orientation="horizontal">
 
             <com.facebook.login.widget.ProfilePictureView
-                android:layout_width="48dp"
                 android:id="@+id/profilePhoto"
+                android:layout_width="48dp"
                 android:layout_height="48dp" />
 
             <LinearLayout
@@ -30,28 +30,28 @@
                 <com.devspark.robototextview.widget.RobotoTextView
                     android:id="@+id/commenter"
                     android:layout_width="match_parent"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/colorPrimary"
                     android:layout_height="wrap_content"
-                    android:text="Aawaz Gyawali" />
+                    android:text="Aawaz Gyawali"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorPrimary" />
 
                 <com.devspark.robototextview.widget.RobotoTextView
                     android:id="@+id/time"
                     android:layout_width="match_parent"
-                    android:textColor="@color/black"
                     android:layout_height="wrap_content"
-                    android:text="2 hours ago" />
+                    android:text="2 hours ago"
+                    android:textColor="@color/black" />
             </LinearLayout>
 
         </LinearLayout>
 
         <com.devspark.robototextview.widget.RobotoTextView
+            android:id="@+id/comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:id="@+id/comment"
-            android:textColor="@color/black"
-            android:text="THis is a sample comment of the post." />
+            android:text="THis is a sample comment of the post."
+            android:textColor="@color/black" />
     </LinearLayout>
 
 </android.support.v7.widget.CardView>

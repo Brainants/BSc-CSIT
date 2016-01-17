@@ -17,8 +17,8 @@ import android.widget.ProgressBar;
 
 import com.techies.bsccsit.R;
 import com.techies.bsccsit.adapters.FacebookSearchAdapter;
-import com.techies.bsccsit.advance.BackgroundTaskHandler;
 import com.techies.bsccsit.advance.Singleton;
+import com.techies.bsccsit.networking.PopularCommunitiesDownloader;
 
 import java.util.ArrayList;
 
@@ -26,15 +26,12 @@ import mehdi.sakout.fancybuttons.FancyButton;
 
 public class PopularCommunities extends Fragment {
 
+    public static FacebookSearchAdapter adapter;
     private RecyclerView recyclerview;
     private View core;
-
-
     private ArrayList<String> names=new ArrayList<>(),
             extra=new ArrayList<>(),
             ids=new ArrayList<>();
-    public static FacebookSearchAdapter adapter;
-
     private ProgressBar progress;
     private LinearLayout error;
 
@@ -119,9 +116,9 @@ public class PopularCommunities extends Fragment {
     }
 
     private void downloadFromInternet() {
-        BackgroundTaskHandler.PopularCommunitiesDownloader downloader=new BackgroundTaskHandler.PopularCommunitiesDownloader();
+        PopularCommunitiesDownloader downloader = new PopularCommunitiesDownloader();
         downloader.doInBackground();
-        downloader.setTaskCompleteListener(new BackgroundTaskHandler.PopularCommunitiesDownloader.OnTaskCompleted() {
+        downloader.setTaskCompleteListener(new PopularCommunitiesDownloader.OnTaskCompleted() {
             @Override
             public void onTaskCompleted(boolean success) {
                 progress.setVisibility(View.GONE);

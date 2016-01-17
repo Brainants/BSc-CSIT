@@ -5,6 +5,7 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#eee"
     android:orientation="vertical"
     android:scrollbarStyle="insideOverlay"
     tools:context=".activities.MainActivity">
@@ -15,34 +16,34 @@
         android:layout_height="match_parent">
 
         <android.support.design.widget.AppBarLayout
-            android:layout_width="match_parent"
             android:id="@+id/mainAppBar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbarMain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_collapseMode="pin"
-                app:layout_scrollFlags="scroll|enterAlways"
                 android:background="@color/colorPrimary"
-                android:theme="@style/Theme.AppCompat" />
+                android:theme="@style/Theme.AppCompat"
+                app:layout_collapseMode="pin"
+                app:layout_scrollFlags="scroll|enterAlways" />
         </android.support.design.widget.AppBarLayout>
 
         <RelativeLayout
             android:id="@+id/fragHolder"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <android.support.design.widget.FloatingActionButton
+            android:id="@+id/mainFab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="16dp"
             android:src="@drawable/message_plus"
-            android:id="@+id/mainFab"
             app:layout_anchor="@id/fragHolder"
-            app:layout_anchorGravity="bottom|right|end"
-            android:layout_margin="16dp" />
+            app:layout_anchorGravity="bottom|right|end" />
 
     </android.support.design.widget.CoordinatorLayout>
 

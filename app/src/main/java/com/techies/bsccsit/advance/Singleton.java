@@ -1,29 +1,25 @@
 package com.techies.bsccsit.advance;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.format.DateUtils;
+import android.view.View;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.gcm.GcmNetworkManager;
-
-import org.json.JSONArray;
+import com.squareup.picasso.Picasso;
+import com.techies.bsccsit.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+import mehdi.sakout.fancybuttons.FancyButton;
 
 public class Singleton {
     private static Singleton sInstance = null;
@@ -43,14 +39,6 @@ public class Singleton {
             sInstance = new Singleton();
         }
         return sInstance;
-    }
-
-    public RequestQueue getRequestQueue() {
-        return mRequestQueue;
-    }
-
-    public SQLiteDatabase getDatabase() {
-        return mDatabase.getWritableDatabase();
     }
 
     public static boolean checkExistInFollowing(String id) {
@@ -155,10 +143,6 @@ public class Singleton {
         }
     }
 
-    public GcmNetworkManager getGcmScheduler() {
-        return mScheduler;
-    }
-
     public static boolean isScheduledEvent(String eventId) {
         return false;
         /*Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM remainder WHERE eventID = " + eventId, null);
@@ -174,7 +158,26 @@ public class Singleton {
     public static String getSemester() {
         return MyApp.getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getInt("semester", 0) + "sem";
     }
+
     public static int getSizeName(Context context) {
+        int screenLayout = context.getResources().getConfiguration().screenLayout;
+        screenLayout &= Configuration.SCREENLAYOUT_SIZE_MASK;
+
+        switch (screenLayout) {
+            case Configuration.SCREENLAYOUT_SIZE_SMALL:
+                return 2;
+            case Configuration.SCREENLAYOUT_SIZE_NORMAL:
+                return 2;
+            case Configuration.SCREENLAYOUT_SIZE_LARGE:
+                return 1;
+            case 4: // Configuration.SCREENLAYOUT_SIZE_XLARGE is API >= 9
+                return 1;
+            default:
+                return 2;
+        }
+    }
+
+    public static int getSpanCount(Context context) {
         int screenLayout = context.getResources().getConfiguration().screenLayout;
         screenLayout &= Configuration.SCREENLAYOUT_SIZE_MASK;
 
@@ -190,6 +193,30 @@ public class Singleton {
             default:
                 return 1;
         }
+    }
+
+    public static FancyButton getTagView(Context context, String tag) {
+        FancyButton button = (FancyButton) View.inflate(context, R.layout.tag_widget, null);
+        button.setText(tag);
+        return button;
+    }
+
+    public static CircleImageView getProfileView(Context context, String userID) {
+        CircleImageView imageView = (CircleImageView) View.inflate(context, R.layout.tag_widget, null);
+        Picasso.with(context).load("https://graph.facebook.com/" + userID + "/picture?type=large").into(imageView);
+        return imageView;
+    }
+
+    public RequestQueue getRequestQueue() {
+        return mRequestQueue;
+    }
+
+    public SQLiteDatabase getDatabase() {
+        return mDatabase.getWritableDatabase();
+    }
+
+    public GcmNetworkManager getGcmScheduler() {
+        return mScheduler;
     }
 }
 

@@ -17,8 +17,8 @@ import android.widget.ProgressBar;
 
 import com.techies.bsccsit.R;
 import com.techies.bsccsit.adapters.NewsAdapter;
-import com.techies.bsccsit.advance.BackgroundTaskHandler;
 import com.techies.bsccsit.advance.Singleton;
+import com.techies.bsccsit.networking.NewsDownloader;
 
 import java.util.ArrayList;
 
@@ -71,9 +71,9 @@ public class News extends Fragment {
     }
 
     private void downloadFromInternet(final boolean first) {
-        BackgroundTaskHandler.NewsDownloader downloader =
-                new BackgroundTaskHandler.NewsDownloader();
-        downloader.setTaskCompleteListener(new BackgroundTaskHandler.NewsDownloader.OnTaskCompleted() {
+        NewsDownloader downloader =
+                new NewsDownloader();
+        downloader.setTaskCompleteListener(new NewsDownloader.OnTaskCompleted() {
             @Override
             public void onTaskCompleted(boolean success) {
                 swipeLayout.setRefreshing(false);

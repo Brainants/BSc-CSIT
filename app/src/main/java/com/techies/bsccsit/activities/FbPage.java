@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -17,26 +16,20 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
-import com.devspark.robototextview.widget.RobotoTextView;
 import com.facebook.AccessToken;
 import com.facebook.FacebookRequestError;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
-import com.facebook.login.widget.ProfilePictureView;
-import com.squareup.picasso.Picasso;
 import com.techies.bsccsit.R;
 import com.techies.bsccsit.adapters.FbPageAdapter;
 import com.techies.bsccsit.advance.Singleton;
-import com.techies.bsccsit.fragments.FollowingCommunities;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FbPage extends AppCompatActivity {
 

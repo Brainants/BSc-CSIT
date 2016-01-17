@@ -2,14 +2,9 @@ package com.techies.bsccsit.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -23,21 +18,18 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.techies.bsccsit.R;
-import com.techies.bsccsit.advance.BackgroundTaskHandler;
 import com.techies.bsccsit.advance.Singleton;
+import com.techies.bsccsit.networking.MyCommunitiesDownloader;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -145,7 +137,7 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
         if (!preferences.getBoolean("checked", false)) {
-            StringRequest request = new StringRequest(Request.Method.POST, "https://slim-bloodskate.c9users.io/app/api/checkUser", new Response.Listener<String>() {
+            StringRequest request = new StringRequest(Request.Method.POST, "http://bsccsit.brainants.com/getuser", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     try {
@@ -153,6 +145,11 @@ public class LoginActivity extends AppCompatActivity {
                         JSONObject object = new JSONObject(response);
                         if (object.getBoolean("exists")) {
                             addEveryThingToSp(object.getJSONObject("data"));
+                            if (object.getJSONObject("data").getString("communities").equals("")) {
+                                editor.putBoolean("loggedFirstIn", true);
+                                editor.putBoolean("formFilled", true).apply();
+                                startActivity(new Intent(LoginActivity.this, CompleteLogin.class));
+                            }
                             editor.putBoolean("checked", true);
                             editor.apply();
                             postFbLoginWork();
@@ -197,9 +194,9 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if (Singleton.getFollowingArray().size() - 1 == 0) {
-            BackgroundTaskHandler.MyCommunitiesDownloader downloader = new BackgroundTaskHandler.MyCommunitiesDownloader();
+            MyCommunitiesDownloader downloader = new MyCommunitiesDownloader();
             downloader.doInBackground();
-            downloader.setTaskCompleteListener(new BackgroundTaskHandler.MyCommunitiesDownloader.OnTaskCompleted() {
+            downloader.setTaskCompleteListener(new MyCommunitiesDownloader.OnTaskCompleted() {
                 @Override
                 public void onTaskCompleted(boolean success) {
                     if (success) {
@@ -225,7 +222,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void addEveryThingToSp(JSONObject response) {
         try {
-            editor.putInt("semester", Integer.parseInt( response.getString("semester")));
+            editor.putInt("semester", Integer.parseInt(response.getString("semester")));
             editor.putString("college", response.getString("college"));
             editor.putString("phone_number", response.getString("phone_number"));
             editor.putBoolean("admin", response.getInt("admin") == 1);

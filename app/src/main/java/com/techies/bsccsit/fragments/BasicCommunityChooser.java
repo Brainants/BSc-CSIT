@@ -21,8 +21,9 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.techies.bsccsit.R;
 import com.techies.bsccsit.activities.MainActivity;
 import com.techies.bsccsit.adapters.FacebookSearchAdapter;
-import com.techies.bsccsit.advance.BackgroundTaskHandler;
 import com.techies.bsccsit.advance.Singleton;
+import com.techies.bsccsit.networking.MyCommunitiesUploader;
+import com.techies.bsccsit.networking.PopularCommunitiesDownloader;
 
 import java.util.ArrayList;
 
@@ -30,17 +31,14 @@ import mehdi.sakout.fancybuttons.FancyButton;
 
 public class BasicCommunityChooser extends Fragment {
 
+    public static FacebookSearchAdapter adapter;
     private RecyclerView recyclerView;
     private FloatingActionButton fab;
     private int following=Singleton.getFollowingArray().size()-1;
     private MaterialDialog dialog;
-
-
     private ArrayList<String> names=new ArrayList<>(),
             extra=new ArrayList<>(),
             ids=new ArrayList<>();
-    public static FacebookSearchAdapter adapter;
-
     private LinearLayout error;
     private SharedPreferences.Editor editor;
 
@@ -65,7 +63,7 @@ public class BasicCommunityChooser extends Fragment {
                 editor.putBoolean("loggedIn",true);
                 editor.apply();
 
-                BackgroundTaskHandler.MyCommunitiesUploader uploader=new BackgroundTaskHandler.MyCommunitiesUploader();
+                MyCommunitiesUploader uploader = new MyCommunitiesUploader();
                 uploader.doInBackground();
 
                 Toast.makeText(getActivity(), "Welcome "+getActivity().getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getString("FirstName","")+"!", Toast.LENGTH_SHORT).show();
@@ -94,9 +92,9 @@ public class BasicCommunityChooser extends Fragment {
 
     private void downloadFromInternet() {
         dialog.show();
-        BackgroundTaskHandler.PopularCommunitiesDownloader downloader=new BackgroundTaskHandler.PopularCommunitiesDownloader();
+        PopularCommunitiesDownloader downloader = new PopularCommunitiesDownloader();
         downloader.doInBackground();
-        downloader.setTaskCompleteListener(new BackgroundTaskHandler.PopularCommunitiesDownloader.OnTaskCompleted() {
+        downloader.setTaskCompleteListener(new PopularCommunitiesDownloader.OnTaskCompleted() {
             @Override
             public void onTaskCompleted(boolean success) {
                 dialog.dismiss();

@@ -10,13 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.devspark.robototextview.widget.RobotoTextView;
 import com.squareup.picasso.Picasso;
 import com.techies.bsccsit.R;
 import com.techies.bsccsit.activities.FbEvent;
-import com.techies.bsccsit.activities.FbPage;
 import com.techies.bsccsit.activities.MainActivity;
 import com.techies.bsccsit.advance.Singleton;
 
@@ -29,9 +27,9 @@ import java.util.Locale;
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.VH> {
     private final Context context;
     LayoutInflater inflater;
-    private int noOfUpcomming;
     ArrayList<String> names, time, hoster, imageURL,eventsIds;
     int header=1,card=0;
+    private int noOfUpcomming;
 
     public EventAdapter(Context context,int noOfUpcomming, ArrayList<String> names, ArrayList<String> eventsIds, ArrayList<String> time
             , ArrayList<String> hoster, ArrayList<String> imageURL) {

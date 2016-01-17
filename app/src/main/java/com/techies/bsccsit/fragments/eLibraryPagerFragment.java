@@ -5,31 +5,26 @@ import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.techies.bsccsit.R;
 import com.techies.bsccsit.adapters.eLibraryAdapter;
 import com.techies.bsccsit.advance.Singleton;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 public class eLibraryPagerFragment extends Fragment {
 
@@ -57,7 +52,7 @@ public class eLibraryPagerFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        core=view;
+        core = view;
         recy = (RecyclerView) view.findViewById(R.id.recyELibrary);
     }
 
@@ -80,7 +75,7 @@ public class eLibraryPagerFragment extends Fragment {
     }
 
     private void fillAdapter() {
-        recy.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recy.setLayoutManager(new GridLayoutManager(getActivity(), Singleton.getSpanCount(getContext())));
         eLibraryAdapter adapter = new eLibraryAdapter(getActivity(), types[getArguments().getInt("position")], Title, Source, FileName);
         recy.setAdapter(adapter);
         adapter.setOnCLickListener(new eLibraryAdapter.ClickListener() {
@@ -89,17 +84,17 @@ public class eLibraryPagerFragment extends Fragment {
                 if (eLibraryAdapter.checkExistance(types[getArguments().getInt("position")], FileName.get(position))) {
 
                     File file = new File(Environment.getExternalStorageDirectory() + "/" + Singleton.getSemester() + "/" + types[getArguments().getInt("position")] +
-                            "/"+ FileName.get(position));
-                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            "/" + FileName.get(position));
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setDataAndType(Uri.fromFile(file), "application/pdf");
                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                     try {
                         startActivity(intent);
-                    } catch (Exception e){
-                        Snackbar.make(core.findViewById(R.id.coreLibrary),"No reader found.",Snackbar.LENGTH_LONG).setAction("Download", new View.OnClickListener() {
+                    } catch (Exception e) {
+                        Snackbar.make(core.findViewById(R.id.coreLibrary), "No reader found.", Snackbar.LENGTH_LONG).setAction("Download", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                String appPackageName="com.adobe.reader";
+                                String appPackageName = "com.adobe.reader";
                                 try {
                                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
                                 } catch (android.content.ActivityNotFoundException anfe) {
@@ -123,7 +118,7 @@ public class eLibraryPagerFragment extends Fragment {
                     DownloadManager manager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
                     manager.enqueue(request);
 
-                    Snackbar.make(core.findViewById(R.id.coreLibrary),"Download has begun.",Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(core.findViewById(R.id.coreLibrary), "Download has begun.", Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
@@ -136,15 +131,15 @@ public class eLibraryPagerFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_e_library_pager, container, false);
     }
 
-    public static class Receiver extends BroadcastReceiver{
+    public static class Receiver extends BroadcastReceiver {
 
-        public Receiver(){
+        public Receiver() {
 
         }
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            Toast.makeText(context,"Download Completed.",Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Download Completed.", Toast.LENGTH_SHORT).show();
         }
     }
 }

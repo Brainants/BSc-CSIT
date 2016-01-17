@@ -13,8 +13,8 @@ import android.view.ViewGroup;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.techies.bsccsit.R;
-import com.techies.bsccsit.advance.BackgroundTaskHandler;
 import com.techies.bsccsit.advance.Singleton;
+import com.techies.bsccsit.networking.eLibraryDownloader;
 
 
 public class eLibrary extends Fragment {
@@ -38,9 +38,9 @@ public class eLibrary extends Fragment {
                     .build();
             dialog.show();
 
-            BackgroundTaskHandler.eLibraryDownloader downloader = new BackgroundTaskHandler.eLibraryDownloader();
+            eLibraryDownloader downloader = new eLibraryDownloader();
             downloader.execute();
-            downloader.setTaskCompleteListener(new BackgroundTaskHandler.eLibraryDownloader.OnTaskCompleted() {
+            downloader.setTaskCompleteListener(new eLibraryDownloader.OnTaskCompleted() {
                 @Override
                 public void onTaskCompleted(boolean success) {
                     if (success) {
@@ -67,6 +67,13 @@ public class eLibrary extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         tabLayout = (TabLayout) view.findViewById(R.id.tabLayoutLibrary);
         viewPager = (ViewPager) view.findViewById(R.id.viewPagerLibrary);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_e_library, container, false);
     }
 
     class PagerAdapter extends FragmentStatePagerAdapter {
@@ -97,12 +104,5 @@ public class eLibrary extends Fragment {
         public int getCount() {
             return 4;
         }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_e_library, container, false);
     }
 }

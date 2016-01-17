@@ -2,7 +2,6 @@ package com.techies.bsccsit.fragments;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.AuthFailureError;
@@ -27,7 +25,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.techies.bsccsit.R;
-import com.techies.bsccsit.activities.MainActivity;
 import com.techies.bsccsit.advance.Singleton;
 
 import java.util.HashMap;
@@ -104,7 +101,7 @@ public class CompleteLoginForm extends Fragment implements AdapterView.OnItemSel
                 .build();
         dialog.show();
 
-        StringRequest request = new StringRequest(Request.Method.POST, "https://slim-bloodskate.c9users.io/app/api/register", new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.POST, "http://bsccsit.brainants.com/login", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 if (response.contains("success")) {

@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.devspark.robototextview.widget.RobotoTextView;
 import com.squareup.picasso.Picasso;
@@ -24,12 +23,11 @@ public class FacebookSearchAdapter extends RecyclerView.Adapter<FacebookSearchAd
 
     private final Context context;
     private final String allOrmy;
-    private LayoutInflater inflater;
-
     ArrayList<String> names=new ArrayList<>(),
             ids=new ArrayList<>(),
             extra=new ArrayList<>();
     ClickListener clickListener;
+    private LayoutInflater inflater;
 
 
     public FacebookSearchAdapter(Context context,String appOrmy ,ArrayList<String> names,ArrayList<String> extra,ArrayList<String> ids){
@@ -91,13 +89,13 @@ public class FacebookSearchAdapter extends RecyclerView.Adapter<FacebookSearchAd
 
     }
 
-    public interface ClickListener{
-        void onClick(FancyButton view,int position);
-    }
-
     @Override
     public int getItemCount() {
         return names.size();
+    }
+
+    public interface ClickListener {
+        void onClick(FancyButton view, int position);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

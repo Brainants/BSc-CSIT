@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
+    android:layout_margin="1.5dp"
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/eachEventCore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/eachEventCore"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -17,19 +17,19 @@
             android:layout_height="150dp">
 
             <ImageView
+                android:id="@+id/eventCoverImage"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:scaleType="centerCrop"
-                android:id="@+id/eventCoverImage"
-                android:background="@color/colorPrimaryTrans" />
+                android:background="@color/colorPrimaryTrans"
+                android:scaleType="centerCrop" />
 
             <android.support.v7.widget.CardView
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:layout_marginBottom="-30dp"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
                 android:layout_margin="5dp"
+                android:layout_marginBottom="-30dp"
                 app:cardCornerRadius="10dp">
 
                 <LinearLayout
@@ -39,21 +39,21 @@
                     android:orientation="vertical">
 
                     <com.devspark.robototextview.widget.RobotoTextView
+                        android:id="@+id/monthTxt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="DEC"
-                        android:id="@+id/monthTxt"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/colorAccent" />
 
                     <com.devspark.robototextview.widget.RobotoTextView
+                        android:id="@+id/dayTxt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
                         android:gravity="center"
-                        android:id="@+id/dayTxt"
                         android:text="12"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="#000" />
                 </LinearLayout>
 
@@ -71,44 +71,44 @@
 
             <LinearLayout
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <com.devspark.robototextview.widget.RobotoTextView
+                    android:id="@+id/nameOfEvent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/nameOfEvent"
-                    android:text="CSITAN TU Meeting"
                     android:maxLines="1"
+                    android:text="CSITAN TU Meeting"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/colorPrimary" />
 
                 <com.devspark.robototextview.widget.RobotoTextView
+                    android:id="@+id/eventHoster"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
                     android:maxLines="1"
-                    android:id="@+id/eventHoster"
                     android:text="Hosted By: CSITAN"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
             </LinearLayout>
 
             <View
                 android:layout_width="2dp"
-                android:background="#ddd"
-                android:layout_marginTop="3dp"
+                android:layout_height="match_parent"
                 android:layout_marginBottom="3dp"
-                android:layout_height="match_parent" />
+                android:layout_marginTop="3dp"
+                android:background="#ddd" />
 
             <ImageView
+                android:id="@+id/addToCalender"
                 android:layout_width="48dp"
                 android:layout_height="match_parent"
-                android:id="@+id/addToCalender"
                 android:padding="10dp"
-                android:visibility="gone"
-                android:src="@drawable/calender_check" />
+                android:src="@drawable/calender_check"
+                android:visibility="gone" />
         </LinearLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>

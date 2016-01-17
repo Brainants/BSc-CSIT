@@ -3,15 +3,12 @@ package com.techies.bsccsit.fragments;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +19,7 @@ import com.techies.bsccsit.R;
 import com.techies.bsccsit.adapters.EventAdapter;
 import com.techies.bsccsit.advance.BackgroundTaskHandler;
 import com.techies.bsccsit.advance.Singleton;
+import com.techies.bsccsit.networking.EventsDownloader;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -106,9 +104,9 @@ public class Events extends Fragment {
     }
 
     private void downloadFromInternet(final boolean first) {
-        BackgroundTaskHandler.EventsDownloader downloader =
-                new BackgroundTaskHandler.EventsDownloader();
-        downloader.setTaskCompleteListener(new BackgroundTaskHandler.EventsDownloader.OnTaskCompleted() {
+        EventsDownloader downloader =
+                new EventsDownloader();
+        downloader.setTaskCompleteListener(new EventsDownloader.OnTaskCompleted() {
             @Override
             public void onTaskCompleted(boolean success) {
                 progress.setVisibility(View.GONE);
@@ -157,11 +155,11 @@ public class Events extends Fragment {
                 if(position==0)
                     return 2;
                 else if(position<=noOfUpcoming)
-                    return 1;
+                    return Singleton.getSizeName(getContext());
                 else if(position==(noOfUpcoming+1))
                     return 2;
                 else
-                    return 1;
+                    return Singleton.getSizeName(getContext());
             }
         });
         recyclerView.setLayoutManager(layoutManager);

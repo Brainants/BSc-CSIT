@@ -2,8 +2,6 @@ package com.techies.bsccsit.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,19 +12,16 @@ import android.widget.TextView;
 import com.facebook.login.widget.ProfilePictureView;
 import com.squareup.picasso.Picasso;
 import com.techies.bsccsit.R;
-import com.techies.bsccsit.activities.FbPage;
 import com.techies.bsccsit.activities.ImageViewActivity;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 public class FbPageAdapter extends RecyclerView.Adapter<FbPageAdapter.VH> {
-    private Context context;
     LayoutInflater inflater;
     ArrayList<String> names, time, ids, message, imageURL;
+    private Context context;
 
     public FbPageAdapter(Context context, ArrayList<String> names, ArrayList<String> time, ArrayList<String> ids, ArrayList<String> messages, ArrayList<String> imageURL) {
     inflater = LayoutInflater.from(context);
@@ -78,21 +73,6 @@ public class FbPageAdapter extends RecyclerView.Adapter<FbPageAdapter.VH> {
         return names.size();
     }
 
-    public class VH extends RecyclerView.ViewHolder {
-        TextView nameHolder, timeHolder, messageHolder;
-        ImageView imageHolder;
-        ProfilePictureView profilePicHolder;
-
-        public VH(View itemView) {
-            super(itemView);
-            nameHolder= (TextView) itemView.findViewById(R.id.nameOfPoster);
-            timeHolder= (TextView) itemView.findViewById(R.id.timeOfPost);
-            messageHolder= (TextView) itemView.findViewById(R.id.messageOfPost);
-            imageHolder= (ImageView) itemView.findViewById(R.id.imageOfPost);
-            profilePicHolder= (ProfilePictureView) itemView.findViewById(R.id.imageOfPoster);
-        }
-    }
-
     private ArrayList pullLinks(String text) {
         ArrayList links = new ArrayList();
         String regex = "\\(?\\b(http://|www[.])[-A-Za-z0-9+&amp;@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&amp;@#/%=~_()|]";
@@ -108,5 +88,20 @@ public class FbPageAdapter extends RecyclerView.Adapter<FbPageAdapter.VH> {
         }
         return links;
 
+    }
+
+    public class VH extends RecyclerView.ViewHolder {
+        TextView nameHolder, timeHolder, messageHolder;
+        ImageView imageHolder;
+        ProfilePictureView profilePicHolder;
+
+        public VH(View itemView) {
+            super(itemView);
+            nameHolder = (TextView) itemView.findViewById(R.id.nameOfPoster);
+            timeHolder = (TextView) itemView.findViewById(R.id.timeOfPost);
+            messageHolder = (TextView) itemView.findViewById(R.id.messageOfPost);
+            imageHolder = (ImageView) itemView.findViewById(R.id.imageOfPost);
+            profilePicHolder = (ProfilePictureView) itemView.findViewById(R.id.imageOfPoster);
+        }
     }
 }
