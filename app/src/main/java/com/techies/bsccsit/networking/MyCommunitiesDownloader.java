@@ -32,7 +32,8 @@ public class MyCommunitiesDownloader {
         final StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                List<String> list = Arrays.asList(response.split(","));
+                List<String> list = Arrays.asList(response.split("\\s*,\\s*"));
+
                 fillMyCommFromResponse(response, list);
             }
         }, new Response.ErrorListener() {
@@ -70,7 +71,6 @@ public class MyCommunitiesDownloader {
                 if (response.getError() != null) {
                     listener.onTaskCompleted(false);
                     response.getError().getException().printStackTrace();
-                    ;
                 } else {
                     JSONObject object = response.getJSONObject();
                     ContentValues values = new ContentValues();
@@ -100,5 +100,4 @@ public class MyCommunitiesDownloader {
     public interface OnTaskCompleted {
         void onTaskCompleted(boolean success);
     }
-
 }

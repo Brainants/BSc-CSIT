@@ -13,22 +13,23 @@
         android:theme="@style/Theme.AppCompat"/>
 
     <com.techies.bsccsit.widget.TouchImageView
+        android:id="@+id/imageViewerImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitCenter"
-        android:id="@+id/imageViewerImage"
-        android:layout_centerInParent="true" />
+        android:layout_centerInParent="true"
+        android:scaleType="fitCenter" />
 
     <com.devspark.robototextview.widget.RobotoTextView
+        android:id="@+id/decsOfImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
         android:layout_alignParentBottom="true"
-        android:id="@+id/decsOfImage"
-        android:textColor="@color/white"
-        android:maxLines="2"
+        android:background="@drawable/gradient_black"
         android:ellipsize="end"
+        android:maxLines="2"
+        android:padding="10dp"
         android:paddingBottom="10dp"
-        android:text="Description of the text." />
+        android:text="Description of the text."
+        android:textColor="@color/white" />
 
 </RelativeLayout>

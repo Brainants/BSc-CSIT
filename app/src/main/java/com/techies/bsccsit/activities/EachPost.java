@@ -4,19 +4,17 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
-import com.facebook.login.widget.ProfilePictureView;
-import com.squareup.picasso.Picasso;
 import com.techies.bsccsit.R;
 import com.techies.bsccsit.adapters.CommentsAdapter;
-import com.techies.bsccsit.advance.Singleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,41 +27,42 @@ public class EachPost extends AppCompatActivity {
     private ArrayList<String> posterId=new ArrayList<>(), names=new ArrayList<>(),
             times=new ArrayList<>(), message=new ArrayList<>();
     private RecyclerView recyclerView;
+    private ProgressBar progressBar;
+    private LinearLayout errorLayout;
     private View headerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_each_post);
+
+        setSupportActionBar((Toolbar) findViewById(R.id.idEachToolbar));
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle("Comments");
+
         recyclerView = (RecyclerView) findViewById(R.id.eachPostRecy);
-        readyHeader();
+        progressBar = (ProgressBar) findViewById(R.id.loadingEachPost);
+        errorLayout = (LinearLayout) findViewById(R.id.errorMessageEachPost);
+        errorLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fetchFromInternet();
+            }
+        });
+
         fetchFromInternet();
     }
 
-    private void readyHeader(){
-        headerView=View.inflate(this,R.layout.news_each_post,null);
-        TextView name= (TextView) headerView.findViewById(R.id.nameOfPoster);
-        TextView time= (TextView) headerView.findViewById(R.id.timeOfPost);
-        TextView message= (TextView) headerView.findViewById(R.id.messageOfPost);
-        ImageView imageView= (ImageView) headerView.findViewById(R.id.imageOfPost);
-
-        ProfilePictureView profilePictureView= (ProfilePictureView) headerView.findViewById(R.id.imageOfPoster);
-        time.setText(Singleton.convertToSimpleDate(getIntent().getStringExtra("time")));
-        name.setText(getIntent().getStringExtra("name"));
-        message.setText(getIntent().getStringExtra("message"));
-        profilePictureView.setProfileId(getIntent().getStringExtra("userId"));
-        if (getIntent().getStringExtra("imageURL").equals(""))
-            imageView.setVisibility(View.GONE);
-        else
-            Picasso.with(this).load(getIntent().getStringExtra("imageURL")).into(imageView);
-    }
-
     private void fetchFromInternet() {
+        errorLayout.setVisibility(View.GONE);
         Bundle params=new Bundle();
         new GraphRequest(AccessToken.getCurrentAccessToken(), getIntent().getStringExtra("postID")+"/comments", params, HttpMethod.GET, new GraphRequest.Callback() {
             @Override
             public void onCompleted(GraphResponse response) {
-                if (response.getError()==null){
+                if (response.getError() != null) {
+                    errorLayout.setVisibility(View.VISIBLE);
+                } else {
                     JSONObject object= response.getJSONObject();
                     try {
                         JSONArray array= object.getJSONArray("data");
@@ -74,8 +73,9 @@ public class EachPost extends AppCompatActivity {
                             times.add(eachObj.getString("created_time"));
                             message.add(eachObj.getString("message"));
                         }
+                        progressBar.setVisibility(View.GONE);
                         recyclerView.setLayoutManager(new LinearLayoutManager(EachPost.this));
-                        recyclerView.setAdapter(new CommentsAdapter(EachPost.this,headerView,posterId,names,times,message));
+                        recyclerView.setAdapter(new CommentsAdapter(EachPost.this, getIntent().getExtras(), posterId, names, times, message));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

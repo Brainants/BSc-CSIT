@@ -21,7 +21,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.VH>{
     private final Context context;
     LayoutInflater inflater;
-    ArrayList<String> names, time, ids,postIds, message, imageURL;
+    ArrayList<String> names, time, ids, postIds,
+            message, imageURL;
     ArrayList<Integer> likes, comments;
 
     public ForumAdapter(Context context, ArrayList<String> names, ArrayList<String> time

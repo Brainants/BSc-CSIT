@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -78,6 +79,10 @@ public class Forum extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         fab = MainActivity.fab;
+        downloadFromInternet();
+    }
+
+    private void downloadFromInternet() {
         errorMessage.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
         Bundle params = new Bundle();
@@ -96,6 +101,18 @@ public class Forum extends Fragment {
                         ids.clear();
                         likes.clear();
                         comments.clear();
+                        imageURL.clear();
+                        postIds.clear();
+                        time.clear();
+
+                        imageURLEach.clear();
+                        messagesEach.clear();
+                        namesEach.clear();
+                        idsEach.clear();
+                        likesEach.clear();
+                        commentsEach.clear();
+                        postIdsEach.clear();
+                        timeEach.clear();
 
                         JSONArray array = response.getJSONObject().getJSONArray("data");
                         for (int i = 0; i < array.length(); i++) {
@@ -131,11 +148,11 @@ public class Forum extends Fragment {
                 }
             }
         }).executeAsync();
+
     }
 
     private void forumSemesterWise() {
         int sem = getActivity().getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getInt("semester", 1);
-
         for (int i = 0; i < messages.size(); i++) {
             if (messages.get(i).contains("#" + sem + "sem")) {
                 messagesEach.add(messages.get(i));
@@ -169,6 +186,7 @@ public class Forum extends Fragment {
                 if (graphResponse.getError() != null) {
                     Snackbar.make(MainActivity.coordinatorLayout, "Unable to post.", Snackbar.LENGTH_SHORT).show();
                 } else {
+                    downloadFromInternet();
                     Snackbar.make(MainActivity.coordinatorLayout, "Post successful.", Snackbar.LENGTH_SHORT).show();
                     getContext().getSharedPreferences("misc", Context.MODE_PRIVATE).edit().putString("message", "").apply();
                 }
@@ -183,19 +201,8 @@ public class Forum extends Fragment {
         manager.registerCallback(callback, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                new MaterialDialog.Builder(getActivity())
-                        .title("Write a post")
-                        .input("Your message here.", getContext().getSharedPreferences("misc", Context.MODE_PRIVATE).getString("message", ""), false, new MaterialDialog.InputCallback() {
-                            @Override
-                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                                getContext().getSharedPreferences("misc", Context.MODE_PRIVATE).edit().putString("message", input.toString()).apply();
-                                sendPostRequestThroughGraph(input.toString());
-                            }
-                        })
-                        .positiveText("Post")
-                        .negativeText("Cancel")
-                        .build()
-                        .show();
+                getActivity().getSharedPreferences("misc", Context.MODE_PRIVATE).edit().putBoolean("publishPermission", true).apply();
+                fab.callOnClick();
             }
 
             @Override
@@ -225,7 +232,34 @@ public class Forum extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                askPostPermission();
+                if (!getActivity().getSharedPreferences("misc", Context.MODE_PRIVATE).getBoolean("publishPermission", false)) {
+                    new MaterialDialog.Builder(getContext())
+                            .title("Allow app to post.")
+                            .content("Our fourm uses facebook so you must allow us to post on facebook.")
+                            .positiveText("Proceed...")
+                            .negativeText("I won't use forum")
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    askPostPermission();
+                                }
+                            })
+                            .show();
+                } else {
+                    new MaterialDialog.Builder(getActivity())
+                            .title("Write a post")
+                            .input("Your message here.", getContext().getSharedPreferences("misc", Context.MODE_PRIVATE).getString("message", ""), false, new MaterialDialog.InputCallback() {
+                                @Override
+                                public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                                    getContext().getSharedPreferences("misc", Context.MODE_PRIVATE).edit().putString("message", input.toString()).apply();
+                                    sendPostRequestThroughGraph(input.toString());
+                                }
+                            })
+                            .positiveText("Post")
+                            .negativeText("Cancel")
+                            .build()
+                            .show();
+                }
             }
         });
     }
