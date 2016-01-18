@@ -10,12 +10,13 @@
         android:id="@+id/toolbarImageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/Theme.AppCompat"/>
+        android:theme="@style/Theme.AppCompat" />
 
     <com.techies.bsccsit.widget.TouchImageView
         android:id="@+id/imageViewerImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/toolbarImageView"
         android:layout_centerInParent="true"
         android:scaleType="fitCenter" />
 
