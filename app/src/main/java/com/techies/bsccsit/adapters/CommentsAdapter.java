@@ -3,19 +3,20 @@ package com.techies.bsccsit.adapters;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.devspark.robototextview.widget.RobotoTextView;
-import com.facebook.login.widget.ProfilePictureView;
 import com.squareup.picasso.Picasso;
 import com.techies.bsccsit.R;
 import com.techies.bsccsit.advance.Singleton;
 
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.VH> {
 
@@ -34,12 +35,13 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.VH> {
         this.times=times;
         this.message=message;
         inflater=LayoutInflater.from(context);
+        Log.d("Debug", headerBundle.toString());
     }
 
     @Override
     public VH onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType==0)
-            return new VH(inflater.inflate(R.layout.news_each_post, parent, false));
+            return new VH(inflater.inflate(R.layout.each_post_header, parent, false));
         else
             return new VH(inflater.inflate(R.layout.comment_each,parent,false));
     }
@@ -47,10 +49,10 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.VH> {
     @Override
     public void onBindViewHolder(VH holder, int position) {
         if (position == 0) {
-            holder.timePost.setText(Singleton.convertToSimpleDate(headerBundle.getString("time")));
+            holder.timePost.setText(headerBundle.getString("time"));
             holder.namePost.setText(headerBundle.getString("name"));
             holder.messagePost.setText(headerBundle.getString("message"));
-            holder.profilePictureView.setProfileId(headerBundle.getString("userId"));
+            Picasso.with(context).load("https://graph.facebook.com/" + headerBundle.getString("userId") + "/picture?type=large").placeholder(R.drawable.user_place_holder).into(holder.imageViewPost);
             if (headerBundle.getString("imageURL").equals(""))
                 holder.imageViewPost.setVisibility(View.GONE);
             else
@@ -74,24 +76,24 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.VH> {
     }
 
     public class VH extends RecyclerView.ViewHolder {
-        RobotoTextView name,time,comment;
+        TextView name, time, comment;
 
         TextView namePost, messagePost, timePost;
         ImageView imageViewPost;
-        ProfilePictureView profilePictureView;
+        CircleImageView profilePictureView;
 
 
         public VH(View itemView) {
             super(itemView);
-            name= (RobotoTextView) itemView.findViewById(R.id.commenter);
-            time= (RobotoTextView) itemView.findViewById(R.id.time);
-            comment= (RobotoTextView) itemView.findViewById(R.id.comment);
+            name = (TextView) itemView.findViewById(R.id.commenter);
+            time = (TextView) itemView.findViewById(R.id.time);
+            comment = (TextView) itemView.findViewById(R.id.comment);
 
             namePost = (TextView) itemView.findViewById(R.id.nameOfPoster);
             timePost = (TextView) itemView.findViewById(R.id.timeOfPost);
             messagePost = (TextView) itemView.findViewById(R.id.messageOfPost);
             imageViewPost = (ImageView) itemView.findViewById(R.id.imageOfPost);
-            profilePictureView = (ProfilePictureView) itemView.findViewById(R.id.imageOfPoster);
+            profilePictureView = (CircleImageView) itemView.findViewById(R.id.imageOfPoster);
 
         }
     }

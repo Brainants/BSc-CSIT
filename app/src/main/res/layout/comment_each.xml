@@ -1,46 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="1.5dp"
     android:orientation="vertical"
-    app:cardCornerRadius="0dp">
+    android:padding="5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-
-        <com.devspark.robototextview.widget.RobotoTextView
+        <TextView
             android:id="@+id/commenter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+        android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="Aawaz Gyawali"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/black"
-            app:typeface="roboto_bold" />
+            android:textSize="15sp" />
 
-        <com.devspark.robototextview.widget.RobotoTextView
-            android:id="@+id/comment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="THis is a sample comment of the post."
-            android:textColor="@color/black"
-            app:typeface="roboto_thin" />
-
-        <com.devspark.robototextview.widget.RobotoTextView
+        <TextView
             android:id="@+id/time"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:gravity="right|end"
-            android:text="2 hours ago"
-            android:textColor="@color/black"
-            app:typeface="roboto_thin_italic" />
+            android:text="2 hours ago" />
 
     </LinearLayout>
 
-</android.support.v7.widget.CardView>
+    <TextView
+        android:id="@+id/comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:text="THis is a sample comment of the post."
+        android:textColor="@color/black"
+        android:textSize="13sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="3dp"
+        android:background="#ccc" />
+</LinearLayout>

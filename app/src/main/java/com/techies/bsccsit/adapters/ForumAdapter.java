@@ -70,7 +70,7 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.VH>{
             });
         }
 
-        Picasso.with(context).load("https://graph.facebook.com/"+ids.get(position)+"/picture?type=large").into(holder.profilePicHolder);
+        Picasso.with(context).load("https://graph.facebook.com/" + ids.get(position) + "/picture?type=large").placeholder(R.drawable.user_place_holder).into(holder.profilePicHolder);
     }
 
     @Override
