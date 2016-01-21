@@ -1,5 +1,6 @@
 package com.techies.bsccsit.fragments;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.techies.bsccsit.R;
+import com.techies.bsccsit.activities.AddProject;
 import com.techies.bsccsit.activities.MainActivity;
 import com.techies.bsccsit.adapters.ProjectAdapter;
 import com.techies.bsccsit.advance.Singleton;
@@ -48,8 +50,13 @@ public class Projects extends Fragment {
         fillFromDatabase();
 
         FloatingActionButton fab = MainActivity.fab;
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), AddProject.class));
+            }
+        });
         fab.show();
-
     }
 
     private void fillFromDatabase() {

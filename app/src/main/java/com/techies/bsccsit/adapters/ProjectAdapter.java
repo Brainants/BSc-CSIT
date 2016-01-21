@@ -1,6 +1,7 @@
 package com.techies.bsccsit.adapters;
 
 import android.content.Context;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,8 +47,11 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.VH> {
         holder.title.setText(titles.get(position));
         holder.detail.setText(detail.get(position));
         String[] tagArray = tags.get(position).split("\\s*,\\s*");
+        LinearLayout.LayoutParams params = new AppBarLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.setMargins(2, 0, 2, 0);
+
         for (String tag : tagArray) {
-            holder.tagsHolder.addView(Singleton.getTagView(context, tag));
+            holder.tagsHolder.addView(Singleton.getTagView(context, tag), params);
         }
     }
 

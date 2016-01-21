@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="1.5dp"
     android:layout_marginRight="1.5dp"
-    android:padding="3dp"
+    android:padding="8dp"
     fancy:fb_borderColor="@color/colorPrimary"
     fancy:fb_borderWidth="1.5dp"
     fancy:fb_defaultColor="#00000000"

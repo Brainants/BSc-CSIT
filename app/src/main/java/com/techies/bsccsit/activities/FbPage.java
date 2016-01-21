@@ -67,10 +67,10 @@ public class FbPage extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         getSupportActionBar().setTitle(getIntent().getStringExtra("name"));
         getSupportActionBar().setSubtitle(getIntent().getStringExtra("details"));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         downloadFromInternet();
 

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/addProjectCood"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.techies.bsccsit.activities.AddProject">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarPage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:contentScrim="@color/colorPrimary">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/addProjectToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:theme="@style/Theme.AppCompat"
+            app:layout_collapseMode="pin"
+            app:layout_scrollFlags="scroll|enterAlways" />
+    </android.support.design.widget.AppBarLayout>
+
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nestedScrollAddPro"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <com.devspark.robototextview.widget.RobotoTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="Name Your Project"
+                android:textColor="@color/black"
+                app:typeface="roboto_bold" />
+
+            <com.beardedhen.androidbootstrap.BootstrapEditText
+                android:id="@+id/projectTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:bootstrapBrand="info"
+                app:bootstrapSize="lg" />
+
+            <com.devspark.robototextview.widget.RobotoTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:text="Describe Your Project"
+                android:textColor="@color/black"
+                app:typeface="roboto_bold" />
+
+            <com.beardedhen.androidbootstrap.BootstrapEditText
+                android:id="@+id/projectDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:lines="5"
+                app:bootstrapBrand="info"
+                app:bootstrapSize="lg" />
+
+            <com.devspark.robototextview.widget.RobotoTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:text="Tags"
+                android:textColor="@color/black"
+                app:typeface="roboto_bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.devspark.robototextview.widget.RobotoTextView
+                    android:id="@+id/noTagsText"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="No tags added"
+                    app:typeface="roboto_thin_italic" />
+
+                <HorizontalScrollView
+                    android:id="@+id/horizontalViewProject"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:id="@+id/tagHolderAddProject"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" />
+                </HorizontalScrollView>
+
+                <mehdi.sakout.fancybuttons.FancyButton
+                    android:id="@+id/tagChoser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    fancy:fb_borderColor="#ccc"
+                    fancy:fb_borderWidth="1dp"
+                    fancy:fb_defaultColor="#00000000"
+                    fancy:fb_iconPaddingBottom="5dp"
+                    fancy:fb_iconPaddingTop="5dp"
+                    fancy:fb_iconResource="@drawable/plus_grey"
+                    fancy:fb_radius="10dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp">
+
+                <com.devspark.robototextview.widget.RobotoTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:text="Looking for"
+                    android:textColor="@color/black"
+                    app:typeface="roboto_bold" />
+
+                <com.beardedhen.androidbootstrap.BootstrapEditText
+                    android:id="@+id/noOfRequiredUsers"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    app:bootstrapBrand="info"
+                    app:bootstrapSize="lg" />
+
+                <com.devspark.robototextview.widget.RobotoTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text=" new users."
+                    android:textColor="@color/black"
+                    app:typeface="roboto_bold_italic" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/projectDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:src="@drawable/done"
+        app:layout_anchor="@id/nestedScrollAddPro"
+        app:layout_anchorGravity="bottom|right|end" />
+</android.support.design.widget.CoordinatorLayout>
