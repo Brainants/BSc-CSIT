@@ -10,7 +10,6 @@ import android.view.View;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.gcm.GcmNetworkManager;
-import com.squareup.picasso.Picasso;
 import com.techies.bsccsit.R;
 
 import java.text.SimpleDateFormat;
@@ -18,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import mehdi.sakout.fancybuttons.FancyButton;
 
 public class Singleton {
@@ -68,8 +66,6 @@ public class Singleton {
         try {
             Date finalDate = simpleDateFormat.parse(date);
             return DateUtils.getRelativeTimeSpanString(finalDate.getTime(), System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS, DateUtils.FORMAT_ABBREV_RELATIVE);
-
-
         } catch (Exception e) {
             e.printStackTrace();
             return "Unknown Time";
@@ -214,12 +210,6 @@ public class Singleton {
         FancyButton button = (FancyButton) View.inflate(context, R.layout.tag_widget, null);
         button.setText(tag);
         return button;
-    }
-
-    public static CircleImageView getProfileView(Context context, String userID) {
-        CircleImageView imageView = (CircleImageView) View.inflate(context, R.layout.tag_widget, null);
-        Picasso.with(context).load("https://graph.facebook.com/" + userID + "/picture?type=large").into(imageView);
-        return imageView;
     }
 
     public RequestQueue getRequestQueue() {

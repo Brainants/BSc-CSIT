@@ -148,6 +148,7 @@ public class LoginActivity extends AppCompatActivity {
                             if (object.getJSONObject("data").getString("communities").equals("")) {
                                 editor.putBoolean("loggedFirstIn", true);
                                 editor.putBoolean("formFilled", true).apply();
+                                finish();
                                 startActivity(new Intent(LoginActivity.this, CompleteLogin.class));
                             }
                             editor.putBoolean("checked", true);
@@ -179,7 +180,7 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<>();
-                    params.put("fbid", preferences.getString("UserID", ""));
+                    params.put("user_id", preferences.getString("UserID", ""));
                     return params;
                 }
 

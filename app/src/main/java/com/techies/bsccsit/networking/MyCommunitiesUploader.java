@@ -14,24 +14,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MyCommunitiesUploader {
+    private OnTaskCompleted listener;
 
     public void doInBackground() {
         String url = "http://bsccsit.brainants.com/updateusercommunities";
         final StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                listener.onTaskCompleted(true);
                 MyApp.getContext().getSharedPreferences("community", Context.MODE_PRIVATE).edit().putBoolean("changedComm", false).apply();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
+                listener.onTaskCompleted(false);
             }
         }) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("fbid", MyApp.getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getString("UserID", ""));
+                params.put("user_id", MyApp.getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getString("UserID", ""));
                 params.put("communities", Singleton.getFollowingList().replace(",bsccsitapp", ""));
                 return params;
             }
@@ -45,6 +48,14 @@ public class MyCommunitiesUploader {
         };
         if (MyApp.getContext().getSharedPreferences("community", Context.MODE_PRIVATE).getBoolean("changedComm", false))
             Singleton.getInstance().getRequestQueue().add(request);
+    }
+
+    public void setTaskCompleteListener(OnTaskCompleted listener) {
+        this.listener = listener;
+    }
+
+    public interface OnTaskCompleted {
+        void onTaskCompleted(boolean success);
     }
 }
 

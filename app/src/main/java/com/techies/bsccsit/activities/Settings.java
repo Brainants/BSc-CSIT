@@ -31,6 +31,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        //// TODO: 1/23/2016 dgerau cgae faba chha
 
         changeSem = (Button) findViewById(R.id.semButton);
         textView = (TextView) findViewById(R.id.semester);

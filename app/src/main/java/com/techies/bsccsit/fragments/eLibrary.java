@@ -24,6 +24,8 @@ public class eLibrary extends Fragment {
 
     public eLibrary() {
         // Required empty public constructor
+        //// TODO: 1/23/2016 ali smart banauna chha
+
     }
 
 
@@ -39,7 +41,7 @@ public class eLibrary extends Fragment {
             dialog.show();
 
             eLibraryDownloader downloader = new eLibraryDownloader();
-            downloader.execute();
+            downloader.doInBackground();
             downloader.setTaskCompleteListener(new eLibraryDownloader.OnTaskCompleted() {
                 @Override
                 public void onTaskCompleted(boolean success) {

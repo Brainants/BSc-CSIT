@@ -193,7 +193,7 @@ public class AddProject extends AppCompatActivity implements TextWatcher {
         for (CharSequence aSelectedTxt : selectedTxt) {
             tags = tags + aSelectedTxt.toString() + ",";
         }
-        return tags.substring(0, tags.length() - 2);
+        return tags.substring(0, tags.length() - 1);
     }
 
     @Override

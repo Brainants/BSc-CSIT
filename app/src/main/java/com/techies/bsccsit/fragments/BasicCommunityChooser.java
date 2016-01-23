@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +22,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.techies.bsccsit.R;
 import com.techies.bsccsit.activities.MainActivity;
 import com.techies.bsccsit.adapters.FacebookSearchAdapter;
+import com.techies.bsccsit.advance.MyApp;
 import com.techies.bsccsit.advance.Singleton;
 import com.techies.bsccsit.networking.MyCommunitiesUploader;
 import com.techies.bsccsit.networking.PopularCommunitiesDownloader;
@@ -41,6 +43,7 @@ public class BasicCommunityChooser extends Fragment {
             ids=new ArrayList<>();
     private LinearLayout error;
     private SharedPreferences.Editor editor;
+    private View view;
 
     public BasicCommunityChooser(){
         
@@ -60,15 +63,37 @@ public class BasicCommunityChooser extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MyApp.getContext().getSharedPreferences("community", Context.MODE_PRIVATE).edit().putBoolean("changedComm", true).apply();
                 editor.putBoolean("loggedIn",true);
                 editor.apply();
 
+                final MaterialDialog dialog = new MaterialDialog.Builder(getContext())
+                        .progress(true, 0)
+                        .content("Please wait...")
+                        .build();
+                dialog.show();
+
                 MyCommunitiesUploader uploader = new MyCommunitiesUploader();
                 uploader.doInBackground();
+                uploader.setTaskCompleteListener(new MyCommunitiesUploader.OnTaskCompleted() {
+                    @Override
+                    public void onTaskCompleted(boolean success) {
+                        dialog.dismiss();
+                        if (success) {
+                            Toast.makeText(getActivity(), "Welcome " + getActivity().getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getString("FirstName", "") + "!", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getContext(), MainActivity.class));
+                            getActivity().finish();
+                        } else {
+                            Snackbar.make(view, "Unable to connect.", Snackbar.LENGTH_SHORT).setAction("Retry", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    fab.callOnClick();
+                                }
+                            }).show();
+                        }
+                    }
+                });
 
-                Toast.makeText(getActivity(), "Welcome "+getActivity().getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getString("FirstName","")+"!", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getContext(), MainActivity.class));
-                getActivity().finish();
             }
         });
         fillFromDatabase();
@@ -151,6 +176,7 @@ public class BasicCommunityChooser extends Fragment {
                 downloadFromInternet();
             }
         });
+        this.view = view;
     }
 
     @Override

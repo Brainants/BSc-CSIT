@@ -3,7 +3,6 @@ package com.techies.bsccsit.networking;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.AsyncTask;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -18,11 +17,10 @@ import org.json.JSONArray;
 import java.util.HashMap;
 import java.util.Map;
 
-public class eLibraryDownloader extends AsyncTask<Void, Void, Void> {
+public class eLibraryDownloader {
 
     private OnTaskCompleted listener;
 
-    @Override
     public Void doInBackground(Void... params) {
         StringRequest request = new StringRequest(Request.Method.POST, "http://bsccsit.brainants.com/getelibrary", new Response.Listener<String>() {
             @Override

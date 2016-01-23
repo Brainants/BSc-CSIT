@@ -3,6 +3,7 @@ package com.techies.bsccsit.networking;
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -16,9 +17,11 @@ import com.facebook.HttpMethod;
 import com.techies.bsccsit.advance.MyApp;
 import com.techies.bsccsit.advance.Singleton;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,9 +35,20 @@ public class MyCommunitiesDownloader {
         final StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                List<String> list = Arrays.asList(response.split("\\s*,\\s*"));
-
-                fillMyCommFromResponse(response, list);
+                try {
+                    ArrayList<String> list = new ArrayList<>();
+                    JSONArray array = new JSONArray(response);
+                    for (int i = 0; i < array.length(); i++)
+                        list.add(array.getString(i));
+                    String tags = "";
+                    for (String aSelectedTxt : list) {
+                        tags = tags + aSelectedTxt + ",";
+                    }
+                    Log.d("Debug", tags.substring(0, tags.length() - 1));
+                    fillMyCommFromResponse(tags.substring(0, tags.length() - 1), list);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -46,7 +60,7 @@ public class MyCommunitiesDownloader {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("fbid", MyApp.getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getString("UserID", ""));
+                params.put("user_id", MyApp.getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getString("UserID", ""));
                 return params;
             }
 
@@ -65,6 +79,7 @@ public class MyCommunitiesDownloader {
         Bundle param = new Bundle();
         param.putString("fields", "name,category");
         param.putString("ids", response);
+        Log.d("Debug", pages.toString());
         new GraphRequest(AccessToken.getCurrentAccessToken(), "", param, HttpMethod.GET, new GraphRequest.Callback() {
             @Override
             public void onCompleted(GraphResponse response) {

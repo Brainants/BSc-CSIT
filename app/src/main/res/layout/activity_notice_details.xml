@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fancy="http://schemas.android.com/apk/res-auto"
@@ -30,41 +31,50 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
-            android:id="@+id/mainBar"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/noticeTitle"
+            >
+
+            <LinearLayout
+                android:id="@+id/mainBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="3dp"
-                android:text="My name is Rojshan gaautam and i read in class IX "
-                android:textColor="#000"
-                android:textSize="27sp"
-                android:textStyle="bold" />
+                android:orientation="vertical">
 
 
-            <TextView
-                android:id="@+id/noticeDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="3dp"
-                android:layout_weight="1"
-                android:text="5 days ago" />
+                <TextView
+                    android:id="@+id/noticeTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    android:text="My name is Rojshan gaautam and i read in class IX "
+                    android:textColor="#000"
+                    android:textSize="27sp"
+                    android:textStyle="bold" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="1dp"
-                android:background="#ddd" />
+
+                <TextView
+                    android:id="@+id/noticeDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:text="5 days ago" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="1dp"
+                    android:background="#ddd" />
+
+            </LinearLayout>
 
             <WebView
                 android:id="@+id/noticeContent"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/mainBar"
                 android:scrollbars="none" />
 
@@ -77,8 +87,7 @@
                 fancy:fb_ghost="true"
                 fancy:fb_text="Download"
                 fancy:fb_textColor="@color/colorPrimaryDark" />
-        </LinearLayout>
-
+        </RelativeLayout>
 
     </android.support.v4.widget.NestedScrollView>
 
