@@ -85,9 +85,9 @@ public class FbEvent extends AppCompatActivity {
 
         if (BackgroundTaskHandler.convertToSimpleDate(time)
                 .compareTo(current) > 0)
-            fab.setVisibility(View.VISIBLE);
+            fab.show();
         else
-            fab.setVisibility(View.GONE);
+            fab.hide();
 
         if (Singleton.isScheduledEvent(eventId)) {
             fab.setImageResource(R.drawable.calender_check_white);
@@ -168,11 +168,11 @@ public class FbEvent extends AppCompatActivity {
 
 
                         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZZZZZ", Locale.US);
-                        String startTime=null,endTime=null;
+                        String startTime = null, endTime = null;
 
                         try {
-                             startTime = details.getString("start_time");
-                             endTime = details.getString("end_time");
+                            startTime = details.getString("start_time");
+                            endTime = details.getString("end_time");
 
 
                             String strMonthStart = (String) android.text.format.DateFormat.format("MMM", format.parse(startTime));

@@ -69,6 +69,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:lines="5"
+                android:maxLines="15"
                 app:bootstrapBrand="info"
                 app:bootstrapSize="lg" />
 

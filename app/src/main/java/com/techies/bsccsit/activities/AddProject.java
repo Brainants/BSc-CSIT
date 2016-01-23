@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
@@ -147,6 +148,7 @@ public class AddProject extends AppCompatActivity implements TextWatcher {
                         params.put("title", projectTitle.getText().toString());
                         params.put("description", projectDesc.getText().toString());
                         params.put("required_users", noOfUsers.getText().toString());
+                        params.put("tags", getTags());
                         return params;
                     }
 
@@ -184,5 +186,20 @@ public class AddProject extends AppCompatActivity implements TextWatcher {
     @Override
     public void afterTextChanged(Editable s) {
 
+    }
+
+    public String getTags() {
+        String tags = "";
+        for (CharSequence aSelectedTxt : selectedTxt) {
+            tags = tags + aSelectedTxt.toString() + ",";
+        }
+        return tags.substring(0, tags.length() - 2);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home)
+            finish();
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -26,6 +26,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE events(names TEXT,created_time TEXT,eventIDs TEXT,hosters TEXT,fullImage TEXT);");
 
         db.execSQL("CREATE TABLE projects(title TEXT,detail TEXT,tags TEXT,users TEXT,projectID TEXT);");
+
+        db.execSQL("CREATE TABLE notices(id INT, title TEXT, short_desc TEXT, detail TEXT, date TEXT, attachment_link TEXT, attachment_title TEXT);");
+
     }
 
     @Override
@@ -41,6 +44,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS events");
 
         db.execSQL("DROP TABLE IF EXISTS projects");
+
+        db.execSQL("DROP TABLE IF EXISTS notices");
 
         onCreate(db);
     }

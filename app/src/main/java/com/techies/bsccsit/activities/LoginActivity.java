@@ -160,6 +160,7 @@ public class LoginActivity extends AppCompatActivity {
                             finish();
                         }
                     } catch (Exception ignored) {
+                        ignored.printStackTrace();
                     }
                 }
             }, new Response.ErrorListener() {

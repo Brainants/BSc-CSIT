@@ -63,6 +63,21 @@ public class Singleton {
         }
     }
 
+    public static CharSequence convertDate(String date) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.US);
+        try {
+            Date finalDate = simpleDateFormat.parse(date);
+            return DateUtils.getRelativeTimeSpanString(finalDate.getTime(), System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS, DateUtils.FORMAT_ABBREV_RELATIVE);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Unknown Time";
+        }
+    }
+
+
+
     public static String getFollowingList() {
         Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT FbID FROM myCommunities", null);
         String string = "";
