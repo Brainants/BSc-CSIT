@@ -89,6 +89,8 @@ public class Projects extends Fragment {
         downloader.setTaskCompleteListener(new ProjectsDownloader.OnTaskCompleted() {
             @Override
             public void onTaskCompleted(boolean success) {
+                if (!MainActivity.current.equals("Projects"))
+                    return;
                 swipeLayout.setRefreshing(false);
                 progress.setVisibility(View.GONE);
 
@@ -111,6 +113,7 @@ public class Projects extends Fragment {
     }
 
     private void setToAdapter() {
+        MainActivity.fab.show();
         progress.setVisibility(View.GONE);
         swipeLayout.setVisibility(View.VISIBLE);
         ProjectAdapter adapter = new ProjectAdapter(getActivity(), projectID, titles, user, tags, detail);

@@ -42,9 +42,9 @@ public class MainActivity extends AppCompatActivity {
     public static FloatingActionButton fab;
     public static DrawerLayout drawerLayout;
     public static CoordinatorLayout coordinatorLayout;
+    public static String current = "Home";
     private FragmentManager manager;
     private int previous;
-    private MaterialDialog loadFirstTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,12 +122,14 @@ public class MainActivity extends AppCompatActivity {
                 switch (id){
                     case R.id.newsEvent:
                         setTitle("Home");
+                        current = "Home";
                         item.setChecked(true);
                         previous=id;
                         manager.beginTransaction().replace(R.id.fragHolder,new NewsEvents()).commit();
                         break;
                     case R.id.TUNotices:
                         setTitle("TU Notices");
+                        current = "TU Notices";
                         item.setChecked(true);
                         previous=id;
                         manager.beginTransaction().replace(R.id.fragHolder,new TuNotices()).commit();
@@ -135,24 +137,28 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.elibrary:
                         setTitle("E-Library");
                         item.setChecked(true);
+                        current = "E-Library";
                         previous=id;
                         manager.beginTransaction().replace(R.id.fragHolder,new eLibrary()).commit();
                         break;
                     case R.id.projects:
                         setTitle("Projects");
                         item.setChecked(true);
+                        current = "Projects";
                         previous=id;
                         manager.beginTransaction().replace(R.id.fragHolder,new Projects()).commit();
                         break;
                     case R.id.community:
                         setTitle("Communities");
                         item.setChecked(true);
+                        current = "Communities";
                         previous=id;
                         manager.beginTransaction().replace(R.id.fragHolder,new Community()).commit();
                         break;
                     case R.id.fourm:
                         setTitle("Forum");
                         item.setChecked(true);
+                        current = "Forum";
                         previous=id;
                         manager.beginTransaction().replace(R.id.fragHolder,new Forum()).commit();
                         break;

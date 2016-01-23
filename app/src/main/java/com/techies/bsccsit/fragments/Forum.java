@@ -90,6 +90,8 @@ public class Forum extends Fragment {
         new GraphRequest(AccessToken.getCurrentAccessToken(), "bsccsitapp/feed", params, HttpMethod.GET, new GraphRequest.Callback() {
             @Override
             public void onCompleted(GraphResponse response) {
+                if (!MainActivity.current.equals("Forum"))
+                    return;
                 try {
                     FacebookRequestError error = response.getError();
                     if (error != null) {
@@ -141,7 +143,6 @@ public class Forum extends Fragment {
                         forumSemesterWise();
                         fillRecy();
                     }
-
                 } catch (Exception ignored) {
                     progressBar.setVisibility(View.GONE);
                     errorMessage.setVisibility(View.VISIBLE);

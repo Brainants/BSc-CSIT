@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.techies.bsccsit.R;
+import com.techies.bsccsit.activities.MainActivity;
 import com.techies.bsccsit.adapters.EventAdapter;
 import com.techies.bsccsit.advance.BackgroundTaskHandler;
 import com.techies.bsccsit.advance.Singleton;
@@ -109,6 +110,8 @@ public class Events extends Fragment {
         downloader.setTaskCompleteListener(new EventsDownloader.OnTaskCompleted() {
             @Override
             public void onTaskCompleted(boolean success) {
+                if (!MainActivity.current.equals("Home"))
+                    return;
                 progress.setVisibility(View.GONE);
                 swipeLayout.setRefreshing(false);
                 if(success)

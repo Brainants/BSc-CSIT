@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.techies.bsccsit.R;
+import com.techies.bsccsit.activities.MainActivity;
 import com.techies.bsccsit.adapters.NewsAdapter;
 import com.techies.bsccsit.advance.Singleton;
 import com.techies.bsccsit.networking.NewsDownloader;
@@ -24,11 +25,11 @@ import java.util.ArrayList;
 
 public class News extends Fragment {
 
-    private ArrayList<String>  names=new ArrayList<>(),
-            posterId=new ArrayList<>(),
-            fullImage=new ArrayList<>(),
-            message=new ArrayList<>(),
-            created_time=new ArrayList<>();
+    private ArrayList<String> names = new ArrayList<>(),
+            posterId = new ArrayList<>(),
+            fullImage = new ArrayList<>(),
+            message = new ArrayList<>(),
+            created_time = new ArrayList<>();
 
     private RecyclerView recyclerView;
     private ProgressBar progress;
@@ -52,9 +53,9 @@ public class News extends Fragment {
         fullImage.clear();
         message.clear();
         created_time.clear();
-        int count=0;
-        Cursor cursor= Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM news",null);
-        while(cursor.moveToNext()){
+        int count = 0;
+        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM news", null);
+        while (cursor.moveToNext()) {
             count++;
             names.add(cursor.getString(cursor.getColumnIndex("names")));
             posterId.add(cursor.getString(cursor.getColumnIndex("posterId")));
@@ -63,10 +64,10 @@ public class News extends Fragment {
             created_time.add(cursor.getString(cursor.getColumnIndex("created_time")));
         }
         cursor.close();
-        if(count==0) {
+        if (count == 0) {
             progress.setVisibility(View.VISIBLE);
             downloadFromInternet(true);
-        }else
+        } else
             setToAdapter();
     }
 
@@ -76,13 +77,15 @@ public class News extends Fragment {
         downloader.setTaskCompleteListener(new NewsDownloader.OnTaskCompleted() {
             @Override
             public void onTaskCompleted(boolean success) {
+                if (!MainActivity.current.equals("Home"))
+                    return;
                 swipeLayout.setRefreshing(false);
                 progress.setVisibility(View.GONE);
 
-                if(success)
+                if (success)
                     fillFromDatabase();
-                else if(!first)
-                    Snackbar.make(coreView,"Unable to update.",Snackbar.LENGTH_SHORT).setAction("Retry", new View.OnClickListener() {
+                else if (!first)
+                    Snackbar.make(coreView, "Unable to update.", Snackbar.LENGTH_SHORT).setAction("Retry", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             downloadFromInternet(false);
@@ -106,7 +109,7 @@ public class News extends Fragment {
     private void setToAdapter() {
         progress.setVisibility(View.GONE);
         swipeLayout.setVisibility(View.VISIBLE);
-        NewsAdapter adapter=new NewsAdapter(getActivity(),names,created_time,posterId,message,fullImage);
+        NewsAdapter adapter = new NewsAdapter(getActivity(), names, created_time, posterId, message, fullImage);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
@@ -114,12 +117,12 @@ public class News extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView= (RecyclerView) view.findViewById(R.id.recyclerViewNews);
-        progress= (ProgressBar) view.findViewById(R.id.progressNews);
-        error= (LinearLayout) view.findViewById(R.id.errorMessageNews);
-        swipeLayout= (SwipeRefreshLayout) view.findViewById(R.id.swipeNews);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerViewNews);
+        progress = (ProgressBar) view.findViewById(R.id.progressNews);
+        error = (LinearLayout) view.findViewById(R.id.errorMessageNews);
+        swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeNews);
         swipeLayout.setVisibility(View.GONE);
-        this.coreView=view;
+        this.coreView = view;
         error.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

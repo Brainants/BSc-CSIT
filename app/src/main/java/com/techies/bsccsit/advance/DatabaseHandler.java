@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
-    private static final int version = 10;
+    private static final int version = 11;
     private static final String name="bsccsitDB";
 
     public DatabaseHandler(Context context) {

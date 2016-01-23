@@ -6,23 +6,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
+import com.devspark.robototextview.widget.RobotoTextView;
 import com.techies.bsccsit.R;
 import com.techies.bsccsit.activities.NoticeDetails;
 import com.techies.bsccsit.advance.Singleton;
 
 import java.util.ArrayList;
 
-/**
- * Created by roshan on 1/21/16.
- */
-
-
 public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.CustomViewHolder> {
 
     LayoutInflater inflater;
-    private ArrayList<String> mTitles = new ArrayList<String>(),
+    private ArrayList<String> mTitles = new ArrayList<>(),
             mShorts = new ArrayList<>(),
             mDetails = new ArrayList<>(),
             mDates = new ArrayList<>(),
@@ -63,13 +58,13 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.CustomView
     }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView title, shortDesc, date;
+        RobotoTextView title, shortDesc, date;
 
         public CustomViewHolder(View itemView) {
             super(itemView);
-            title = (TextView) itemView.findViewById(R.id.titleNotice);
-            shortDesc = (TextView) itemView.findViewById(R.id.shortDesc);
-            date = (TextView) itemView.findViewById(R.id.date);
+            title = (RobotoTextView) itemView.findViewById(R.id.titleNotice);
+            shortDesc = (RobotoTextView) itemView.findViewById(R.id.shortDesc);
+            date = (RobotoTextView) itemView.findViewById(R.id.date);
             itemView.setClickable(true);
             itemView.setOnClickListener(this);
 

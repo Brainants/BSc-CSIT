@@ -1,5 +1,7 @@
 package com.techies.bsccsit.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -17,9 +19,14 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.techies.bsccsit.R;
 import com.techies.bsccsit.adapters.CommentsAdapter;
 
@@ -28,6 +35,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class EachPost extends AppCompatActivity {
 
@@ -38,6 +46,8 @@ public class EachPost extends AppCompatActivity {
     private LinearLayout errorLayout;
     private FloatingActionButton fab;
     private View headerView;
+    private LoginManager manager;
+    private CallbackManager callback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,44 +68,59 @@ public class EachPost extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new MaterialDialog.Builder(EachPost.this)
-                        .title("Add a comment...")
-                        .input("Comment here.", "", false, new MaterialDialog.InputCallback() {
-                            @Override
-                            public void onInput(@NonNull final MaterialDialog dialog, CharSequence input) {
-                                final MaterialDialog materialDialog = new MaterialDialog.Builder(EachPost.this)
-                                        .progress(true, 0)
-                                        .content("Posting...")
-                                        .build();
-                                materialDialog.show();
-                                Bundle bundle = new Bundle();
-                                bundle.putString("message", input.toString());
-                                new GraphRequest(AccessToken.getCurrentAccessToken(), getIntent().getStringExtra("postID") + "/comments", bundle, HttpMethod.POST, new GraphRequest.Callback() {
-                                    @Override
-                                    public void onCompleted(GraphResponse response) {
-                                        materialDialog.dismiss();
-                                        if (response.getError() != null) {
-                                            response.getError().getException().printStackTrace();
-                                            Toast.makeText(EachPost.this, "Unable to comment.", Toast.LENGTH_SHORT).show();
-                                        } else {
-                                            dialog.dismiss();
-                                            Snackbar.make(findViewById(R.id.coreEachPost), "Commented Successfully", Snackbar.LENGTH_SHORT).show();
-                                            fetchFromInternet();
+                if (!getSharedPreferences("misc", Context.MODE_PRIVATE).getBoolean("publishPermission", false)) {
+                    new MaterialDialog.Builder(EachPost.this)
+                            .title("Allow app to post.")
+                            .content("Our fourm uses facebook so you must allow us to post on facebook.")
+                            .positiveText("Proceed...")
+                            .negativeText("I won't use forum")
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    askPostPermission();
+                                }
+                            })
+                            .show();
+                } else {
+                    new MaterialDialog.Builder(EachPost.this)
+                            .title("Add a comment...")
+                            .input("Comment here.", "", false, new MaterialDialog.InputCallback() {
+                                @Override
+                                public void onInput(@NonNull final MaterialDialog dialog, CharSequence input) {
+                                    final MaterialDialog materialDialog = new MaterialDialog.Builder(EachPost.this)
+                                            .progress(true, 0)
+                                            .content("Posting...")
+                                            .build();
+                                    materialDialog.show();
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("message", input.toString());
+                                    new GraphRequest(AccessToken.getCurrentAccessToken(), getIntent().getStringExtra("postID") + "/comments", bundle, HttpMethod.POST, new GraphRequest.Callback() {
+                                        @Override
+                                        public void onCompleted(GraphResponse response) {
+                                            materialDialog.dismiss();
+                                            if (response.getError() != null) {
+                                                response.getError().getException().printStackTrace();
+                                                Toast.makeText(EachPost.this, "Unable to comment.", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                dialog.dismiss();
+                                                Snackbar.make(findViewById(R.id.coreEachPost), "Commented Successfully", Snackbar.LENGTH_SHORT).show();
+                                                fetchFromInternet();
+                                            }
                                         }
-                                    }
-                                }).executeAsync();
-                            }
-                        })
-                        .positiveText("Comment")
-                        .autoDismiss(false)
-                        .onNegative(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .negativeText("Cancel")
-                        .show();
+                                    }).executeAsync();
+                                }
+                            })
+                            .positiveText("Comment")
+                            .autoDismiss(false)
+                            .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .negativeText("Cancel")
+                            .show();
+                }
 
             }
         });
@@ -147,11 +172,41 @@ public class EachPost extends AppCompatActivity {
         }).executeAsync();
     }
 
+    private void askPostPermission() {
+        manager = LoginManager.getInstance();
+        manager.logInWithPublishPermissions(this, Arrays.asList("publish_actions"));
+        callback = CallbackManager.Factory.create();
+        manager.registerCallback(callback, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                getSharedPreferences("misc", Context.MODE_PRIVATE).edit().putBoolean("publishPermission", true).apply();
+                fab.callOnClick();
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+
+            }
+        });
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home)
             finish();
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callback.onActivityResult(requestCode, resultCode, data);
+    }
+
 }
 

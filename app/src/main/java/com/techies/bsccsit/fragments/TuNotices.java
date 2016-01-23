@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.techies.bsccsit.R;
+import com.techies.bsccsit.activities.MainActivity;
 import com.techies.bsccsit.adapters.NoticeAdapter;
 import com.techies.bsccsit.advance.Singleton;
 import com.techies.bsccsit.networking.NoticeDownloader;
@@ -88,11 +89,12 @@ public class TuNotices extends Fragment {
         downloader.setOnTaskCompleteListener(new NoticeDownloader.OnTaskCompleted() {
             @Override
             public void onTaskCompleted(boolean success) {
+                if (!MainActivity.current.equals("TU Notices"))
+                    return;
                 swipeNotice.setRefreshing(false);
                 progressBar.setVisibility(View.GONE);
                 if (success)
                     loadFromDb();
-
                 else if (!isFirst)
                     Snackbar.make(coreNotice, "Unable to update.", Snackbar.LENGTH_SHORT).setAction("Retry", new View.OnClickListener() {
                         @Override

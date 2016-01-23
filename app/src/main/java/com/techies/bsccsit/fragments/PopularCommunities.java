@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.techies.bsccsit.R;
+import com.techies.bsccsit.activities.MainActivity;
 import com.techies.bsccsit.adapters.FacebookSearchAdapter;
 import com.techies.bsccsit.advance.Singleton;
 import com.techies.bsccsit.networking.PopularCommunitiesDownloader;
@@ -121,6 +122,8 @@ public class PopularCommunities extends Fragment {
         downloader.setTaskCompleteListener(new PopularCommunitiesDownloader.OnTaskCompleted() {
             @Override
             public void onTaskCompleted(boolean success) {
+                if (!MainActivity.current.equals("Communities"))
+                    return;
                 progress.setVisibility(View.GONE);
                 if(success)
                     fillFromDatabase();
