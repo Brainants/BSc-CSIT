@@ -10,6 +10,7 @@
         android:id="@+id/toolbarImageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
         android:theme="@style/Theme.AppCompat" />
 
     <com.techies.bsccsit.widget.TouchImageView

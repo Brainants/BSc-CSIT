@@ -197,8 +197,8 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp" />
 
-            <TableLayout
-                android:id="@+id/communityHolder"
+            <LinearLayout
+                android:id="@+id/communityHolderProfile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />

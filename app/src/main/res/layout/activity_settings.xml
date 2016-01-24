@@ -1,55 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/settingsCore"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.techies.bsccsit.activities.Settings">
 
-    <LinearLayout
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <com.devspark.robototextview.widget.RobotoTextView
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/settingToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="3dp"
-            android:paddingLeft="10dp"
-            android:paddingTop="5dp"
-            android:text="General"
-            android:textColor="@color/colorPrimary" />
+            android:background="@color/colorPrimary"
+            android:theme="@style/Theme.AppCompat"
+            app:layout_collapseMode="pin"
+            app:layout_scrollFlags="scroll|enterAlways" />
+    </android.support.design.widget.AppBarLayout>
 
-        <View
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:background="@color/colorPrimary" />
+            android:layout_height="0dp"
+            android:orientation="vertical">
 
-        <com.devspark.robototextview.widget.RobotoTextView
-            android:id="@+id/semester"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="20dp"
-            android:paddingTop="10dp"
-            android:text="Change Semester"
-            android:textSize="15sp" />
+            <com.devspark.robototextview.widget.RobotoTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="3dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:text="General"
+                android:textColor="@color/colorPrimary"
+                app:typeface="roboto_bold" />
 
-        <android.support.v7.widget.AppCompatSpinner
-            android:id="@+id/semesterChange"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:padding="20dp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/colorPrimary" />
 
-        <Button
-            android:id="@+id/semButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Save" />
+            <mehdi.sakout.fancybuttons.FancyButton
+                android:id="@+id/changeSemester"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                fancy:fb_defaultColor="#00000000"
+                fancy:fb_focusColor="#80dddddd"
+                fancy:fb_text="Change Semester"
+                fancy:fb_textColor="@color/black"
+                fancy:fb_textGravity="left" />
 
-    </LinearLayout>
-</ScrollView>
+            <mehdi.sakout.fancybuttons.FancyButton
+                android:id="@+id/emptyLibrary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                fancy:fb_defaultColor="#00000000"
+                fancy:fb_focusColor="#80dddddd"
+                fancy:fb_text="Refresh E-Library"
+                fancy:fb_textColor="@color/black"
+                fancy:fb_textGravity="left" />
+
+            <com.devspark.robototextview.widget.RobotoTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="3dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:text="Notification"
+                android:textColor="@color/colorPrimary"
+                app:typeface="roboto_bold" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/colorPrimary" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:text="News" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:text="Events" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:text="Elibrary" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:text="TU Notices" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:text="New Communities" />
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+</android.support.design.widget.CoordinatorLayout>

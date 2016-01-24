@@ -48,7 +48,7 @@ public class UserProfile extends AppCompatActivity {
     private ImageView profilePhoto;
     private NestedScrollView scrollView;
     private CollapsingToolbarLayout collapsingToolbarLayout;
-    private LinearLayout projectHolder;
+    private LinearLayout projectHolder, communityHolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +64,7 @@ public class UserProfile extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         projectHolder = (LinearLayout) findViewById(R.id.projectHolderProfile);
+        communityHolder = (LinearLayout) findViewById(R.id.communityHolderProfile);
         progress = (ProgressBar) findViewById(R.id.progressbarProfile);
         errorLayout = (LinearLayout) findViewById(R.id.errorMessageProfile);
         email = (RobotoTextView) findViewById(R.id.emailProfile);
@@ -104,7 +105,7 @@ public class UserProfile extends AppCompatActivity {
                     college.setText(userObject.getString("college"));
                     semester.setText(getSemester(userObject.getString("semester")));
                     scrollView.setVisibility(View.VISIBLE);
-                    fillProjects(userObject.getJSONArray("admin_projects"), userObject.getJSONArray("member_projects"));
+                    fillProjects(response.getJSONArray("admin_projects"), response.getJSONArray("member_projects"));
                     fillCommunities(userObject.getString("communities"));
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -144,6 +145,8 @@ public class UserProfile extends AppCompatActivity {
             @Override
             public void onCompleted(final GraphResponse response) {
                 if (response.getError() != null) {
+                    response.getError().getException().printStackTrace();
+                } else {
                     CardView.LayoutParams params = new CardView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     params.setMargins(3, 3, 3, 3);
 
@@ -171,8 +174,7 @@ public class UserProfile extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
-                        projectHolder.addView(eachComm, params);
+                        communityHolder.addView(eachComm, params);
                     }
                 }
             }
