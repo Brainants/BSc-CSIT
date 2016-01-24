@@ -2,7 +2,6 @@
     <string name="app_name">BSc CSIT</string>
 
     <string name="title_activity_login">LoginActivity</string>
-    <string name="dummy_button">Dummy Button</string>
     <string name="facebook_app_id">930611757009782</string>
     <string-array name="collegeList">
         <item>Select your college</item>
@@ -63,8 +62,15 @@
         <item>Trinity Int\'l College</item>
     </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="Open">Open</string>
     <string name="Close">Close</string>
+    <string-array name="semester">
+        <item>First Semester</item>
+        <item>First Semester</item>
+        <item>First Semester</item>
+        <item>First Semester</item>
+        <item>First Semester</item>
+        <item>First Semester</item>
+        <item>First Semester</item>
+    </string-array>
 </resources>

@@ -1,5 +1,6 @@
 package com.techies.bsccsit.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -54,31 +55,31 @@ public class MainActivity extends AppCompatActivity {
         manager = getSupportFragmentManager();
 
         //Login chaina vane login activity ma lanchha
-        if (!pref.getBoolean("loggedIn",false)){
-            if (pref.getBoolean("loggedFirstIn",false)){
-                startActivity(new Intent(this,CompleteLogin.class));
+        if (!pref.getBoolean("loggedIn", false)) {
+            if (pref.getBoolean("loggedFirstIn", false)) {
+                startActivity(new Intent(this, CompleteLogin.class));
                 finish();
-            }else {
+            } else {
                 startActivity(new Intent(this, LoginActivity.class));
                 finish();
             }
             return;
         }
 
-        final Toolbar toolbar=(Toolbar) findViewById(R.id.toolbarMain);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarMain);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            AppBarLayout appBarLayout= (AppBarLayout) findViewById(R.id.mainAppBar);
+            AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.mainAppBar);
             toolbar.setElevation(0);
             appBarLayout.setElevation(0);
         }
-        NavigationView navigationView= (NavigationView) findViewById(R.id.naviView);
-        drawerLayout= (DrawerLayout) findViewById(R.id.drawerLayout);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.naviView);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.mainCood);
-        View view= navigationView.getHeaderView(0);
-        final CircleImageView imageView1= (CircleImageView) view.findViewById(R.id.profilePicture);
-        TextView name= (TextView) view.findViewById(R.id.nameHeader);
-        TextView email= (TextView) view.findViewById(R.id.emailHeader);
-        ActionBarDrawerToggle actionBarDrawerToggle=new ActionBarDrawerToggle(this,(DrawerLayout) findViewById(R.id.drawerLayout),toolbar,R.string.Open,R.string.Close){
+        View view = navigationView.getHeaderView(0);
+        final CircleImageView imageView1 = (CircleImageView) view.findViewById(R.id.profilePicture);
+        TextView name = (TextView) view.findViewById(R.id.nameHeader);
+        TextView email = (TextView) view.findViewById(R.id.emailHeader);
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, (DrawerLayout) findViewById(R.id.drawerLayout), toolbar, R.string.Open, R.string.Close) {
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
@@ -90,9 +91,9 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        fab= (FloatingActionButton) findViewById(R.id.mainFab);
-        name.setText(getSharedPreferences("loginInfo",MODE_PRIVATE).getString("FullName",""));
-        email.setText(getSharedPreferences("loginInfo",MODE_PRIVATE).getString("email",""));
+        fab = (FloatingActionButton) findViewById(R.id.mainFab);
+        name.setText(getSharedPreferences("loginInfo", MODE_PRIVATE).getString("FullName", ""));
+        email.setText(getSharedPreferences("loginInfo", MODE_PRIVATE).getString("email", ""));
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -106,71 +107,71 @@ public class MainActivity extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
 
         //checkAdmin
-        navigationView.getMenu().getItem(7).setVisible(pref.getBoolean("admin",false));
+        navigationView.getMenu().getItem(7).setVisible(pref.getBoolean("admin", false));
 
         constructJob();
 
-        previous=R.id.newsEvent;
+        previous = R.id.newsEvent;
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
-                int id= item.getItemId();
+                int id = item.getItemId();
                 drawerLayout.closeDrawer(findViewById(R.id.naviView));
-                if(id==previous)
-                    return  true;
+                if (id == previous)
+                    return true;
                 fab.hide();
-                switch (id){
+                switch (id) {
                     case R.id.newsEvent:
                         setTitle("Home");
                         current = "Home";
                         item.setChecked(true);
-                        previous=id;
-                        manager.beginTransaction().replace(R.id.fragHolder,new NewsEvents()).commit();
+                        previous = id;
+                        manager.beginTransaction().replace(R.id.fragHolder, new NewsEvents()).commit();
                         break;
                     case R.id.TUNotices:
                         setTitle("TU Notices");
                         current = "TU Notices";
                         item.setChecked(true);
-                        previous=id;
-                        manager.beginTransaction().replace(R.id.fragHolder,new TuNotices()).commit();
+                        previous = id;
+                        manager.beginTransaction().replace(R.id.fragHolder, new TuNotices()).commit();
                         break;
                     case R.id.elibrary:
                         setTitle("E-Library");
                         item.setChecked(true);
                         current = "E-Library";
-                        previous=id;
-                        manager.beginTransaction().replace(R.id.fragHolder,new eLibrary()).commit();
+                        previous = id;
+                        manager.beginTransaction().replace(R.id.fragHolder, new eLibrary()).commit();
                         break;
                     case R.id.projects:
                         setTitle("Projects");
                         item.setChecked(true);
                         current = "Projects";
-                        previous=id;
-                        manager.beginTransaction().replace(R.id.fragHolder,new Projects()).commit();
+                        previous = id;
+                        manager.beginTransaction().replace(R.id.fragHolder, new Projects()).commit();
                         break;
                     case R.id.community:
                         setTitle("Communities");
                         item.setChecked(true);
                         current = "Communities";
-                        previous=id;
-                        manager.beginTransaction().replace(R.id.fragHolder,new Community()).commit();
+                        previous = id;
+                        manager.beginTransaction().replace(R.id.fragHolder, new Community()).commit();
                         break;
                     case R.id.fourm:
                         setTitle("Forum");
                         item.setChecked(true);
                         current = "Forum";
-                        previous=id;
-                        manager.beginTransaction().replace(R.id.fragHolder,new Forum()).commit();
+                        previous = id;
+                        manager.beginTransaction().replace(R.id.fragHolder, new Forum()).commit();
                         break;
 
                     case R.id.setting:
-                        startActivity(new Intent(MainActivity.this,Settings.class));
+                        startActivity(new Intent(MainActivity.this, Settings.class));
                         break;
                     case R.id.adminPanel:
-                        startActivity(new Intent(MainActivity.this,AdminPanel.class));
+                        startActivity(new Intent(MainActivity.this, AdminPanel.class));
                         break;
                     case R.id.about:
-                        startActivity(new Intent(MainActivity.this,AboutUs.class));
+                        startActivity(new Intent(MainActivity.this, AboutUs.class));
                         break;
                     case R.id.rate_us:
                         new MaterialDialog.Builder(MainActivity.this)
@@ -181,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
                                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                                     @Override
                                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                       //todo call Play store
+                                        //todo call Play store
                                     }
                                 })
                                 .build()
@@ -191,19 +192,26 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-        Picasso.with(this).load("https://graph.facebook.com/"+getSharedPreferences("loginInfo",MODE_PRIVATE).getString("UserID","")+"/picture?type=large").into(imageView1);
+        Picasso.with(this).load("https://graph.facebook.com/" + getSharedPreferences("loginInfo", MODE_PRIVATE).getString("UserID", "") + "/picture?type=large").into(imageView1);
         fab.hide();
-        manager.beginTransaction().replace(R.id.fragHolder,new NewsEvents()).commit();
+        navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, UserProfile.class).putExtra("userID", getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getString("UserID", "")));
+            }
+        });
+        manager.beginTransaction().replace(R.id.fragHolder, new NewsEvents()).commit();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-               drawerLayout.openDrawer(findViewById(R.id.naviView));
+            drawerLayout.openDrawer(findViewById(R.id.naviView));
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
     private void constructJob() {
 
         String tag = "periodic";

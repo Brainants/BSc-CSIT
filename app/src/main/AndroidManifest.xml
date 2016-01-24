@@ -111,7 +111,8 @@
             android:name=".activities.NoticeDetails"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
-        <activity android:name=".activities.EachProject"></activity>
+        <activity android:name=".activities.EachProject" />
+        <activity android:name=".activities.UserProfile"></activity>
     </application>
 
 </manifest>

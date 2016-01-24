@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:fancy="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="1.5dp"
@@ -26,15 +25,6 @@
             android:textColor="@color/colorPrimary"
             android:textSize="18sp" />
 
-        <LinearLayout
-            android:id="@+id/usersHolder"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-        </LinearLayout>
-
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -53,6 +43,15 @@
             android:ellipsize="end"
             android:maxLines="3"
             android:text="App to create route to tourism area,show nearby services and convert nepali language to their home language and viceversa." />
+
+        <com.devspark.robototextview.widget.RobotoTextView
+            android:id="@+id/adminTag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="Admin"
+            android:textColor="@color/colorAccent"
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -78,16 +77,6 @@
 
             </HorizontalScrollView>
 
-            <mehdi.sakout.fancybuttons.FancyButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="3dp"
-                fancy:fb_borderColor="#FFFFFF"
-                fancy:fb_defaultColor="#00000000"
-                fancy:fb_focusColor="#ddd"
-                fancy:fb_text="Learn More..."
-                fancy:fb_textColor="@color/colorAccent" />
         </LinearLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>
