@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -51,30 +52,84 @@
             <com.devspark.robototextview.widget.RobotoTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="50dp"
-                android:text="Developed By"
-                android:textColor="@color/black"
-                android:textSize="20sp" />
-
-
-            <com.devspark.robototextview.widget.RobotoTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="5dp"
-                android:text="BrainAnts Technology"
-                android:textColor="@color/colorAccent"
-                android:textSize="20sp" />
-
-            <com.devspark.robototextview.widget.RobotoTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
-                android:text="Thamel, Kathmandu"
-                android:textSize="18sp" />
-
+                android:text="V 1.0" />
         </LinearLayout>
+
     </android.support.v4.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+        <com.devspark.robototextview.widget.RobotoTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:text="Developed By"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <com.devspark.robototextview.widget.RobotoTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:text="BrainAnts Technology"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp"
+            app:typeface="roboto_bold" />
+
+        <com.devspark.robototextview.widget.RobotoTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:text="Thamel, Kathmandu"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <mehdi.sakout.fancybuttons.FancyButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                fancy:fb_defaultColor="#3B5998"
+                fancy:fb_focusColor="#5B74A9"
+                fancy:fb_radius="20sp"
+                fancy:fb_text="Facebook"
+                fancy:fb_textColor="@color/white" />
+
+            <mehdi.sakout.fancybuttons.FancyButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                fancy:fb_defaultColor="#55acee"
+                fancy:fb_focusColor="#8055acee"
+                fancy:fb_radius="20sp"
+                fancy:fb_text="Twitter"
+                fancy:fb_textColor="@color/white" />
+
+            <mehdi.sakout.fancybuttons.FancyButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                fancy:fb_defaultColor="#9C27B0"
+                fancy:fb_focusColor="#CE93D8"
+                fancy:fb_radius="20sp"
+                fancy:fb_text="Website"
+                fancy:fb_textColor="@color/white" />
+        </LinearLayout>
+    </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

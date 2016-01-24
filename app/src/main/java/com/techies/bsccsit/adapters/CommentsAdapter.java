@@ -3,7 +3,6 @@ package com.techies.bsccsit.adapters;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +34,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.VH> {
         this.times=times;
         this.message=message;
         inflater=LayoutInflater.from(context);
-        Log.d("Debug", headerBundle.toString());
     }
 
     @Override

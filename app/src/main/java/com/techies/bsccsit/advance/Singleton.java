@@ -1,6 +1,7 @@
 package com.techies.bsccsit.advance;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -67,12 +68,9 @@ public class Singleton {
             Date finalDate = simpleDateFormat.parse(date);
             return DateUtils.getRelativeTimeSpanString(finalDate.getTime(), System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS, DateUtils.FORMAT_ABBREV_RELATIVE);
         } catch (Exception e) {
-            e.printStackTrace();
             return "Unknown Time";
         }
     }
-
-
 
     public static String getFollowingList() {
         Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT FbID FROM myCommunities", null);
@@ -106,42 +104,6 @@ public class Singleton {
         return i;
     }
 
-    public static int getEventNo() {
-        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT names FROM events", null);
-        int i = 0;
-        while (cursor.moveToNext()) {
-            i++;
-        }
-        cursor.close();
-        return i;
-    }
-
-    public static String getLatestEventName() {
-        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT names FROM events", null);
-        String string = "";
-        if (cursor.moveToNext())
-            string = cursor.getString(cursor.getColumnIndex("names"));
-        cursor.close();
-        return string;
-    }
-
-    public static String getLatestEventHost() {
-        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT hosters FROM events", null);
-        String string = "";
-        if (cursor.moveToNext())
-            string = cursor.getString(cursor.getColumnIndex("hosters"));
-        cursor.close();
-        return string;
-    }
-
-    public static String getLatestEventId() {
-        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT eventIDs FROM events", null);
-        String string = "";
-        if (cursor.moveToNext())
-            string = cursor.getString(cursor.getColumnIndex("eventIDs"));
-        cursor.close();
-        return string;
-    }
 
     public static CharSequence convertToSimpleDate(String created_time) {
 
@@ -156,6 +118,7 @@ public class Singleton {
 
     public static boolean isScheduledEvent(String eventId) {
         return false;
+        //// TODO: 1/24/2016 hoge one
         /*Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM remainder WHERE eventID = " + eventId, null);
         if (cursor.moveToNext()) {
             cursor.close();
@@ -210,6 +173,39 @@ public class Singleton {
         FancyButton button = (FancyButton) View.inflate(context, R.layout.tag_widget, null);
         button.setText(tag);
         return button;
+    }
+
+    public static int getElibraryCount() {
+        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM eLibrary", null);
+        int count = cursor.getCount();
+        cursor.close();
+        return count;
+    }
+
+    public static int noticeCount() {
+        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM notices", null);
+        int count = cursor.getCount();
+        cursor.close();
+        return count;
+    }
+
+    public static int getCommunityCount() {
+        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM popularCommunities", null);
+        int count = cursor.getCount();
+        cursor.close();
+        return count;
+    }
+
+    public static int getNewsCount() {
+        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM news", null);
+        int count = cursor.getCount();
+        cursor.close();
+        return count;
+    }
+
+    public static boolean canShowNotif(String tag) {
+        SharedPreferences notif = MyApp.getContext().getSharedPreferences("notification", Context.MODE_PRIVATE);
+        return notif.getBoolean(tag, true);
     }
 
     public RequestQueue getRequestQueue() {

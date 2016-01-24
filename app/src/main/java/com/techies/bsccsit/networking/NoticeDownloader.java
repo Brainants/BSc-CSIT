@@ -1,7 +1,6 @@
 package com.techies.bsccsit.networking;
 
 import android.content.ContentValues;
-import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
@@ -55,7 +54,6 @@ public class NoticeDownloader {
 
                         storeNoticeToDb();
                     } catch (JSONException e) {
-                        e.printStackTrace();
                         listener.onTaskCompleted(false);
                     }
                 }
@@ -63,7 +61,6 @@ public class NoticeDownloader {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("Apptest", error.toString());
                 listener.onTaskCompleted(false);
 
             }

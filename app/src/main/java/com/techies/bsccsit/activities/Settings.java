@@ -1,13 +1,17 @@
 package com.techies.bsccsit.activities;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -20,6 +24,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.techies.bsccsit.R;
 import com.techies.bsccsit.advance.Singleton;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,9 +32,8 @@ import mehdi.sakout.fancybuttons.FancyButton;
 
 public class Settings extends AppCompatActivity {
 
-    FancyButton changeSem, refreshElibrary;
+    private SharedPreferences.Editor notifEditor;
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
@@ -39,10 +43,65 @@ public class Settings extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Settings");
 
-        changeSem = (FancyButton) findViewById(R.id.changeSemester);
-        refreshElibrary = (FancyButton) findViewById(R.id.emptyLibrary);
+        SharedPreferences notif = getSharedPreferences("notification", MODE_PRIVATE);
+        notifEditor = notif.edit();
+
+        FancyButton changeSem = (FancyButton) findViewById(R.id.changeSemester);
+        FancyButton refreshElibrary = (FancyButton) findViewById(R.id.emptyLibrary);
+        FancyButton checkForUpdate = (FancyButton) findViewById(R.id.checkForUpdate);
+
+        SwitchCompat news = (SwitchCompat) findViewById(R.id.newsSwitch);
+        SwitchCompat event = (SwitchCompat) findViewById(R.id.eventSwitch);
+        SwitchCompat elibrary = (SwitchCompat) findViewById(R.id.elibrarySwitch);
+        SwitchCompat notice = (SwitchCompat) findViewById(R.id.noticeSwitch);
+        SwitchCompat community = (SwitchCompat) findViewById(R.id.communitiesSwitch);
+
+        news.setChecked(notif.getBoolean("news", true));
+        elibrary.setChecked(notif.getBoolean("elibrary", true));
+        event.setChecked(notif.getBoolean("event", true));
+        notice.setChecked(notif.getBoolean("notice", true));
+        community.setChecked(notif.getBoolean("community", true));
+
+        news.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                notifEditor.putBoolean("news", isChecked).apply();
+            }
+        });
+        event.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                notifEditor.putBoolean("event", isChecked).apply();
+            }
+        });
+        elibrary.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                notifEditor.putBoolean("elibrary", isChecked).apply();
+            }
+        });
+        notice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                notifEditor.putBoolean("notice", isChecked).apply();
+            }
+        });
+        community.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                notifEditor.putBoolean("community", isChecked).apply();
+            }
+        });
+
         final String[] semsters = {"First Semester", "Second Semester", "Third Semester", "Fourth Semester",
                 "Fifth Semester", "Sixth Semester", "Seventh Semester", "Eighth Semester"};
+
+        checkForUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //// TODO: 1/24/2016 check for upfate funcrion
+            }
+        });
 
         changeSem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,8 +129,15 @@ public class Settings extends AppCompatActivity {
                         .show();
             }
         });
+        refreshElibrary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                File file = new File(Environment.getExternalStorageDirectory() + "/" + Singleton.getSemester() + "/");
+                deleteDirectory(file);
+                Snackbar.make(findViewById(R.id.settingsCore), "E-Library refreshed.", Snackbar.LENGTH_SHORT).show();
+            }
+        });
     }
-
 
     private void changeSemester(final int sem, final MaterialDialog choser) {
         final MaterialDialog progress = new MaterialDialog.Builder(this)
@@ -84,6 +150,7 @@ public class Settings extends AppCompatActivity {
             public void onResponse(String response) {
                 progress.dismiss();
                 choser.dismiss();
+                Singleton.getInstance().getDatabase().delete("eLibrary", null, null);
                 getSharedPreferences("loginInfo", MODE_PRIVATE).edit().putInt("semester", sem).apply();
                 Snackbar.make(findViewById(R.id.settingsCore), "Semester updated.", Snackbar.LENGTH_SHORT).show();
             }
@@ -103,6 +170,23 @@ public class Settings extends AppCompatActivity {
             }
         };
         Singleton.getInstance().getRequestQueue().add(stringRequest);
+    }
+
+    public boolean deleteDirectory(File path) {
+        if (path.exists()) {
+            File[] files = path.listFiles();
+            if (files == null) {
+                return true;
+            }
+            for (int i = 0; i < files.length; i++) {
+                if (files[i].isDirectory()) {
+                    deleteDirectory(files[i]);
+                } else {
+                    files[i].delete();
+                }
+            }
+        }
+        return (path.delete());
     }
 
     @Override

@@ -7,7 +7,6 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -95,7 +94,6 @@ public class UserProfile extends AppCompatActivity {
             public void onResponse(String resp) {
                 progress.setVisibility(View.GONE);
                 errorLayout.setVisibility(View.GONE);
-                Log.d("Debug", resp.toString());
                 try {
                     JSONObject response = new JSONObject(resp);
                     JSONObject userObject = response.getJSONObject("user");
@@ -108,13 +106,11 @@ public class UserProfile extends AppCompatActivity {
                     fillProjects(response.getJSONArray("admin_projects"), response.getJSONArray("member_projects"));
                     fillCommunities(userObject.getString("communities"));
                 } catch (JSONException e) {
-                    e.printStackTrace();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
                 progress.setVisibility(View.GONE);
                 errorLayout.setVisibility(View.VISIBLE);
             }
@@ -145,7 +141,6 @@ public class UserProfile extends AppCompatActivity {
             @Override
             public void onCompleted(final GraphResponse response) {
                 if (response.getError() != null) {
-                    response.getError().getException().printStackTrace();
                 } else {
                     CardView.LayoutParams params = new CardView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     params.setMargins(3, 3, 3, 3);
@@ -172,7 +167,6 @@ public class UserProfile extends AppCompatActivity {
                                 }
                             });
                         } catch (JSONException e) {
-                            e.printStackTrace();
                         }
                         communityHolder.addView(eachComm, params);
                     }
@@ -209,7 +203,6 @@ public class UserProfile extends AppCompatActivity {
                 title.setText(admin.getJSONObject(i).getString("title"));
                 detail.setText(admin.getJSONObject(i).getString("description"));
             } catch (JSONException e) {
-                e.printStackTrace();
             }
             projectHolder.addView(eachProject, params);
         }
@@ -222,7 +215,6 @@ public class UserProfile extends AppCompatActivity {
                 title.setText(member.getJSONObject(i).getString("title"));
                 detail.setText(member.getJSONObject(i).getString("description"));
             } catch (JSONException e) {
-                e.printStackTrace();
             }
             projectHolder.addView(eachProject, params);
         }

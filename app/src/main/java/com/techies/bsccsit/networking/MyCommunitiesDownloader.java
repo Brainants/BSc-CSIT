@@ -3,7 +3,6 @@ package com.techies.bsccsit.networking;
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -44,17 +43,14 @@ public class MyCommunitiesDownloader {
                     for (String aSelectedTxt : list) {
                         tags = tags + aSelectedTxt + ",";
                     }
-                    Log.d("Debug", tags.substring(0, tags.length() - 1));
                     fillMyCommFromResponse(tags.substring(0, tags.length() - 1), list);
                 } catch (JSONException e) {
-                    e.printStackTrace();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 listener.onTaskCompleted(false);
-                error.printStackTrace();
             }
         }) {
             @Override
@@ -79,13 +75,11 @@ public class MyCommunitiesDownloader {
         Bundle param = new Bundle();
         param.putString("fields", "name,category");
         param.putString("ids", response);
-        Log.d("Debug", pages.toString());
         new GraphRequest(AccessToken.getCurrentAccessToken(), "", param, HttpMethod.GET, new GraphRequest.Callback() {
             @Override
             public void onCompleted(GraphResponse response) {
                 if (response.getError() != null) {
                     listener.onTaskCompleted(false);
-                    response.getError().getException().printStackTrace();
                 } else {
                     JSONObject object = response.getJSONObject();
                     ContentValues values = new ContentValues();
@@ -100,7 +94,6 @@ public class MyCommunitiesDownloader {
                         }
                         listener.onTaskCompleted(true);
                     } catch (Exception e) {
-                        e.printStackTrace();
                         listener.onTaskCompleted(false);
                     }
                 }

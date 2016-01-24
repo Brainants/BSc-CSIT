@@ -99,7 +99,6 @@ public class EachPost extends AppCompatActivity {
                                         public void onCompleted(GraphResponse response) {
                                             materialDialog.dismiss();
                                             if (response.getError() != null) {
-                                                response.getError().getException().printStackTrace();
                                                 Toast.makeText(EachPost.this, "Unable to comment.", Toast.LENGTH_SHORT).show();
                                             } else {
                                                 dialog.dismiss();
@@ -165,7 +164,6 @@ public class EachPost extends AppCompatActivity {
                         recyclerView.setLayoutManager(new LinearLayoutManager(EachPost.this));
                         recyclerView.setAdapter(new CommentsAdapter(EachPost.this, getIntent().getExtras(), posterId, names, times, message));
                     } catch (JSONException e) {
-                        e.printStackTrace();
                     }
                 }
             }

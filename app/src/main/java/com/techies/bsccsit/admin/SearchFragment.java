@@ -37,14 +37,13 @@ import java.util.Map;
 import mehdi.sakout.fancybuttons.FancyButton;
 
 public class SearchFragment extends Fragment {
+    final ArrayList<String> names = new ArrayList<>(),
+            ids = new ArrayList<>(),
+            extras = new ArrayList<>();
     EditText searchText;
     RecyclerView recyclerView;
     FancyButton searchBtn;
     View coreView;
-
-    final ArrayList<String> names = new ArrayList<>(),
-            ids = new ArrayList<>(),
-            extras = new ArrayList<>();
     private FacebookSearchAdapter adapter;
 
     @Nullable
@@ -110,7 +109,6 @@ public class SearchFragment extends Fragment {
                     }
 
                 } catch (Exception ignored) {
-                    ignored.printStackTrace();
                 }
             }
 

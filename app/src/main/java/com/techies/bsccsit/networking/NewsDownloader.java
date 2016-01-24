@@ -76,7 +76,6 @@ public class NewsDownloader extends AsyncTask<Void, Void, Void> {
             NewsFeedSorter();
             addToDatabase();
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

@@ -37,14 +37,12 @@ public class ProjectsDownloader extends AsyncTask<Void, Void, Void> {
                     }
                     listener.onTaskCompleted(true);
                 } catch (Exception e) {
-                    e.printStackTrace();
                     listener.onTaskCompleted(false);
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
                 listener.onTaskCompleted(false);
             }
         });

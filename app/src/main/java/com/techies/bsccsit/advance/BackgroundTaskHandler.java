@@ -6,10 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.PowerManager;
 import android.support.v7.app.NotificationCompat;
+import android.util.Log;
 
 import com.google.android.gms.gcm.GcmTaskService;
 import com.google.android.gms.gcm.TaskParams;
 import com.techies.bsccsit.R;
+import com.techies.bsccsit.activities.MainActivity;
 import com.techies.bsccsit.networking.EventsDownloader;
 import com.techies.bsccsit.networking.MyCommunitiesUploader;
 import com.techies.bsccsit.networking.NewsDownloader;
@@ -23,6 +25,11 @@ import java.util.Locale;
 
 public class BackgroundTaskHandler extends GcmTaskService {
 
+    private static int notifLibrary = 1;
+    private static int notifNotice = 2;
+    private static int notifCommunity = 3;
+    private static int notifNews = 3;
+
     public static Date convertToSimpleDate(String created_time) {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZZZZZ", Locale.US);
@@ -33,13 +40,14 @@ public class BackgroundTaskHandler extends GcmTaskService {
         }
     }
 
-    public static void notification(String newsTitle, String content, String ticker, int notifyNumber, Intent intent1, Context context) {
+    public static void notification(String title, String content, String ticker, int notifyNumber, Intent intent1, Context context) {
+        Log.d("Debug", "notif Called");
         NotificationCompat.Builder notificationCompat = new NotificationCompat.Builder(context);
         notificationCompat.setAutoCancel(true)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setTicker(ticker)
                 .setWhen(System.currentTimeMillis())
-                .setContentTitle(newsTitle)
+                .setContentTitle(title)
                 .setContentText(content);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
         notificationCompat.setContentIntent(pendingIntent);
@@ -57,12 +65,16 @@ public class BackgroundTaskHandler extends GcmTaskService {
 
     @Override
     public int onRunTask(TaskParams taskParams) {
+
+        final int previousNews = Singleton.getNewsCount();
         NewsDownloader newsDownloader = new NewsDownloader();
         newsDownloader.execute();
         newsDownloader.setTaskCompleteListener(new NewsDownloader.OnTaskCompleted() {
             @Override
             public void onTaskCompleted(boolean success) {
-                //// TODO: 1/23/2016 news naya aako notificarion
+                if (success && (Singleton.getNewsCount() - previousNews) > 0 && Singleton.canShowNotif("news"))
+                    notification("New news arrived.", "You may like to read them.", "New news added."
+                            , notifNews, new Intent(MyApp.getContext(), MainActivity.class), MyApp.getContext());
             }
         });
 
@@ -75,37 +87,56 @@ public class BackgroundTaskHandler extends GcmTaskService {
             }
         });
 
+        final int previousCommunity = Singleton.getCommunityCount();
         PopularCommunitiesDownloader communityDownloader = new PopularCommunitiesDownloader();
         communityDownloader.doInBackground();
         communityDownloader.setTaskCompleteListener(new PopularCommunitiesDownloader.OnTaskCompleted() {
             @Override
             public void onTaskCompleted(boolean success) {
-                //// TODO: 1/23/2016 community naya aako notificarion
+                if (success && (Singleton.getCommunityCount() - previousCommunity) > 0 && Singleton.canShowNotif("community"))
+                    notification("New communities arrived.", "You may like to follow them.", "New Communities added."
+                            , notifCommunity, new Intent(MyApp.getContext(), MainActivity.class), MyApp.getContext());
             }
         });
 
         MyCommunitiesUploader myCommunitiesUploader = new MyCommunitiesUploader();
-        if (getSharedPreferences("community", Context.MODE_PRIVATE).getBoolean("changedComm", false))
+        if (getSharedPreferences("community", Context.MODE_PRIVATE).getBoolean("changedComm", false)) {
             myCommunitiesUploader.doInBackground();
+            myCommunitiesUploader.setTaskCompleteListener(new MyCommunitiesUploader.OnTaskCompleted() {
+                @Override
+                public void onTaskCompleted(boolean success) {
 
+                }
+            });
+        }
+
+        final int previousLibrary = Singleton.eLibraryCount();
         eLibraryDownloader downloader = new eLibraryDownloader();
         downloader.doInBackground();
         downloader.setTaskCompleteListener(new eLibraryDownloader.OnTaskCompleted() {
             @Override
             public void onTaskCompleted(boolean success) {
-                //// TODO: 1/23/2016 Library updated bhanne notif
+                if (success && Singleton.getElibraryCount() > previousLibrary && Singleton.canShowNotif("elibrary"))
+                    notification("E-Library Updated", "New PDFs has been added. Check them out.", "E-Library Updated"
+                            , notifLibrary, new Intent(MyApp.getContext(), MainActivity.class), MyApp.getContext());
             }
         });
 
+        final int previousNotice = Singleton.noticeCount();
         NoticeDownloader noticeDownloader = new NoticeDownloader();
         newsDownloader.doInBackground();
         noticeDownloader.setOnTaskCompleteListener(new NoticeDownloader.OnTaskCompleted() {
             @Override
             public void onTaskCompleted(boolean success) {
-                //// TODO: 1/23/2016 notice naya aako notificarion
+                if (success && Singleton.canShowNotif("notice")) {
+                    if ((Singleton.noticeCount() - previousNotice) == 1) {
+                        // todo latest notice dekhaune notification();
+                    } else
+                        notification(Singleton.noticeCount() - previousNotice + " new TU Notices.", "New notices has been detected. Check them out.", "New notices avilable.",
+                                notifNotice, new Intent(MyApp.getContext(), MainActivity.class), MyApp.getContext());
+                }
             }
         });
-
         return 1;
     }
 }

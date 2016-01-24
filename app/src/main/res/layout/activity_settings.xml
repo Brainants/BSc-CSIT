@@ -58,7 +58,12 @@
                 fancy:fb_focusColor="#80dddddd"
                 fancy:fb_text="Change Semester"
                 fancy:fb_textColor="@color/black"
-                fancy:fb_textGravity="left" />
+                fancy:fb_textGravity="left">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </mehdi.sakout.fancybuttons.FancyButton>
 
             <mehdi.sakout.fancybuttons.FancyButton
                 android:id="@+id/emptyLibrary"
@@ -69,7 +74,13 @@
                 fancy:fb_focusColor="#80dddddd"
                 fancy:fb_text="Refresh E-Library"
                 fancy:fb_textColor="@color/black"
-                fancy:fb_textGravity="left" />
+                fancy:fb_textGravity="left">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </mehdi.sakout.fancybuttons.FancyButton>
 
             <com.devspark.robototextview.widget.RobotoTextView
                 android:layout_width="match_parent"
@@ -89,34 +100,74 @@
                 android:background="@color/colorPrimary" />
 
             <android.support.v7.widget.SwitchCompat
+                android:id="@+id/newsSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="15dp"
                 android:text="News" />
 
             <android.support.v7.widget.SwitchCompat
+                android:id="@+id/eventSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="15dp"
                 android:text="Events" />
 
             <android.support.v7.widget.SwitchCompat
+                android:id="@+id/elibrarySwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="15dp"
                 android:text="Elibrary" />
 
             <android.support.v7.widget.SwitchCompat
+                android:id="@+id/noticeSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="15dp"
                 android:text="TU Notices" />
 
             <android.support.v7.widget.SwitchCompat
+                android:id="@+id/communitiesSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="15dp"
-                android:text="New Communities" />
+                android:text="Communities" />
+
+            <com.devspark.robototextview.widget.RobotoTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="3dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:text="App Version"
+                android:textColor="@color/colorPrimary"
+                app:typeface="roboto_bold" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/colorPrimary" />
+
+            <mehdi.sakout.fancybuttons.FancyButton
+                android:id="@+id/checkForUpdate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                fancy:fb_defaultColor="#00000000"
+                fancy:fb_focusColor="#80dddddd"
+                fancy:fb_text="Check for update"
+                fancy:fb_textColor="@color/black"
+                fancy:fb_textGravity="left">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </mehdi.sakout.fancybuttons.FancyButton>
+
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
