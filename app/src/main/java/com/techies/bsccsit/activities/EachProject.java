@@ -12,5 +12,6 @@ public class EachProject extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_each_project);
         //// TODO: 1/23/2016  Purai complete garaune
+
     }
 }

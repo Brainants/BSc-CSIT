@@ -140,13 +140,13 @@ public class UserProfile extends AppCompatActivity {
         new GraphRequest(AccessToken.getCurrentAccessToken(), "", params, HttpMethod.GET, new GraphRequest.Callback() {
             @Override
             public void onCompleted(final GraphResponse response) {
-                if (response.getError() != null) {
-                } else {
+                if (response.getError() == null) {
                     CardView.LayoutParams params = new CardView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     params.setMargins(3, 3, 3, 3);
 
                     for (int i = 0; i < comms.length; i++) {
                         CardView eachComm = (CardView) LayoutInflater.from(UserProfile.this).inflate(R.layout.profile_each_community, null, false);
+                        eachComm.setCardElevation(3);
                         RobotoTextView title = (RobotoTextView) eachComm.findViewById(R.id.nameSearch);
                         RobotoTextView category = (RobotoTextView) eachComm.findViewById(R.id.extraDetail);
                         CircleImageView profilePIc = (CircleImageView) eachComm.findViewById(R.id.profileImage);
@@ -195,6 +195,7 @@ public class UserProfile extends AppCompatActivity {
 
         for (int i = 0; i < admin.length(); i++) {
             CardView eachProject = (CardView) LayoutInflater.from(this).inflate(R.layout.each_project, null, false);
+            eachProject.setCardElevation(3);
             RobotoTextView title = (RobotoTextView) eachProject.findViewById(R.id.projectName);
             RobotoTextView detail = (RobotoTextView) eachProject.findViewById(R.id.projectDetail);
             RobotoTextView adminTag = (RobotoTextView) eachProject.findViewById(R.id.adminTag);
@@ -209,6 +210,7 @@ public class UserProfile extends AppCompatActivity {
 
         for (int i = 0; i < member.length(); i++) {
             CardView eachProject = (CardView) LayoutInflater.from(this).inflate(R.layout.each_project, null, false);
+            eachProject.setCardElevation(3);
             RobotoTextView title = (RobotoTextView) eachProject.findViewById(R.id.projectName);
             RobotoTextView detail = (RobotoTextView) eachProject.findViewById(R.id.projectDetail);
             try {

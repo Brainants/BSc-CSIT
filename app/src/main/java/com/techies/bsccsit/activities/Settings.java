@@ -143,6 +143,7 @@ public class Settings extends AppCompatActivity {
         final MaterialDialog progress = new MaterialDialog.Builder(this)
                 .content("Please wait...")
                 .progress(true, 0)
+                .cancelable(false)
                 .build();
         progress.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://bsccsit.brainants.com/updateusersemester", new Response.Listener<String>() {

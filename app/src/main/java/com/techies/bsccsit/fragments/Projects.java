@@ -32,8 +32,7 @@ public class Projects extends Fragment {
     private ArrayList<String> titles = new ArrayList<>(),
             projectID = new ArrayList<>(),
             tags = new ArrayList<>(),
-            detail = new ArrayList<>(),
-            user = new ArrayList<>();
+            detail = new ArrayList<>();
 
     private ProgressBar progress;
     private LinearLayout error;
@@ -64,7 +63,6 @@ public class Projects extends Fragment {
         projectID.clear();
         tags.clear();
         detail.clear();
-        user.clear();
         int count = 0;
         Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM projects", null);
         while (cursor.moveToNext()) {
@@ -73,7 +71,6 @@ public class Projects extends Fragment {
             projectID.add(cursor.getString(cursor.getColumnIndex("projectID")));
             tags.add(cursor.getString(cursor.getColumnIndex("tags")));
             detail.add(cursor.getString(cursor.getColumnIndex("detail")));
-            user.add(cursor.getString(cursor.getColumnIndex("users")));
         }
         cursor.close();
         if (count == 0) {
@@ -116,7 +113,7 @@ public class Projects extends Fragment {
         MainActivity.fab.show();
         progress.setVisibility(View.GONE);
         swipeLayout.setVisibility(View.VISIBLE);
-        ProjectAdapter adapter = new ProjectAdapter(getActivity(), projectID, titles, user, tags, detail);
+        ProjectAdapter adapter = new ProjectAdapter(getActivity(), projectID, titles, tags, detail);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), Singleton.getSpanCount(getContext())));
     }

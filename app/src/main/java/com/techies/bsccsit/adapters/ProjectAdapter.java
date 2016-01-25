@@ -19,20 +19,17 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.VH> {
     private LayoutInflater inflater;
     private ArrayList<String> projectIds;
     private ArrayList<String> titles;
-    private ArrayList<String> users;
     private ArrayList<String> tags;
     private ArrayList<String> detail;
 
     public ProjectAdapter(Context context, ArrayList<String> projectIds,
                           ArrayList<String> titles,
-                          ArrayList<String> users,
                           ArrayList<String> tags,
                           ArrayList<String> detail) {
         inflater = LayoutInflater.from(context);
         this.context = context;
         this.projectIds = projectIds;
         this.titles = titles;
-        this.users = users;
         this.tags = tags;
         this.detail = detail;
     }
@@ -62,7 +59,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.VH> {
 
     public class VH extends RecyclerView.ViewHolder {
         RobotoTextView title, detail;
-        LinearLayout usersHolder, tagsHolder;
+        LinearLayout tagsHolder;
 
         public VH(View itemView) {
             super(itemView);
