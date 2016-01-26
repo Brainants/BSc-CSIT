@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
-    private static final int version = 11;
+    private static final int version = 12;
     private static final String name="bsccsitDB";
 
     public DatabaseHandler(Context context) {
@@ -29,6 +29,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE notices(id INT, title TEXT, short_desc TEXT, detail TEXT, date TEXT, attachment_link TEXT, attachment_title TEXT);");
 
+        db.execSQL("CREATE TABLE tags(id INT, tag_name TEXT);");
+
     }
 
     @Override
@@ -46,6 +48,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS projects");
 
         db.execSQL("DROP TABLE IF EXISTS notices");
+
+        db.execSQL("DROP TABLE IF EXISTS tags");
 
         onCreate(db);
     }
