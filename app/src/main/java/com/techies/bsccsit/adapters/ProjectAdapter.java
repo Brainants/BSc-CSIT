@@ -1,15 +1,18 @@
 package com.techies.bsccsit.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.devspark.robototextview.widget.RobotoTextView;
 import com.techies.bsccsit.R;
+import com.techies.bsccsit.activities.EachProject;
 import com.techies.bsccsit.advance.Singleton;
 
 import java.util.ArrayList;
@@ -40,16 +43,23 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.VH> {
     }
 
     @Override
-    public void onBindViewHolder(VH holder, int position) {
+    public void onBindViewHolder(VH holder, final int position) {
         holder.title.setText(titles.get(position));
         holder.detail.setText(detail.get(position));
         String[] tagArray = tags.get(position).split("\\s*,\\s*");
-        LinearLayout.LayoutParams params = new AppBarLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setMargins(4, 0, 4, 0);
 
         for (String tag : tagArray) {
             holder.tagsHolder.addView(Singleton.getTagView(context, tag), params);
         }
+        holder.core.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                context.startActivity(new Intent(context, EachProject.class)
+                        .putExtra("project_id",projectIds.get(position)));
+            }
+        });
     }
 
     @Override
@@ -60,12 +70,14 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.VH> {
     public class VH extends RecyclerView.ViewHolder {
         RobotoTextView title, detail;
         LinearLayout tagsHolder;
+        RelativeLayout core;
 
         public VH(View itemView) {
             super(itemView);
             title = (RobotoTextView) itemView.findViewById(R.id.projectName);
             detail = (RobotoTextView) itemView.findViewById(R.id.projectDetail);
             tagsHolder = (LinearLayout) itemView.findViewById(R.id.tagsHoldr);
+            core= (RelativeLayout) itemView;
         }
     }
 }

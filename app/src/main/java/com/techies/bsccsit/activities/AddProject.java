@@ -177,7 +177,7 @@ public class AddProject extends AppCompatActivity implements TextWatcher {
                         params.put("user_id", getSharedPreferences("loginInfo", MODE_PRIVATE).getString("UserID", ""));
                         params.put("title", projectTitle.getText().toString());
                         params.put("description", projectDesc.getText().toString());
-                        params.put("required_users", noOfUsers.getText().toString());
+                        params.put("required_users", String.valueOf(Integer.parseInt(noOfUsers.getText().toString()) == 0 ? 1 : Integer.parseInt(noOfUsers.getText().toString())));
                         params.put("tags", getTags());
                         return params;
                     }

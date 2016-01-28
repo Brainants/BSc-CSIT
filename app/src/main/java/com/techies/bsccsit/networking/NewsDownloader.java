@@ -43,8 +43,6 @@ public class NewsDownloader extends AsyncTask<Void, Void, Void> {
 
     private void parseTheResponse(JSONObject object) {
         ArrayList<String> ids = Singleton.getFollowingArray();
-
-
         try {
             for (int i = 0; i < ids.size(); i++) {
                 JSONObject eachPage = object.getJSONObject(ids.get(i));

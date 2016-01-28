@@ -168,6 +168,7 @@
                     <com.devspark.robototextview.widget.RobotoTextView
                         android:id="@+id/eventDesc"
                         android:layout_width="match_parent"
+                        android:autoLink="web"
                         android:layout_height="wrap_content"
                         android:text="Event description" />
 

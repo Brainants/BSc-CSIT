@@ -112,7 +112,8 @@
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
         <activity android:name=".activities.EachProject" />
-        <activity android:name=".activities.UserProfile"></activity>
+        <activity android:name=".activities.UserProfile" />
+        <activity android:name=".activities.EachProjectAdmin"></activity>
     </application>
 
 </manifest>

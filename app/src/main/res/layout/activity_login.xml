@@ -1,53 +1,79 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LoginCore"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/LoginCore"
     android:background="@color/white"
-    xmlns:fancy="http://schemas.android.com/apk/res-auto"
     tools:context="com.techies.bsccsit.activities.LoginActivity">
 
-    <RelativeLayout
+
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_centerInParent="true"
-        android:layout_above="@+id/loginButton"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:alpha=".8"
+        android:scaleType="centerCrop"
+        android:src="@drawable/back" />
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/test"
-            android:scaleType="centerCrop" />
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/logo" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/logo"
-            android:layout_centerInParent="true"
-            android:src="@drawable/logo" />
-
-        <com.devspark.robototextview.widget.RobotoTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="10dp"
-            android:layout_below="@+id/logo"
-            android:textColor="@color/colorPrimary"
-            android:textSize="25dp"
-            android:text="Bsc CSIT" />
-    </RelativeLayout>
-
-    <mehdi.sakout.fancybuttons.FancyButton
+    <com.devspark.robototextview.widget.RobotoTextView
+        android:id="@+id/appTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp"
+        android:layout_below="@+id/logo"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="Bsc CSIT"
+        android:textColor="@color/white"
+        android:textSize="25dp"
+        app:typeface="roboto_bold" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPagerIntro"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/loginButton"
+        android:layout_below="@+id/appTitle" />
+
+
+    <mehdi.sakout.fancybuttons.FancyButton
+        android:id="@+id/loginButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:paddingTop="10dp"
         fancy:fb_borderColor="#FFFFFF"
         fancy:fb_defaultColor="#3b5998"
-        android:layout_alignParentBottom="true"
         fancy:fb_focusColor="#5474b8"
-        fancy:fb_fontIconResource="\uf082"
+        fancy:fb_iconPaddingRight="20dp"
         fancy:fb_iconPosition="left"
-        fancy:fb_text="Login with Facebook"
-        fancy:fb_textColor="#FFFFFF"
-        android:id="@+id/loginButton" />
+        fancy:fb_iconResource="@drawable/facebook_icon"
+        fancy:fb_radius="10dp">
+
+        <com.devspark.robototextview.widget.RobotoTextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Login With Facebook"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:typeface="roboto_bold" />
+    </mehdi.sakout.fancybuttons.FancyButton>
+
 </RelativeLayout>
