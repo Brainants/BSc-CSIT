@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -48,6 +49,7 @@ public class UserProfile extends AppCompatActivity {
     private NestedScrollView scrollView;
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private LinearLayout projectHolder, communityHolder;
+    private RobotoTextView projectHolderTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +76,7 @@ public class UserProfile extends AppCompatActivity {
         scrollView = (NestedScrollView) findViewById(R.id.nestedScrollProfile);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.profileCollapse);
         scrollView.setVisibility(View.GONE);
+        projectHolderTitle = (RobotoTextView) findViewById(R.id.projectTitleUser);
         errorLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -141,12 +144,11 @@ public class UserProfile extends AppCompatActivity {
             @Override
             public void onCompleted(final GraphResponse response) {
                 if (response.getError() == null) {
-                    CardView.LayoutParams params = new CardView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     params.setMargins(3, 3, 3, 3);
 
                     for (int i = 0; i < comms.length; i++) {
-                        CardView eachComm = (CardView) LayoutInflater.from(UserProfile.this).inflate(R.layout.profile_each_community, null, false);
-                        eachComm.setCardElevation(3);
+                        RelativeLayout eachComm = (RelativeLayout) LayoutInflater.from(UserProfile.this).inflate(R.layout.profile_each_community, null, false);
                         RobotoTextView title = (RobotoTextView) eachComm.findViewById(R.id.nameSearch);
                         RobotoTextView category = (RobotoTextView) eachComm.findViewById(R.id.extraDetail);
                         CircleImageView profilePIc = (CircleImageView) eachComm.findViewById(R.id.profileImage);
@@ -190,12 +192,11 @@ public class UserProfile extends AppCompatActivity {
     }
 
     private void fillProjects(JSONArray admin, JSONArray member) {
-        CardView.LayoutParams params = new CardView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setMargins(3, 3, 3, 3);
 
         for (int i = 0; i < admin.length(); i++) {
-            CardView eachProject = (CardView) LayoutInflater.from(this).inflate(R.layout.each_project, null, false);
-            eachProject.setCardElevation(3);
+            RelativeLayout eachProject = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.each_project, null, false);
             RobotoTextView title = (RobotoTextView) eachProject.findViewById(R.id.projectName);
             RobotoTextView detail = (RobotoTextView) eachProject.findViewById(R.id.projectDetail);
             RobotoTextView adminTag = (RobotoTextView) eachProject.findViewById(R.id.adminTag);
@@ -209,8 +210,7 @@ public class UserProfile extends AppCompatActivity {
         }
 
         for (int i = 0; i < member.length(); i++) {
-            CardView eachProject = (CardView) LayoutInflater.from(this).inflate(R.layout.each_project, null, false);
-            eachProject.setCardElevation(3);
+            RelativeLayout eachProject = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.each_project, null, false);
             RobotoTextView title = (RobotoTextView) eachProject.findViewById(R.id.projectName);
             RobotoTextView detail = (RobotoTextView) eachProject.findViewById(R.id.projectDetail);
             try {
@@ -220,5 +220,7 @@ public class UserProfile extends AppCompatActivity {
             }
             projectHolder.addView(eachProject, params);
         }
+        if (projectHolder.getChildCount() == 0)
+            projectHolderTitle.setText("No Projects");
     }
 }

@@ -1,5 +1,6 @@
 package com.techies.bsccsit.activities;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -24,7 +25,9 @@ import com.beardedhen.androidbootstrap.BootstrapEditText;
 import com.devspark.robototextview.widget.RobotoTextView;
 import com.techies.bsccsit.R;
 import com.techies.bsccsit.advance.Singleton;
+import com.techies.bsccsit.networking.TagsDownloader;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -67,41 +70,68 @@ public class AddProject extends AppCompatActivity implements TextWatcher {
         projectDesc.addTextChangedListener(this);
         noOfUsers.addTextChangedListener(this);
 
-        final String[] languages = {"Android", "JAVA", "PHP", "Ruby", "Python", "IOS", "Windows", "JS"};
+
+        final String[] languages = getAllTags();
 
         tagChooser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new MaterialDialog.Builder(AddProject.this)
-                        .title("Select your tag")
-                        .items(languages)
-                        .itemsCallbackMultiChoice(selectedPos, new MaterialDialog.ListCallbackMultiChoice() {
-                            @Override
-                            public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
-                                selectedPos = which.clone();
-                                selectedTxt = text.clone();
-                                if (which.length == 0) {
-                                    noTagMessage.setVisibility(View.VISIBLE);
-                                    tagHolderScroll.setVisibility(View.GONE);
-                                } else {
-                                    noTagMessage.setVisibility(View.GONE);
-                                    tagHolderScroll.setVisibility(View.VISIBLE);
+                if (languages.length == 0) {
+                    final MaterialDialog dialog = new MaterialDialog.Builder(AddProject.this)
+                            .content("Fetching all tags...")
+                            .progress(true, 0)
+                            .build();
+                    dialog.show();
+                    TagsDownloader downloader = new TagsDownloader();
+                    downloader.doInBackground();
+                    downloader.setOnTaskCompleteListener(new TagsDownloader.ClickListener() {
+                        @Override
+                        public void onTaskComplete(boolean success) {
+                            dialog.dismiss();
+                            if (success)
+                                tagChooser.callOnClick();
+                            else
+                                Snackbar.make(findViewById(R.id.addProjectCood), "Unable to fetch tags.", Snackbar.LENGTH_SHORT).setAction("Retry", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        tagChooser.callOnClick();
+                                    }
+                                });
+
+                        }
+                    });
+                } else {
+                    new MaterialDialog.Builder(AddProject.this)
+                            .title("Select your tag")
+                            .items(languages)
+                            .itemsCallbackMultiChoice(selectedPos, new MaterialDialog.ListCallbackMultiChoice() {
+                                @Override
+                                public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+                                    selectedPos = which.clone();
+                                    selectedTxt = text.clone();
+                                    if (which.length == 0) {
+                                        noTagMessage.setVisibility(View.VISIBLE);
+                                        tagHolderScroll.setVisibility(View.GONE);
+                                    } else {
+                                        noTagMessage.setVisibility(View.GONE);
+                                        tagHolderScroll.setVisibility(View.VISIBLE);
+                                    }
+
+                                    LinearLayout.LayoutParams params = new AppBarLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                                    params.setMargins(2, 0, 2, 0);
+
+                                    tagHolder.removeAllViews();
+
+                                    for (int i = 0; i < text.length; i++)
+                                        tagHolder.addView(Singleton.getTagView(AddProject.this, text[i].toString()), params);
+                                    ValidateEveryThing();
+                                    return true;
                                 }
-
-                                LinearLayout.LayoutParams params = new AppBarLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                                params.setMargins(2, 0, 2, 0);
-
-                                tagHolder.removeAllViews();
-
-                                for (int i = 0; i < text.length; i++)
-                                    tagHolder.addView(Singleton.getTagView(AddProject.this, text[i].toString()), params);
-                                ValidateEveryThing();
-                                return true;
-                            }
-                        })
-                        .positiveText("Done")
-                        .negativeText("Cancel")
-                        .show();
+                            })
+                            .positiveText("Done")
+                            .negativeText("Cancel")
+                            .show();
+                }
             }
         });
         doneFab.setOnClickListener(new View.OnClickListener() {
@@ -202,4 +232,15 @@ public class AddProject extends AppCompatActivity implements TextWatcher {
             finish();
         return super.onOptionsItemSelected(item);
     }
+
+    private String[] getAllTags() {
+
+        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM tags", null);
+        String[] tags = new String[cursor.getCount()];
+        while (cursor.moveToNext()) {
+            tags[cursor.getPosition()] = cursor.getString(cursor.getColumnIndex("tag_name"));
+        }
+        return tags;
+    }
 }
+

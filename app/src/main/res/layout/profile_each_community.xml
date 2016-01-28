@@ -1,56 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="1.5dp"
-    android:orientation="vertical"
-    app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="0dp">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="5dp">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profileImage"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center_horizontal"
-            android:scaleType="centerCrop"
-            app:civ_border_color="@color/colorAccent"
-            app:civ_border_width="1dp" />
+        android:layout_height="wrap_content"
+        android:layout_margin="1.5dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardElevation="3dp"
+        app:cardCornerRadius="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:padding="5dp">
 
-            <com.devspark.robototextview.widget.RobotoTextView
-                android:id="@+id/nameSearch"
-                android:layout_width="wrap_content"
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profileImage"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:scaleType="centerCrop"
+                app:civ_border_color="@color/colorAccent"
+                app:civ_border_width="1dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:maxLines="2"
-                android:text="Aawaz Gyawali"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/colorPrimary" />
+                android:orientation="vertical">
+
+                <com.devspark.robototextview.widget.RobotoTextView
+                    android:id="@+id/nameSearch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:text="Aawaz Gyawali"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorPrimary" />
 
 
-            <com.devspark.robototextview.widget.RobotoTextView
-                android:id="@+id/extraDetail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/nameHolder"
-                android:gravity="center"
-                android:text="150 Likes"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/black" />
+                <com.devspark.robototextview.widget.RobotoTextView
+                    android:id="@+id/extraDetail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/nameHolder"
+                    android:gravity="center"
+                    android:text="150 Likes"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/black" />
 
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-</android.support.v7.widget.CardView>
+    </android.support.v7.widget.CardView>
+</RelativeLayout>

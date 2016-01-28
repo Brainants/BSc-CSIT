@@ -48,7 +48,6 @@ public class Settings extends AppCompatActivity {
 
         FancyButton changeSem = (FancyButton) findViewById(R.id.changeSemester);
         FancyButton refreshElibrary = (FancyButton) findViewById(R.id.emptyLibrary);
-        FancyButton checkForUpdate = (FancyButton) findViewById(R.id.checkForUpdate);
 
         SwitchCompat news = (SwitchCompat) findViewById(R.id.newsSwitch);
         SwitchCompat event = (SwitchCompat) findViewById(R.id.eventSwitch);
@@ -95,13 +94,6 @@ public class Settings extends AppCompatActivity {
 
         final String[] semsters = {"First Semester", "Second Semester", "Third Semester", "Fourth Semester",
                 "Fifth Semester", "Sixth Semester", "Seventh Semester", "Eighth Semester"};
-
-        checkForUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //// TODO: 1/24/2016 check for upfate funcrion
-            }
-        });
 
         changeSem.setOnClickListener(new View.OnClickListener() {
             @Override

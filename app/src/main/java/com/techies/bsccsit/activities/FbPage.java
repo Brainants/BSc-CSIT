@@ -11,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -44,7 +46,6 @@ public class FbPage extends AppCompatActivity {
     private RecyclerView recyclerView;
     private LinearLayout errorMsg;
     private String page_id;
-    private FloatingActionButton followFAB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,46 +74,6 @@ public class FbPage extends AppCompatActivity {
         getSupportActionBar().setSubtitle(getIntent().getStringExtra("details"));
 
         downloadFromInternet();
-
-        followFAB= (FloatingActionButton) findViewById(R.id.pageFollowFAB);
-
-        if ( Singleton.checkExistInFollowing(page_id)){
-            followFAB.setImageResource(R.drawable.cross);
-            followFAB.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this,R.color.unfollowColor)));
-        }else {
-            followFAB.setImageResource(R.drawable.plus);
-            followFAB.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this,R.color.colorPrimary)));
-        }
-
-        followFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (Singleton.checkExistInFollowing(page_id)){
-                    if (Singleton.getFollowingArray().size() <= 6) {
-                        Snackbar.make(findViewById(R.id.fbPageCore), "You must follow at least 5 communities.", Snackbar.LENGTH_SHORT).show();
-                        return;
-                    }
-                    Singleton.getInstance().getDatabase().execSQL("DELETE FROM myCommunities WHERE FbID = "+page_id);
-                    Snackbar.make(findViewById(R.id.fbPageCore),getIntent().getStringExtra("name")+" removed Successfully.",Snackbar.LENGTH_SHORT).show();
-                }else {
-                    ContentValues values=new ContentValues();
-                    values.put("Title",getIntent().getStringExtra("name"));
-                    values.put("FbID",page_id);
-                    values.put("ExtraText",getIntent().getStringExtra("details"));
-                    Singleton.getInstance().getDatabase().insert("myCommunities",null,values);
-                    Snackbar.make(findViewById(R.id.fbPageCore),getIntent().getStringExtra("name")+" added Successfully.",Snackbar.LENGTH_SHORT).show();
-                    getSharedPreferences("community", Context.MODE_PRIVATE).edit().putBoolean("changedComm",true).apply();
-                }
-
-                if ( Singleton.checkExistInFollowing(page_id)){
-                    followFAB.setImageResource(R.drawable.cross);
-                    followFAB.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(FbPage.this,R.color.unfollowColor)));
-                }else {
-                    followFAB.setImageResource(R.drawable.plus);
-                    followFAB.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(FbPage.this,R.color.colorPrimary)));
-                }
-            }
-        });
     }
 
     private void downloadFromInternet() {
@@ -180,7 +141,38 @@ public class FbPage extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             super.onBackPressed();
+        } else if (item.getItemId() == R.id.followUnfollow) {
+            if (Singleton.checkExistInFollowing(page_id)) {
+                if (Singleton.getFollowingArray().size() <= 6) {
+                    Snackbar.make(findViewById(R.id.fbPageCore), "You must follow at least 5 communities.", Snackbar.LENGTH_SHORT).show();
+                }
+                item.setIcon(R.drawable.plus);
+                Singleton.getInstance().getDatabase().execSQL("DELETE FROM myCommunities WHERE FbID = " + page_id);
+                Snackbar.make(findViewById(R.id.fbPageCore), getIntent().getStringExtra("name") + " removed Successfully.", Snackbar.LENGTH_SHORT).show();
+            } else {
+                ContentValues values = new ContentValues();
+                values.put("Title", getIntent().getStringExtra("name"));
+                values.put("FbID", page_id);
+                values.put("ExtraText", getIntent().getStringExtra("details"));
+                Singleton.getInstance().getDatabase().insert("myCommunities", null, values);
+                item.setIcon(R.drawable.cross);
+                Snackbar.make(findViewById(R.id.fbPageCore), getIntent().getStringExtra("name") + " added Successfully.", Snackbar.LENGTH_SHORT).show();
+                getSharedPreferences("community", Context.MODE_PRIVATE).edit().putBoolean("changedComm", true).apply();
+            }
         }
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_page, menu);
+        MenuItem item = menu.getItem(0);
+        if (Singleton.checkExistInFollowing(page_id)) {
+            item.setIcon(R.drawable.cross);
+        } else {
+            item.setIcon(R.drawable.plus);
+        }
+
         return true;
     }
 }

@@ -176,12 +176,14 @@
             </android.support.v7.widget.CardView>
 
             <com.devspark.robototextview.widget.RobotoTextView
+                android:id="@+id/projectTitleUser"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:text="Associated Projects"
                 android:textColor="@color/colorPrimary"
-                android:textSize="18sp" />
+                android:textSize="15sp"
+                app:typeface="roboto_bold" />
 
             <LinearLayout
                 android:id="@+id/projectHolderProfile"
@@ -195,7 +197,8 @@
                 android:padding="10dp"
                 android:text="Following Communities"
                 android:textColor="@color/colorPrimary"
-                android:textSize="18sp" />
+                android:textSize="15sp"
+                app:typeface="roboto_bold" />
 
             <LinearLayout
                 android:id="@+id/communityHolderProfile"

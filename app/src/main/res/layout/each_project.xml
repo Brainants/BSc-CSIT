@@ -1,82 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="1.5dp"
-    android:orientation="vertical"
-    app:cardBackgroundColor="@color/white"
-    app:cardElevation="3dp">
+    android:layout_height="wrap_content">
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="5dp">
-
-        <com.devspark.robototextview.widget.RobotoTextView
-            android:id="@+id/projectName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="3dp"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:text="RecTour : (Recommend Tour /Tourism)"
-            android:textColor="@color/colorPrimary"
-            android:textSize="18sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="3dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="3dp"
-            android:background="#ccc" />
-
-        <com.devspark.robototextview.widget.RobotoTextView
-            android:id="@+id/projectDetail"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_margin="3dp"
-            android:layout_weight="1"
-            android:ellipsize="end"
-            android:maxLines="3"
-            android:text="App to create route to tourism area,show nearby services and convert nepali language to their home language and viceversa." />
-
-        <com.devspark.robototextview.widget.RobotoTextView
-            android:id="@+id/adminTag"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:text="Admin"
-            android:textColor="@color/colorAccent"
-            android:visibility="gone" />
+        android:layout_marginLeft="1.5dp"
+        android:layout_marginRight="1.5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:paddingTop="10dp"
+        app:cardElevation="3dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginTop="2dp"
-            android:gravity="end"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:paddingBottom="10dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="10dp">
 
-            <HorizontalScrollView
-                android:layout_width="0dp"
+            <com.devspark.robototextview.widget.RobotoTextView
+                android:id="@+id/projectName"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_marginLeft="3dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="RecTour : (Recommend Tour /Tourism)"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp"
+                app:typeface="roboto_black" />
 
-                <LinearLayout
-                    android:id="@+id/tagsHoldr"
-                    android:layout_width="wrap_content"
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="3dp"
+                android:background="#ccc" />
+
+            <com.devspark.robototextview.widget.RobotoTextView
+                android:id="@+id/projectDetail"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:text="App to create route to tourism area,show nearby services and convert nepali language to their home language and viceversa." />
+
+            <com.devspark.robototextview.widget.RobotoTextView
+                android:id="@+id/adminTag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="Admin"
+                android:textColor="@color/colorAccent"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginTop="2dp"
+                android:gravity="end"
+                android:orientation="horizontal">
+
+                <HorizontalScrollView
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:scrollbars="none"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1">
 
+                    <LinearLayout
+                        android:id="@+id/tagsHoldr"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-                </LinearLayout>
+                    </LinearLayout>
 
-            </HorizontalScrollView>
+                </HorizontalScrollView>
 
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-</android.support.v7.widget.CardView>
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

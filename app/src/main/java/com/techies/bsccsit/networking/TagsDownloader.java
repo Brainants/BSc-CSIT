@@ -16,9 +16,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-/**
- * Created by roshan on 1/25/16.
- */
 public class TagsDownloader {
     ArrayList<String> mTags = new ArrayList<>();
     ArrayList<Integer> mIds = new ArrayList<>();
@@ -30,47 +27,45 @@ public class TagsDownloader {
             @Override
             public void onResponse(JSONArray response) {
                 try {
-                    for(int i=0;i<response.length();i++) {
+                    for (int i = 0; i < response.length(); i++) {
                         JSONObject object = response.getJSONObject(i);
                         mIds.add(object.getInt("id"));
                         mTags.add(object.getString("name"));
                     }
-
-
                     storeToDb();
-
                 } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.d("AppTest","No data like that");
+                    Log.d("AppTest", "No data like that");
                 }
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-             listener.onTaskComplete(false);
+                listener.onTaskComplete(false);
             }
         });
-
+        Singleton.getInstance().getRequestQueue().add(request);
     }
 
     private void storeToDb() {
         SQLiteDatabase database = Singleton.getInstance().getDatabase();
-        database.delete("tags",null,null);
-        ContentValues values=new ContentValues();
+        database.delete("tags", null, null);
+        ContentValues values = new ContentValues();
 
-        for(int i=0;i<mTags.size();i++) {
+        for (int i = 0; i < mTags.size(); i++) {
             values.clear();
-            values.put("id",mIds.get(i));
-            values.put("tag_name",mTags.get(i));
-            database.insert("tags",null,values);
+            values.put("id", mIds.get(i));
+            values.put("tag_name", mTags.get(i));
+            database.insert("tags", null, values);
         }
         listener.onTaskComplete(true);
         database.close();
     }
+
     public void setOnTaskCompleteListener(ClickListener listener) {
         this.listener = listener;
     }
+
     public interface ClickListener {
         void onTaskComplete(boolean success);
     }

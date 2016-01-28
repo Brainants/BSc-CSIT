@@ -17,6 +17,7 @@ import com.techies.bsccsit.networking.MyCommunitiesUploader;
 import com.techies.bsccsit.networking.NewsDownloader;
 import com.techies.bsccsit.networking.NoticeDownloader;
 import com.techies.bsccsit.networking.PopularCommunitiesDownloader;
+import com.techies.bsccsit.networking.TagsDownloader;
 import com.techies.bsccsit.networking.eLibraryDownloader;
 
 import java.text.SimpleDateFormat;
@@ -28,7 +29,7 @@ public class BackgroundTaskHandler extends GcmTaskService {
     private static int notifLibrary = 1;
     private static int notifNotice = 2;
     private static int notifCommunity = 3;
-    private static int notifNews = 3;
+    private static int notifNews = 4;
 
     public static Date convertToSimpleDate(String created_time) {
 
@@ -41,7 +42,6 @@ public class BackgroundTaskHandler extends GcmTaskService {
     }
 
     public static void notification(String title, String content, String ticker, int notifyNumber, Intent intent1, Context context) {
-        Log.d("Debug", "notif Called");
         NotificationCompat.Builder notificationCompat = new NotificationCompat.Builder(context);
         notificationCompat.setAutoCancel(true)
                 .setSmallIcon(R.mipmap.ic_launcher)
@@ -137,6 +137,16 @@ public class BackgroundTaskHandler extends GcmTaskService {
                 }
             }
         });
+
+        TagsDownloader tagsDownloader=new TagsDownloader();
+        tagsDownloader.doInBackground();
+        tagsDownloader.setOnTaskCompleteListener(new TagsDownloader.ClickListener() {
+            @Override
+            public void onTaskComplete(boolean success) {
+
+            }
+        });
+
         return 1;
     }
 }

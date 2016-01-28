@@ -6,14 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#eee"
-    android:fitsSystemWindows="true"
     tools:context="com.techies.bsccsit.activities.FbPage">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarPage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:contentScrim="@color/colorPrimary">
 
@@ -70,13 +68,4 @@
             android:text="Tap to retry."
             android:textColor="@color/colorAccent" />
     </LinearLayout>
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/pageFollowFAB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:src="@drawable/plus"
-        app:backgroundTint="@color/colorPrimary" />
-
 </android.support.design.widget.CoordinatorLayout>
