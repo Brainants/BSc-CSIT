@@ -44,7 +44,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.VH> {
         holder.title.setText(titles.get(position));
         holder.detail.setText(detail.get(position));
         String[] tagArray = tags.get(position).split("\\s*,\\s*");
-        LinearLayout.LayoutParams params = new AppBarLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setMargins(4, 0, 4, 0);
 
         for (String tag : tagArray) {

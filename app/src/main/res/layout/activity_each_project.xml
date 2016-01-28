@@ -5,19 +5,17 @@
     android:id="@+id/eventCoordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#eee"
-    android:fitsSystemWindows="true">
+    android:background="#eee">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/eventAppbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:contentScrim="@color/colorPrimary">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/eventToolbar"
+            android:id="@+id/eachProjectToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_collapseMode="pin"
@@ -27,152 +25,141 @@
 
 
     <android.support.v4.widget.NestedScrollView
-        android:id="@+id/nestedScrollEvent"
+        android:id="@+id/nestedScrollProject"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <com.devspark.robototextview.widget.RobotoTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="10dp"
-                        android:paddingTop="10dp"
-                        android:text="Prasannas Project"
-                        android:textColor="@color/black"
-                        android:textSize="18dp"
-                        app:typeface="roboto_bold" />
-
-                    <com.devspark.robototextview.widget.RobotoTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="10dp"
-                        android:text="By Prasanna Mishra"
-                        android:textColor="@color/black"
-                        android:textSize="12sp"
-                        app:typeface="roboto_black_italic" />
-                </LinearLayout>
-
-                <mehdi.sakout.fancybuttons.FancyButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:layout_margin="5dp"
-                    fancy:fb_defaultColor="#444"
-                    fancy:fb_radius="5dp"
-                    fancy:fb_iconResource="@drawable/plus"
-                    fancy:fb_textColor="@color/white" />
-            </LinearLayout>
-
-            <com.devspark.robototextview.widget.RobotoTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="App to create route to tourism area,show nearby services and convert nepali language to their home language and viceversa." />
-
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
-                android:visibility="gone"
-                app:cardCornerRadius="0dp">
+                app:cardElevation="3dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="5dp">
+                    android:layout_marginBottom="5dp"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/headerImg"
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/project_header" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/adminImageProject"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginTop="15dp"
+                            app:civ_border_color="@color/white"
+                            app:civ_border_width="2dp" />
+
+                    </RelativeLayout>
 
                     <com.devspark.robototextview.widget.RobotoTextView
-                        android:id="@+id/projectNameEach"
+                        android:id="@+id/eachProjectTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="3dp"
-                        android:ellipsize="end"
-                        android:maxLines="2"
-                        android:text="RecTour : (Recommend Tour /Tourism)"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="18sp" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginBottom="3dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginTop="3dp"
-                        android:background="#ccc" />
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:text="Demo Project"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        app:typeface="roboto_bold" />
 
                     <com.devspark.robototextview.widget.RobotoTextView
-                        android:id="@+id/projectDetailEach"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_margin="3dp"
-                        android:layout_weight="1"
-                        android:ellipsize="end"
-                        android:maxLines="3"
-                        android:text="App to create route to tourism area,show nearby services and convert nepali language to their home language and viceversa." />
-
-                    <LinearLayout
+                        android:id="@+id/eachProjectDetail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:layout_marginTop="2dp"
-                        android:gravity="end"
-                        android:orientation="horizontal">
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:text="ABAP is one of the many application-specific fourth-generation languages (4GLs) first developed in the 1980s. It was originally the report language for SAP R/2, a platform that enabled large corporations to build mainframe business applications for materials management and financial and management accounting." />
 
-                        <HorizontalScrollView
-                            android:layout_width="0dp"
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="none">
+
+                        <LinearLayout
+                            android:id="@+id/tagHolderEachProject"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1">
-
-                            <LinearLayout
-                                android:id="@+id/tagsHolderProject"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <include layout="@layout/tag_widget" />
-
-                                <include layout="@layout/tag_widget" />
-
-                                <include layout="@layout/tag_widget" />
-
-                                <include layout="@layout/tag_widget" />
-                            </LinearLayout>
-                        </HorizontalScrollView>
-
-
-                    </LinearLayout>
+                            android:orientation="horizontal" />
+                    </HorizontalScrollView>
                 </LinearLayout>
-
             </android.support.v7.widget.CardView>
 
+            <com.devspark.robototextview.widget.RobotoTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="Members"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"
+                app:typeface="roboto_bold" />
 
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/usersHolderProject"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
+
+            <mehdi.sakout.fancybuttons.FancyButton
+                android:id="@+id/sendRequestProject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:padding="10dp"
+                fancy:fb_borderColor="#80dddddd"
+                fancy:fb_defaultColor="@color/colorAccent"
+                fancy:fb_focusColor="#80dddddd"
+                fancy:fb_iconResource="@drawable/plus"
+                fancy:fb_radius="5dp"
+                fancy:fb_text="Send Request"
+                fancy:fb_textColor="@color/white"
+                fancy:fb_textGravity="left" />
+
+            <com.devspark.robototextview.widget.RobotoTextView
+                android:id="@+id/seekingCount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right|end"
+                android:paddingRight="10dp"
+                android:text="Seeking 2 users."
+                android:textSize="15dp"
+                app:typeface="roboto_condensed_italic" />
         </LinearLayout>
-
     </android.support.v4.widget.NestedScrollView>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <ProgressBar
             android:id="@+id/progressbarEachProject"
@@ -185,7 +172,6 @@
         android:id="@+id/errorMessageEachProject"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="220dp"
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone">
