@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        android:theme="@style/Theme.AppCompat" />
 
 
     <android.support.v7.widget.RecyclerView
@@ -23,18 +23,15 @@
         android:visibility="gone" />
 
 
-
-
-
-        <com.devspark.robototextview.widget.RobotoTextView
-            android:id="@+id/noNotifIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:drawableTop="@drawable/no_notification"
-            android:gravity="center"
-            android:textSize="18sp"
-            android:visibility="gone"
-            android:text="No Notifications" />
+    <com.devspark.robototextview.widget.RobotoTextView
+        android:id="@+id/noNotifIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:drawableTop="@drawable/no_notification"
+        android:gravity="center"
+        android:text="No Notifications"
+        android:textSize="18sp"
+        android:visibility="gone" />
 
 </RelativeLayout>
