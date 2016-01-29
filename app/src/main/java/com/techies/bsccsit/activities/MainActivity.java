@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     public static String current = "Home";
     private FragmentManager manager;
     private int previous;
+    NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
             toolbar.setElevation(0);
             appBarLayout.setElevation(0);
         }
-        NavigationView navigationView = (NavigationView) findViewById(R.id.naviView);
+        navigationView = (NavigationView) findViewById(R.id.naviView);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.mainCood);
         View view = navigationView.getHeaderView(0);
@@ -209,8 +210,8 @@ public class MainActivity extends AppCompatActivity {
         if (item.getItemId() == android.R.id.home) {
             drawerLayout.openDrawer(findViewById(R.id.naviView));
             return true;
-        } else if(item.getItemId()==R.id.action_notif) {
-            startActivity(new Intent(MainActivity.this,Notification.class));
+        } else if (item.getItemId() == R.id.action_notif) {
+            startActivity(new Intent(MainActivity.this, Notification.class));
         }
 
 
@@ -219,14 +220,29 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.action_main,menu);
+        getMenuInflater().inflate(R.menu.action_main, menu);
 
-        if(Singleton.hasNewNotifications())
+        if (Singleton.hasNewNotifications())
             menu.getItem(0).setIcon(R.drawable.bell_fill);
         else
             menu.getItem(0).setIcon(R.drawable.bell_outline);
 
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(navigationView)) {
+            drawerLayout.closeDrawer(navigationView);
+        } else if (!current.equals("Home")) {
+            setTitle("Home");
+            current = "Home";
+            navigationView.getMenu().getItem(0).setChecked(true);
+            previous = navigationView.getMenu().getItem(0).getItemId();
+            manager.beginTransaction().replace(R.id.fragHolder, new NewsEvents()).commit();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private void constructJob() {

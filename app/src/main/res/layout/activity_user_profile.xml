@@ -82,8 +82,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="About"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="18sp" />
+                        app:typeface="roboto_bold"
+                        android:textSize="15sp"
+                        android:textColor="@color/colorPrimary"/>
 
                     <View
                         android:layout_width="match_parent"

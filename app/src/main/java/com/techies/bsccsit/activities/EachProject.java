@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -212,7 +213,6 @@ public class EachProject extends AppCompatActivity {
         params.setMargins(4, 0, 4, 0);
         managedBy.setText(admin.getString("name"));
         userHolder.removeAllViews();
-        int num = 0;
         for (int i = 0; i < users.length(); i++) {
             RelativeLayout eachUser = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.user_widget, null);
 
@@ -227,12 +227,12 @@ public class EachProject extends AppCompatActivity {
                 public void onClick(View view) {
                     try {
                         startActivity(new Intent(EachProject.this, UserProfile.class).putExtra("userID", users.getJSONObject(finalI).getString("id")));
-                    } catch (JSONException e) {}
+                    } catch (JSONException e) {
+                    }
                 }
             });
-            num = i;
         }
-        if (num == 0) {
+        if (users.length() == 0) {
             membersHeader.setText("No members");
             horizontalScrollViewUser.setVisibility(View.GONE);
         }

@@ -191,7 +191,7 @@ public class UserProfile extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void fillProjects(JSONArray admin, JSONArray member) {
+    private void fillProjects(final JSONArray admin, final JSONArray member) {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setMargins(3, 3, 3, 3);
 
@@ -206,6 +206,16 @@ public class UserProfile extends AppCompatActivity {
                 detail.setText(admin.getJSONObject(i).getString("description"));
             } catch (JSONException e) {
             }
+            final int finalI = i;
+            eachProject.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        startActivity(new Intent(UserProfile.this,EachProjectAdmin.class)
+                                .putExtra("project_id",admin.optJSONObject(finalI).getLong("id")));
+                    } catch (JSONException e) {}
+                }
+            });
             projectHolder.addView(eachProject, params);
         }
 
@@ -218,6 +228,16 @@ public class UserProfile extends AppCompatActivity {
                 detail.setText(member.getJSONObject(i).getString("description"));
             } catch (JSONException e) {
             }
+            final int finalI = i;
+            eachProject.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        startActivity(new Intent(UserProfile.this,EachProject.class)
+                                .putExtra("project_id",member.optJSONObject(finalI).getLong("id")));
+                    } catch (JSONException e) {}
+                }
+            });
             projectHolder.addView(eachProject, params);
         }
         if (projectHolder.getChildCount() == 0)

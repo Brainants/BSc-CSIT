@@ -19,8 +19,4 @@ public class MyApp extends Application {
         mContext = getApplicationContext();
         FacebookSdk.sdkInitialize(getApplicationContext());
     }
-
-    public static void changedFollowing(boolean changed){
-                MyApp.getContext().getSharedPreferences("basic",MODE_PRIVATE).edit().putBoolean("changedCommunity",changed).apply();
-    }
 }

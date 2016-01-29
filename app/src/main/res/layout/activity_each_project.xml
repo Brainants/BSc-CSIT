@@ -141,7 +141,8 @@
                     android:id="@+id/usersHolderProject"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal" />
+                    android:orientation="horizontal" >
+                </LinearLayout>
             </HorizontalScrollView>
 
             <mehdi.sakout.fancybuttons.FancyButton
