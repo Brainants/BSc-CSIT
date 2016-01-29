@@ -3,34 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardElevation="3dp"
-    android:layout_marginLeft="3dp"
-    android:layout_marginRight="3dp"
-    android:layout_marginTop="5dp"
-    android:layout_marginBottom="5dp"
+    android:layout_margin="3dp"
+    android:orientation="vertical"
+    app:cardElevation="3dp">
 
-    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
 
-
-        <LinearLayout
+        <com.devspark.robototextview.widget.RobotoTextView
+            android:id="@+id/notifTitle"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="10dp"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="Notification Title"
+            android:textColor="@color/black"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
 
-            <com.devspark.robototextview.widget.RobotoTextView
-                android:id="@+id/notifTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Notification Title"
-                android:layout_marginBottom="5dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold" />
-            <com.devspark.robototextview.widget.RobotoTextView
-                android:id="@+id/notifDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Description Here"/>
+        <com.devspark.robototextview.widget.RobotoTextView
+            android:id="@+id/notifDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Description Here" />
 
-        </LinearLayout>
+    </LinearLayout>
 </android.support.v7.widget.CardView>

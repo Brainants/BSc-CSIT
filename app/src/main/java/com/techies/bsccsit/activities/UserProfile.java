@@ -214,7 +214,7 @@ public class UserProfile extends AppCompatActivity {
                 public void onClick(View view) {
                     try {
                         startActivity(new Intent(UserProfile.this,EachProjectAdmin.class)
-                                .putExtra("project_id",admin.optJSONObject(finalI).getLong("id")));
+                                .putExtra("project_id",String.valueOf(admin.optJSONObject(finalI).getLong("id"))));
                     } catch (JSONException e) {}
                 }
             });
@@ -236,7 +236,7 @@ public class UserProfile extends AppCompatActivity {
                 public void onClick(View view) {
                     try {
                         startActivity(new Intent(UserProfile.this,EachProject.class)
-                                .putExtra("project_id",member.optJSONObject(finalI).getLong("id")));
+                                .putExtra("project_id",String.valueOf(admin.optJSONObject(finalI).getLong("id"))));
                     } catch (JSONException e) {}
                 }
             });

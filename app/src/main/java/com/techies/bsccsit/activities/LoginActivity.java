@@ -149,13 +149,13 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(String response) {
                     try {
-                        dialog.dismiss();
                         JSONObject object = new JSONObject(response);
                         if (object.getBoolean("exists")) {
                             addEveryThingToSp(object.getJSONObject("data"));
                             if (object.getJSONObject("data").getString("communities").equals("")) {
                                 editor.putBoolean("loggedFirstIn", true);
                                 editor.putBoolean("formFilled", true).apply();
+                                dialog.dismiss();
                                 finish();
                                 startActivity(new Intent(LoginActivity.this, CompleteLogin.class));
                             }
@@ -165,6 +165,7 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             editor.putBoolean("loggedFirstIn", true);
                             editor.apply();
+                            dialog.dismiss();
                             startActivity(new Intent(LoginActivity.this, CompleteLogin.class));
                             finish();
                         }

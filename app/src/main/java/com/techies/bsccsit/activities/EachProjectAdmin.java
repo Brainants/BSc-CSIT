@@ -138,7 +138,6 @@ public class EachProjectAdmin extends AppCompatActivity {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setMargins(4, 0, 4, 0);
         requestHolder.removeAllViews();
-        int num = 0;
         for (int i = 0; i < requests.length(); i++) {
             RelativeLayout eachUser = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.user_widget, null);
 
@@ -147,9 +146,8 @@ public class EachProjectAdmin extends AppCompatActivity {
             name.setText(requests.getJSONObject(i).getString("name"));
             Picasso.with(this).load("https://graph.facebook.com/" + requests.getJSONObject(i).getString("id") + "/picture?type=large").into(userView);
             requestHolder.addView(eachUser, params);
-            num = i;
         }
-        if (num == 0) {
+        if (requests.length() == 0) {
             requestsHeader.setText("No requests");
             horizontalScrollViewRequest.setVisibility(View.GONE);
         }
@@ -159,7 +157,6 @@ public class EachProjectAdmin extends AppCompatActivity {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setMargins(4, 0, 4, 0);
         userHolder.removeAllViews();
-        int num = 0;
         for (int i = 0; i < users.length(); i++) {
             RelativeLayout eachUser = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.user_widget, null);
 
@@ -168,9 +165,8 @@ public class EachProjectAdmin extends AppCompatActivity {
             name.setText(users.getJSONObject(i).getString("name"));
             Picasso.with(this).load("https://graph.facebook.com/" + users.getJSONObject(i).getString("id") + "/picture?type=large").into(userView);
             userHolder.addView(eachUser, params);
-            num = i;
         }
-        if (num == 0) {
+        if (users.length() == 0) {
             membersHeader.setText("No members");
             horizontalScrollViewUser.setVisibility(View.GONE);
         }

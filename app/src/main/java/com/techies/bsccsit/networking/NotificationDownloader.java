@@ -1,7 +1,6 @@
 package com.techies.bsccsit.networking;
 
 
-import android.app.DownloadManager;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -9,7 +8,6 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.techies.bsccsit.advance.Singleton;
 
 import org.json.JSONArray;

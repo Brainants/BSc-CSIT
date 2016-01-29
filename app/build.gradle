@@ -40,4 +40,5 @@ dependencies {
     compile 'com.romainpiel.shimmer:library:1.4.0@aar'
     compile 'com.beardedhen:androidbootstrap:2.0.1'
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
+    compile 'com.flaviofaria:kenburnsview:1.0.7'
 }

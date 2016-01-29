@@ -82,6 +82,7 @@ public class Notification extends AppCompatActivity {
 
 
     private void fillRecy() {
+        recy.setVisibility(View.VISIBLE);
         adapter = new NotificationAdapter(this, title, desc, link);
         recy.setLayoutManager(new LinearLayoutManager(this));
         recy.setAdapter(adapter);

@@ -8,13 +8,23 @@
     android:background="@color/white"
     tools:context="com.techies.bsccsit.activities.LoginActivity">
 
-
-    <ImageView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:alpha=".8"
-        android:scaleType="centerCrop"
-        android:src="@drawable/back" />
+        android:layout_height="match_parent">
+
+
+        <com.flaviofaria.kenburnsview.KenBurnsView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha=".8"
+            android:scaleType="centerCrop"
+            android:src="@drawable/back" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="#60000000" />
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/logo"
@@ -36,14 +46,6 @@
         android:textColor="@color/white"
         android:textSize="25dp"
         app:typeface="roboto_bold" />
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewPagerIntro"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/loginButton"
-        android:layout_below="@+id/appTitle" />
-
 
     <mehdi.sakout.fancybuttons.FancyButton
         android:id="@+id/loginButton"

@@ -114,7 +114,8 @@
         <activity android:name=".activities.EachProject" />
         <activity android:name=".activities.UserProfile" />
         <activity android:name=".activities.EachProjectAdmin" />
-        <activity android:name=".activities.Notification"></activity>
+        <activity android:name=".activities.Notification" />
+        <activity android:name=".activities.ProjectByTag"></activity>
     </application>
 
 </manifest>

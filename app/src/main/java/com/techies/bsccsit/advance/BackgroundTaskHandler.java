@@ -5,10 +5,11 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.PowerManager;
 import android.support.v7.app.NotificationCompat;
-import android.util.Log;
 
 import com.google.android.gms.gcm.GcmTaskService;
 import com.google.android.gms.gcm.TaskParams;
@@ -47,12 +48,19 @@ public class BackgroundTaskHandler extends GcmTaskService {
 
     public static void notification(String title, String content, String ticker, int notifyNumber, Intent intent1, Context context) {
         NotificationCompat.Builder notificationCompat = new NotificationCompat.Builder(context);
+        Uri sound = Uri.parse("android.resource://"
+                + context.getPackageName() + "/" + R.raw.notification);
         notificationCompat.setAutoCancel(true)
-                .setSmallIcon(R.mipmap.ic_launcher)
                 .setTicker(ticker)
                 .setWhen(System.currentTimeMillis())
                 .setContentTitle(title)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
+                .setLights(Color.BLUE, 3000, 3000)
+                .setSound(sound)
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
                 .setContentText(content);
+
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
         notificationCompat.setContentIntent(pendingIntent);
         NotificationManager notificationManagerCompat = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -69,7 +77,6 @@ public class BackgroundTaskHandler extends GcmTaskService {
 
     @Override
     public int onRunTask(TaskParams taskParams) {
-
         final int previousNews = Singleton.getNewsCount();
         NewsDownloader newsDownloader = new NewsDownloader();
         newsDownloader.execute();
@@ -98,7 +105,7 @@ public class BackgroundTaskHandler extends GcmTaskService {
             @Override
             public void OnTaskCompleted(boolean success) {
                 if (success) {
-                    if (previousNotification < Singleton.getNotifCount()) {
+                    if (Singleton.getNotifCount() > previousNews) {
                         Singleton.setNotificationStatus(true);
                         NotifyNewNotification(previousNotification);
                     }
@@ -176,7 +183,10 @@ public class BackgroundTaskHandler extends GcmTaskService {
             intent.setData(Uri.parse(cursor.getString(cursor.getColumnIndex("link"))));
             notification(cursor.getString(cursor.getColumnIndex("title")),
                     cursor.getString(cursor.getColumnIndex("desc")),
-                    cursor.getString(cursor.getColumnIndex("title")), new Random().nextInt(), intent, this);
+                    cursor.getString(cursor.getColumnIndex("title")),
+                    new Random().nextInt(30 - 5) + 5,
+                    intent,
+                    this);
         }
         cursor.close();
     }
