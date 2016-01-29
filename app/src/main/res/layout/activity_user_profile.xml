@@ -223,10 +223,11 @@
     <LinearLayout
         android:id="@+id/errorMessageProfile"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="300dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
+        android:layout_marginTop="20dp"
         android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:visibility="gone">
 
         <ImageView

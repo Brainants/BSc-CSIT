@@ -13,12 +13,15 @@ import android.widget.RelativeLayout;
 import com.devspark.robototextview.widget.RobotoTextView;
 import com.techies.bsccsit.R;
 import com.techies.bsccsit.activities.EachProject;
+import com.techies.bsccsit.activities.EachProjectAdmin;
+import com.techies.bsccsit.advance.MyApp;
 import com.techies.bsccsit.advance.Singleton;
 
 import java.util.ArrayList;
 
 public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.VH> {
     private final Context context;
+    private final ArrayList<String> user;
     private LayoutInflater inflater;
     private ArrayList<String> projectIds;
     private ArrayList<String> titles;
@@ -27,6 +30,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.VH> {
 
     public ProjectAdapter(Context context, ArrayList<String> projectIds,
                           ArrayList<String> titles,
+                          ArrayList<String> user,
                           ArrayList<String> tags,
                           ArrayList<String> detail) {
         inflater = LayoutInflater.from(context);
@@ -34,6 +38,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.VH> {
         this.projectIds = projectIds;
         this.titles = titles;
         this.tags = tags;
+        this.user = user;
         this.detail = detail;
     }
 
@@ -56,8 +61,12 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.VH> {
         holder.core.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                context.startActivity(new Intent(context, EachProject.class)
-                        .putExtra("project_id",projectIds.get(position)));
+                if (user.get(position).equals(MyApp.getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getString("UserID", "")))
+                    context.startActivity(new Intent(context, EachProjectAdmin.class)
+                            .putExtra("project_id", projectIds.get(position)));
+                else
+                    context.startActivity(new Intent(context, EachProject.class)
+                            .putExtra("project_id", projectIds.get(position)));
             }
         });
     }
@@ -77,7 +86,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.VH> {
             title = (RobotoTextView) itemView.findViewById(R.id.projectName);
             detail = (RobotoTextView) itemView.findViewById(R.id.projectDetail);
             tagsHolder = (LinearLayout) itemView.findViewById(R.id.tagsHoldr);
-            core= (RelativeLayout) itemView;
+            core = (RelativeLayout) itemView;
         }
     }
 }

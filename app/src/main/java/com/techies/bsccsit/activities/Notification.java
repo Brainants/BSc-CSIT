@@ -19,6 +19,8 @@ import com.techies.bsccsit.networking.NotificationDownloader;
 
 import java.util.ArrayList;
 
+import com.techies.bsccsit.R;
+
 public class Notification extends AppCompatActivity {
 
     private Toolbar toolbar;

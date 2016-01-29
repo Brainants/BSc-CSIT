@@ -146,7 +146,7 @@ public class FbPage extends AppCompatActivity {
                 if (Singleton.getFollowingArray().size() <= 6) {
                     Snackbar.make(findViewById(R.id.fbPageCore), "You must follow at least 5 communities.", Snackbar.LENGTH_SHORT).show();
                 }
-                item.setIcon(R.drawable.plus);
+                item.setTitle("Follow");
                 Singleton.getInstance().getDatabase().execSQL("DELETE FROM myCommunities WHERE FbID = " + page_id);
                 Snackbar.make(findViewById(R.id.fbPageCore), getIntent().getStringExtra("name") + " removed Successfully.", Snackbar.LENGTH_SHORT).show();
             } else {
@@ -155,7 +155,7 @@ public class FbPage extends AppCompatActivity {
                 values.put("FbID", page_id);
                 values.put("ExtraText", getIntent().getStringExtra("details"));
                 Singleton.getInstance().getDatabase().insert("myCommunities", null, values);
-                item.setIcon(R.drawable.cross);
+                item.setTitle("Unfollow");
                 Snackbar.make(findViewById(R.id.fbPageCore), getIntent().getStringExtra("name") + " added Successfully.", Snackbar.LENGTH_SHORT).show();
                 getSharedPreferences("community", Context.MODE_PRIVATE).edit().putBoolean("changedComm", true).apply();
             }
@@ -168,9 +168,9 @@ public class FbPage extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_page, menu);
         MenuItem item = menu.getItem(0);
         if (Singleton.checkExistInFollowing(page_id)) {
-            item.setIcon(R.drawable.cross);
+            item.setTitle("Unfollow");
         } else {
-            item.setIcon(R.drawable.plus);
+            item.setTitle("Follow");
         }
 
         return true;
