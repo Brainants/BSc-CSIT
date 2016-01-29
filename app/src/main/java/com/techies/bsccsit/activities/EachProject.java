@@ -1,6 +1,7 @@
 package com.techies.bsccsit.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -29,6 +30,7 @@ import com.techies.bsccsit.advance.MyApp;
 import com.techies.bsccsit.advance.Singleton;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -205,7 +207,7 @@ public class EachProject extends AppCompatActivity {
         });
     }
 
-    private void fillUsers(JSONObject admin, JSONArray users) throws Exception {
+    private void fillUsers(JSONObject admin, final JSONArray users) throws Exception {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setMargins(4, 0, 4, 0);
         managedBy.setText(admin.getString("name"));
@@ -217,8 +219,17 @@ public class EachProject extends AppCompatActivity {
             RobotoTextView name = (RobotoTextView) eachUser.findViewById(R.id.name);
             CircleImageView userView = (CircleImageView) eachUser.findViewById(R.id.image);
             name.setText(users.getJSONObject(i).getString("name"));
-            Picasso.with(this).load("https://graph.facebook.com/" + users.getJSONObject(i).getString("user_id") + "/picture?type=large").into(userView);
+            Picasso.with(this).load("https://graph.facebook.com/" + users.getJSONObject(i).getString("id") + "/picture?type=large").into(userView);
             userHolder.addView(eachUser, params);
+            final int finalI = i;
+            eachUser.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        startActivity(new Intent(EachProject.this, UserProfile.class).putExtra("userID", users.getJSONObject(finalI).getString("id")));
+                    } catch (JSONException e) {}
+                }
+            });
             num = i;
         }
         if (num == 0) {
