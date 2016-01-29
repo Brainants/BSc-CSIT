@@ -113,7 +113,8 @@
             android:screenOrientation="portrait" />
         <activity android:name=".activities.EachProject" />
         <activity android:name=".activities.UserProfile" />
-        <activity android:name=".activities.EachProjectAdmin"></activity>
+        <activity android:name=".activities.EachProjectAdmin" />
+        <activity android:name=".activities.Notification"></activity>
     </application>
 
 </manifest>

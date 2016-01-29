@@ -66,9 +66,7 @@ public class NoticeDownloader {
             }
 
         });
-        arrayRequest.setRetryPolicy(new
-
-                DefaultRetryPolicy(20 * 1000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        arrayRequest.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         Singleton.getInstance().getRequestQueue().add(arrayRequest);
 
     }

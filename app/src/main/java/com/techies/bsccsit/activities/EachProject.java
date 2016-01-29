@@ -67,7 +67,7 @@ public class EachProject extends AppCompatActivity {
         seekingCount = (RobotoTextView) findViewById(R.id.seekingCount);
         managedBy = (RobotoTextView) findViewById(R.id.adminName);
         membersHeader = (RobotoTextView) findViewById(R.id.membersHeader);
-        horizontalScrollViewUser= (HorizontalScrollView) findViewById(R.id.horizontalUser);
+        horizontalScrollViewUser = (HorizontalScrollView) findViewById(R.id.horizontalUser);
         errorLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -209,6 +209,7 @@ public class EachProject extends AppCompatActivity {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setMargins(4, 0, 4, 0);
         managedBy.setText(admin.getString("name"));
+        userHolder.removeAllViews();
         int num = 0;
         for (int i = 0; i < users.length(); i++) {
             RelativeLayout eachUser = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.user_widget, null);
@@ -228,6 +229,7 @@ public class EachProject extends AppCompatActivity {
 
     private void fillTags(String tags) {
         String[] tag = tags.split(",");
+        tagHolder.removeAllViews();
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         for (String eachTagString : tag) {
             FancyButton eachTag = (FancyButton) LayoutInflater.from(this).inflate(R.layout.tag_widget, null);

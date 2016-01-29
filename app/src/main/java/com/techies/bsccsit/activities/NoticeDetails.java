@@ -37,7 +37,7 @@ public class NoticeDetails extends AppCompatActivity {
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        setTitle(getIntent().getStringExtra("noticeTitle"));
+        setTitle("Notice");
         noticeTitle.setText(getIntent().getStringExtra("noticeTitle"));
         noticeDate.setText(Singleton.convertDate(getIntent().getStringExtra("noticeDate")));
 
