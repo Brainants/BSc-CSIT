@@ -6,7 +6,7 @@
     android:id="@+id/settingsCore"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.techies.bsccsit.activities.Settings">
+    tools:context="com.brainants.bsccsit.activities.Settings">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

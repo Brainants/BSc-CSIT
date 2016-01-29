@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.techies.bsccsit">
+    package="com.brainants.bsccsit">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.SEND_DOWNLOAD_COMPLETED_INTENTS" />
 
     <application
-        android:name=".advance.MyApp"
+        android:name="com.brainants.bsccsit.advance.MyApp"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
@@ -23,7 +23,7 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".activities.MainActivity"
+            android:name="com.brainants.bsccsit.activities.MainActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -33,7 +33,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.LoginActivity"
+            android:name="com.brainants.bsccsit.activities.LoginActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
@@ -45,21 +45,21 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
-            android:name=".activities.CompleteLogin"
+            android:name="com.brainants.bsccsit.activities.CompleteLogin"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:theme="@style/FullscreenTheme" />
         <activity
-            android:name=".activities.Settings"
+            android:name="com.brainants.bsccsit.activities.Settings"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.ImageViewActivity"
+            android:name="com.brainants.bsccsit.activities.ImageViewActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
         <activity
-            android:name=".activities.EachPost"
+            android:name="com.brainants.bsccsit.activities.EachPost"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
 
@@ -68,20 +68,20 @@
             android:value="9cfaedb2af986a27f7bd621e43ec9f21adaf8e68" />
 
         <activity
-            android:name=".activities.FbPage"
+            android:name="com.brainants.bsccsit.activities.FbPage"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.AboutUs"
+            android:name="com.brainants.bsccsit.activities.AboutUs"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".admin.AdminPanel"
+            android:name="com.brainants.bsccsit.admin.AdminPanel"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
 
         <service
-            android:name=".advance.BackgroundTaskHandler"
+            android:name="com.brainants.bsccsit.advance.BackgroundTaskHandler"
             android:exported="true"
             android:permission="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE">
             <intent-filter>
@@ -90,11 +90,11 @@
         </service>
 
         <activity
-            android:name=".activities.FbEvent"
+            android:name="com.brainants.bsccsit.activities.FbEvent"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
 
-        <receiver android:name=".fragments.eLibraryPagerFragment$Receiver">
+        <receiver android:name="com.brainants.bsccsit.fragments.eLibraryPagerFragment$Receiver">
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_DOWNLOAD_COMPLETE" />
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
@@ -103,19 +103,19 @@
         </receiver>
 
         <activity
-            android:name=".activities.AddProject"
+            android:name="com.brainants.bsccsit.activities.AddProject"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name=".activities.NoticeDetails"
+            android:name="com.brainants.bsccsit.activities.NoticeDetails"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
-        <activity android:name=".activities.EachProject" />
-        <activity android:name=".activities.UserProfile" />
-        <activity android:name=".activities.EachProjectAdmin" />
-        <activity android:name=".activities.Notification" />
-        <activity android:name=".activities.ProjectByTag"></activity>
+        <activity android:name="com.brainants.bsccsit.activities.EachProject" />
+        <activity android:name="com.brainants.bsccsit.activities.UserProfile" />
+        <activity android:name="com.brainants.bsccsit.activities.EachProjectAdmin" />
+        <activity android:name="com.brainants.bsccsit.activities.Notification" />
+        <activity android:name="com.brainants.bsccsit.activities.ProjectByTag"></activity>
     </application>
 
 </manifest>

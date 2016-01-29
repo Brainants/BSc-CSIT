@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context="com.techies.bsccsit.activities.LoginActivity">
+    tools:context="com.brainants.bsccsit.activities.LoginActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"

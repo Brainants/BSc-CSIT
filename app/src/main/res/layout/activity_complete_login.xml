@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#eee"
     android:orientation="vertical"
-    tools:context="com.techies.bsccsit.activities.CompleteLogin">
+    tools:context="com.brainants.bsccsit.activities.CompleteLogin">
 
     <TextView
         android:id="@+id/introbar"

@@ -3,7 +3,7 @@
     android:id="@+id/CompleteCore"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.techies.bsccsit.fragments.CompleteLoginForm">
+    tools:context="com.brainants.bsccsit.fragments.CompleteLoginForm">
 
     <LinearLayout
         android:layout_width="match_parent"

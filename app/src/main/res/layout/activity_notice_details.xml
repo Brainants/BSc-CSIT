@@ -9,7 +9,7 @@
     android:layout_height="match_parent"
     android:background="#fff"
     android:fitsSystemWindows="true"
-    tools:context="com.techies.bsccsit.activities.NoticeDetails">
+    tools:context="com.brainants.bsccsit.activities.NoticeDetails">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

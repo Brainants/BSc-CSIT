@@ -5,7 +5,7 @@
     android:id="@+id/coreEachPost"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.techies.bsccsit.activities.EachPost">
+    tools:context="com.brainants.bsccsit.activities.EachPost">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

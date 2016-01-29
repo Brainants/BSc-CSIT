@@ -6,7 +6,7 @@
     android:id="@+id/addProjectCood"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.techies.bsccsit.activities.AddProject">
+    tools:context="com.brainants.bsccsit.activities.AddProject">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarPage"

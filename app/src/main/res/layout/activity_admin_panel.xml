@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/searchFrag"
-        android:name="com.techies.bsccsit.admin.SearchFragment"
+        android:name="com.brainants.bsccsit.admin.SearchFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout="@layout/fragment_facebook_search" />

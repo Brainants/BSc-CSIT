@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000"
-    tools:context="com.techies.bsccsit.activities.ImageViewActivity">
+    tools:context="com.brainants.bsccsit.activities.ImageViewActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbarImageView"
@@ -13,7 +13,7 @@
         android:background="@android:color/transparent"
         android:theme="@style/Theme.AppCompat" />
 
-    <com.techies.bsccsit.widget.TouchImageView
+    <com.brainants.bsccsit.widget.TouchImageView
         android:id="@+id/imageViewerImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.techies.bsccsit.fragments.eLibrary">
+    tools:context="com.brainants.bsccsit.fragments.eLibrary">
 
     <android.support.design.widget.TabLayout
         android:layout_width="match_parent"

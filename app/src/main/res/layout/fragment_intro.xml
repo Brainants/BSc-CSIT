@@ -6,7 +6,7 @@
     android:gravity="center"
     android:orientation="vertical"
     android:padding="20dp"
-    tools:context="com.techies.bsccsit.fragments.IntroFragment">
+    tools:context="com.brainants.bsccsit.fragments.IntroFragment">
 
     <com.devspark.robototextview.widget.RobotoTextView
         android:id="@+id/introTitle"
