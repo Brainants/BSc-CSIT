@@ -219,5 +219,10 @@ public class Singleton {
     public GcmNetworkManager getGcmScheduler() {
         return mScheduler;
     }
+
+    public static boolean hasNewNotifications() {
+        return MyApp.getContext().getSharedPreferences("notifications",Context.MODE_PRIVATE).getBoolean("hasNewNotif",false);
+
+    }
 }
 

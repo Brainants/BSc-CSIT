@@ -15,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -208,8 +209,24 @@ public class MainActivity extends AppCompatActivity {
         if (item.getItemId() == android.R.id.home) {
             drawerLayout.openDrawer(findViewById(R.id.naviView));
             return true;
+        } else if(item.getItemId()==R.id.action_notif) {
+            startActivity(new Intent(MainActivity.this,Notification.class));
         }
+
+
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.action_main,menu);
+
+        if(Singleton.hasNewNotifications())
+            menu.getItem(0).setIcon(R.drawable.bell_fill);
+        else
+            menu.getItem(0).setIcon(R.drawable.bell_outline);
+
+        return true;
     }
 
     private void constructJob() {
