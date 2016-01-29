@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -138,6 +139,7 @@ public class EachProject extends AppCompatActivity {
                 return params;
             }
         };
+        request.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         Singleton.getInstance().getRequestQueue().add(request);
     }
 
@@ -201,6 +203,7 @@ public class EachProject extends AppCompatActivity {
                         return params;
                     }
                 };
+                request.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                 Singleton.getInstance().getRequestQueue().add(request);
 
             }
