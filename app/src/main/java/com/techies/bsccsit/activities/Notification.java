@@ -48,6 +48,7 @@ public class Notification extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         setTitle("Notifications");
+        Singleton.setNotificationStatus(false);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -64,11 +65,13 @@ public class Notification extends AppCompatActivity {
         link.clear();
         int i = 0;
         while (cursor.moveToNext()) {
-            i++;
-            title.add(cursor.getString(cursor.getColumnIndex("title")));
-            desc.add(cursor.getString(cursor.getColumnIndex("desc")));
-            show.add(cursor.getInt(cursor.getColumnIndex("show")));
-            link.add(cursor.getString(cursor.getColumnIndex("link")));
+            if (cursor.getInt(cursor.getColumnIndex("show")) == 1) {
+                i++;
+                title.add(cursor.getString(cursor.getColumnIndex("title")));
+                desc.add(cursor.getString(cursor.getColumnIndex("desc")));
+                show.add(cursor.getInt(cursor.getColumnIndex("show")));
+                link.add(cursor.getString(cursor.getColumnIndex("link")));
+            }
         }
         cursor.close();
         if (i == 0) {
@@ -79,7 +82,7 @@ public class Notification extends AppCompatActivity {
 
 
     private void fillRecy() {
-        adapter = new NotificationAdapter(this,title,desc,link);
+        adapter = new NotificationAdapter(this, title, desc, link);
         recy.setLayoutManager(new LinearLayoutManager(this));
         recy.setAdapter(adapter);
     }

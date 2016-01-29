@@ -232,8 +232,8 @@
         android:visibility="gone">
 
         <ImageView
-            android:layout_width="192dp"
-            android:layout_height="192dp"
+            android:layout_width="136dp"
+            android:layout_height="136dp"
             android:padding="16dp"
             android:src="@drawable/no_connection" />
 

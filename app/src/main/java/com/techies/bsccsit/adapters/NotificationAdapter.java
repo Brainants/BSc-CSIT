@@ -15,9 +15,6 @@ import com.techies.bsccsit.R;
 
 import java.util.ArrayList;
 
-/**
- * Created by roshan on 1/29/16.
- */
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.CustomViewHolder> {
 
     LayoutInflater inflater;

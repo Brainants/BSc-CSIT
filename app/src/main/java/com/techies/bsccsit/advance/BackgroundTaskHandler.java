@@ -4,6 +4,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.PowerManager;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
@@ -16,6 +18,7 @@ import com.techies.bsccsit.networking.EventsDownloader;
 import com.techies.bsccsit.networking.MyCommunitiesUploader;
 import com.techies.bsccsit.networking.NewsDownloader;
 import com.techies.bsccsit.networking.NoticeDownloader;
+import com.techies.bsccsit.networking.NotificationDownloader;
 import com.techies.bsccsit.networking.PopularCommunitiesDownloader;
 import com.techies.bsccsit.networking.TagsDownloader;
 import com.techies.bsccsit.networking.eLibraryDownloader;
@@ -23,6 +26,7 @@ import com.techies.bsccsit.networking.eLibraryDownloader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Random;
 
 public class BackgroundTaskHandler extends GcmTaskService {
 
@@ -87,6 +91,21 @@ public class BackgroundTaskHandler extends GcmTaskService {
             }
         });
 
+        final int previousNotification = Singleton.getNotifCount();
+        NotificationDownloader NotifDownloader = new NotificationDownloader();
+        NotifDownloader.doInBackground();
+        NotifDownloader.setOnTaskCompleteListener(new NotificationDownloader.ClickListener() {
+            @Override
+            public void OnTaskCompleted(boolean success) {
+                if (success) {
+                    if (previousNotification < Singleton.getNotifCount()) {
+                        Singleton.setNotificationStatus(true);
+                        NotifyNewNotification(previousNotification);
+                    }
+                }
+            }
+        });
+
         final int previousCommunity = Singleton.getCommunityCount();
         PopularCommunitiesDownloader communityDownloader = new PopularCommunitiesDownloader();
         communityDownloader.doInBackground();
@@ -138,7 +157,7 @@ public class BackgroundTaskHandler extends GcmTaskService {
             }
         });
 
-        TagsDownloader tagsDownloader=new TagsDownloader();
+        TagsDownloader tagsDownloader = new TagsDownloader();
         tagsDownloader.doInBackground();
         tagsDownloader.setOnTaskCompleteListener(new TagsDownloader.ClickListener() {
             @Override
@@ -148,5 +167,17 @@ public class BackgroundTaskHandler extends GcmTaskService {
         });
 
         return 1;
+    }
+
+    private void NotifyNewNotification(int previousNotification) {
+        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM notifications", null);
+        for (int i = 0; i < previousNotification; i++) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(cursor.getString(cursor.getColumnIndex("link"))));
+            notification(cursor.getString(cursor.getColumnIndex("title")),
+                    cursor.getString(cursor.getColumnIndex("desc")),
+                    cursor.getString(cursor.getColumnIndex("title")), new Random().nextInt(), intent, this);
+        }
+        cursor.close();
     }
 }

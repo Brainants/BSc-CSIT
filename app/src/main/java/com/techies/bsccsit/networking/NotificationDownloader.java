@@ -37,11 +37,9 @@ public class NotificationDownloader {
                         title.add(object.getString("title"));
                         desc.add(object.getString("description"));
                         link.add(object.getString("deeplink"));
-
                         show.add(object.getInt("show"));
                     }
                     storeToDb();
-
                 } catch (JSONException e) {
                     listener.OnTaskCompleted(false);
                 }
@@ -61,18 +59,16 @@ public class NotificationDownloader {
     private void storeToDb() {
 
         SQLiteDatabase database = Singleton.getInstance().getDatabase();
-        database.delete("notifications",null,null);
+        database.delete("notifications", null, null);
         ContentValues values = new ContentValues();
 
         for (int i = 0; i < title.size(); i++) {
             values.clear();
-            if (show.get(i) == 1) {
-                values.put("title", title.get(i));
-                values.put("desc", desc.get(i));
-                values.put("link", link.get(i));
-                values.put("show", show.get(i));
-                database.insert("notifications", null, values);
-            }
+            values.put("title", title.get(i));
+            values.put("desc", desc.get(i));
+            values.put("link", link.get(i));
+            values.put("show", show.get(i));
+            database.insert("notifications", null, values);
         }
         listener.OnTaskCompleted(true);
     }

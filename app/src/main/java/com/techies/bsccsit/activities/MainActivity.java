@@ -239,6 +239,7 @@ public class MainActivity extends AppCompatActivity {
             current = "Home";
             navigationView.getMenu().getItem(0).setChecked(true);
             previous = navigationView.getMenu().getItem(0).getItemId();
+            fab.hide();
             manager.beginTransaction().replace(R.id.fragHolder, new NewsEvents()).commit();
         } else {
             super.onBackPressed();

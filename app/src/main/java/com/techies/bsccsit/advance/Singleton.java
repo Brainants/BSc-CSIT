@@ -222,7 +222,17 @@ public class Singleton {
 
     public static boolean hasNewNotifications() {
         return MyApp.getContext().getSharedPreferences("notifications",Context.MODE_PRIVATE).getBoolean("hasNewNotif",false);
+    }
 
+    public static void setNotificationStatus(boolean hasNew){
+        MyApp.getContext().getSharedPreferences("notifications",Context.MODE_PRIVATE).edit().putBoolean("hasNewNotif",hasNew).apply();
+    }
+
+    public static int getNotifCount() {
+        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM notifications", null);
+        int count = cursor.getCount();
+        cursor.close();
+        return count;
     }
 }
 
