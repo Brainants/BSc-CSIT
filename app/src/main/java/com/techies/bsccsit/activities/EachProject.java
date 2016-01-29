@@ -98,11 +98,19 @@ public class EachProject extends AppCompatActivity {
                 try {
                     mScrollView.setVisibility(View.VISIBLE);
                     loading.setVisibility(View.GONE);
-                    JSONObject coreObject = new JSONObject(response);
+                    final JSONObject coreObject = new JSONObject(response);
                     title.setText(coreObject.getString("title"));
                     setTitle(coreObject.getString("title"));
                     detail.setText(coreObject.getString("description"));
                     Picasso.with(EachProject.this).load("https://graph.facebook.com/" + coreObject.getLong("user_id") + "/picture?type=large").into(adminImageView);
+                    adminImageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            try {
+                                startActivity(new Intent(EachProject.this,UserProfile.class).putExtra("user_id",String.valueOf(coreObject.getLong("user_id"))));
+                            } catch (JSONException e) {}
+                        }
+                    });
                     fillTags(coreObject.getString("tags"));
                     fillUsers(coreObject.getJSONObject("admin"), coreObject.getJSONArray("members"));
                     handleRequestButton(coreObject.getJSONArray("requests"));
@@ -213,7 +221,7 @@ public class EachProject extends AppCompatActivity {
 
     private void fillUsers(JSONObject admin, final JSONArray users) throws Exception {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(4, 0, 4, 0);
+        params.setMargins(0,0,4,0);
         managedBy.setText(admin.getString("name"));
         userHolder.removeAllViews();
         for (int i = 0; i < users.length(); i++) {
@@ -221,7 +229,7 @@ public class EachProject extends AppCompatActivity {
 
             RobotoTextView name = (RobotoTextView) eachUser.findViewById(R.id.name);
             CircleImageView userView = (CircleImageView) eachUser.findViewById(R.id.image);
-            name.setText(users.getJSONObject(i).getString("name"));
+            name.setText(users.getJSONObject(i).getString("name").split(" ")[0]);
             Picasso.with(this).load("https://graph.facebook.com/" + users.getJSONObject(i).getString("id") + "/picture?type=large").into(userView);
             userHolder.addView(eachUser, params);
             final int finalI = i;

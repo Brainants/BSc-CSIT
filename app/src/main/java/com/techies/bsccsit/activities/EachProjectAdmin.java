@@ -1,8 +1,9 @@
 package com.techies.bsccsit.activities;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -12,7 +13,9 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -25,6 +28,7 @@ import com.techies.bsccsit.R;
 import com.techies.bsccsit.advance.Singleton;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -134,17 +138,43 @@ public class EachProjectAdmin extends AppCompatActivity {
 
     }
 
-    private void fillRequest(JSONArray requests) throws Exception {
+    private void fillRequest(final JSONArray requests) throws Exception {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(4, 0, 4, 0);
+        params.setMargins(0, 0, 4, 0);
         requestHolder.removeAllViews();
         for (int i = 0; i < requests.length(); i++) {
-            RelativeLayout eachUser = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.user_widget, null);
+            final RelativeLayout eachUser = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.user_widget, null);
 
             RobotoTextView name = (RobotoTextView) eachUser.findViewById(R.id.name);
             CircleImageView userView = (CircleImageView) eachUser.findViewById(R.id.image);
             name.setText(requests.getJSONObject(i).getString("name"));
             Picasso.with(this).load("https://graph.facebook.com/" + requests.getJSONObject(i).getString("id") + "/picture?type=large").into(userView);
+            final int finalI = i;
+            eachUser.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        new MaterialDialog.Builder(EachProjectAdmin.this)
+                                .title(requests.getJSONObject(finalI).getString("name"))
+                                .items(new String[]{"View Profile", "Accept Request"})
+                                .itemsCallback(new MaterialDialog.ListCallback() {
+                                    @Override
+                                    public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                                        try {
+                                            if (which == 0) {
+                                                startActivity(new Intent(EachProjectAdmin.this, UserProfile.class).putExtra("userID", requests.getJSONObject(finalI).getString("id")));
+                                                dialog.dismiss();
+                                            } else
+                                                acceptRequest(requests.getJSONObject(finalI), dialog);
+                                        } catch (Exception e) {}
+                                    }
+                                })
+                                .show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
             requestHolder.addView(eachUser, params);
         }
         if (requests.length() == 0) {
@@ -153,7 +183,51 @@ public class EachProjectAdmin extends AppCompatActivity {
         }
     }
 
-    private void fillUsers(JSONArray users) throws Exception {
+    private void acceptRequest(final JSONObject jsonObject, final MaterialDialog dialogPrevious) throws Exception {
+        final MaterialDialog dialog = new MaterialDialog.Builder(EachProjectAdmin.this)
+                .content("Requesting...")
+                .progress(true, 0)
+                .build();
+        dialog.show();
+        StringRequest request = new StringRequest(Request.Method.POST, "http://bsccsit.brainants.com/accept", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                dialog.dismiss();
+                dialogPrevious.dismiss();
+                if (response.toLowerCase().contains("success")) {
+                    loadFromInternet();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                dialog.dismiss();
+                Toast.makeText(EachProjectAdmin.this, "Unable to connect.", Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                try {
+                    params.put("id", String.valueOf(jsonObject.getInt("id")));
+                } catch (JSONException e) {
+                }
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Content-Type", "application/x-www-form-urlencoded");
+                return params;
+            }
+        };
+        request.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        Singleton.getInstance().getRequestQueue().add(request);
+
+    }
+
+    private void fillUsers(final JSONArray users) throws Exception {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setMargins(4, 0, 4, 0);
         userHolder.removeAllViews();
@@ -164,6 +238,16 @@ public class EachProjectAdmin extends AppCompatActivity {
             CircleImageView userView = (CircleImageView) eachUser.findViewById(R.id.image);
             name.setText(users.getJSONObject(i).getString("name"));
             Picasso.with(this).load("https://graph.facebook.com/" + users.getJSONObject(i).getString("id") + "/picture?type=large").into(userView);
+            final int finalI = i;
+            eachUser.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        startActivity(new Intent(EachProjectAdmin.this, UserProfile.class).putExtra("userID", users.getJSONObject(finalI).getString("id")));
+                    } catch (JSONException e) {
+                    }
+                }
+            });
             userHolder.addView(eachUser, params);
         }
         if (users.length() == 0) {
