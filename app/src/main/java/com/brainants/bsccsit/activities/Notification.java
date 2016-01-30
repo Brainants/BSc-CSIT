@@ -1,5 +1,6 @@
 package com.brainants.bsccsit.activities;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
@@ -87,7 +88,7 @@ public class Notification extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home)
-            finish();
+            startActivity(new Intent(this,MainActivity.class));
         return super.onOptionsItemSelected(item);
     }
 }
