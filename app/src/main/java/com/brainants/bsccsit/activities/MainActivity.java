@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
             if ("brainants".equals(uri.getScheme()) && "bsccsit".equals(uri.getHost())) {
                 // Cool, we have a URI addressed to this activity!
                 String mQuery = uri.getQueryParameter("fragment");
-                Log.d("Debug",mQuery);
+                Log.d("Debug", mQuery);
                 if (mQuery.equals("home"))
                     navigate(navigationView.getMenu().findItem(R.id.newsEvent));
                 else if (mQuery.equals("notice"))

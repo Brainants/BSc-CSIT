@@ -122,7 +122,7 @@ public class BackgroundTaskHandler extends GcmTaskService {
             public void onTaskCompleted(boolean success) {
                 if (success && (Singleton.getCommunityCount() - previousCommunity) > 0 && Singleton.canShowNotif("community"))
                     notification("New communities arrived.", "You may like to follow them.", "New Communities added."
-                            , notifCommunity, new Intent(MyApp.getContext(), MainActivity.class), MyApp.getContext());
+                            , notifCommunity, new Intent(Intent.ACTION_VIEW, Uri.parse("brainants://bsccsit/main?fragment=community")), MyApp.getContext());
             }
         });
 
@@ -145,7 +145,7 @@ public class BackgroundTaskHandler extends GcmTaskService {
             public void onTaskCompleted(boolean success) {
                 if (success && Singleton.getElibraryCount() > previousLibrary && Singleton.canShowNotif("elibrary"))
                     notification("E-Library Updated", "New PDFs has been added. Check them out.", "E-Library Updated"
-                            , notifLibrary, new Intent(MyApp.getContext(), MainActivity.class), MyApp.getContext());
+                            , notifLibrary,  new Intent(Intent.ACTION_VIEW, Uri.parse("brainants://bsccsit/main?fragment=elibrary")), MyApp.getContext());
             }
         });
 
@@ -160,7 +160,7 @@ public class BackgroundTaskHandler extends GcmTaskService {
                         // todo latest notice dekhaune notification();
                     } else
                         notification(Singleton.noticeCount() - previousNotice + " new TU Notices.", "New notices has been detected. Check them out.", "New notices avilable.",
-                                notifNotice, new Intent(MyApp.getContext(), MainActivity.class), MyApp.getContext());
+                                notifNotice,   new Intent(Intent.ACTION_VIEW, Uri.parse("brainants://bsccsit/main?fragment=notice")), MyApp.getContext());
                 }
             }
         });
@@ -179,10 +179,9 @@ public class BackgroundTaskHandler extends GcmTaskService {
 
     private void NotifyNewNotification(int previousNotification) {
         Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM notifications", null);
-        for (int i = previousNotification; i > 0; i--) {
-            cursor.moveToNext();
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(cursor.getString(2)));
+        for (int i = 0; i < previousNotification; i++) {
+            cursor.moveToPosition(i);
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(cursor.getString(2)));
             notification(cursor.getString(0),
                     cursor.getString(1),
                     cursor.getString(0),
