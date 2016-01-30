@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#eee"
+    android:fitsSystemWindows="true"
     tools:context="com.brainants.bsccsit.activities.FbPage">
 
     <android.support.design.widget.AppBarLayout

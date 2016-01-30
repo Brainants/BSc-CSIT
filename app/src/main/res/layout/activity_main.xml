@@ -8,6 +8,7 @@
     android:background="#eee"
     android:orientation="vertical"
     android:scrollbarStyle="insideOverlay"
+    android:fitsSystemWindows="true"
     tools:context=".activities.MainActivity">
 
 

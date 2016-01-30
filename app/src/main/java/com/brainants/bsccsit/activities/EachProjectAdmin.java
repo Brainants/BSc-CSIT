@@ -150,7 +150,7 @@ public class EachProjectAdmin extends AppCompatActivity {
             RobotoTextView name = (RobotoTextView) eachUser.findViewById(R.id.name);
             CircleImageView userView = (CircleImageView) eachUser.findViewById(R.id.image);
             name.setText(requests.getJSONObject(i).getString("name"));
-            Picasso.with(this).load("https://graph.facebook.com/" + requests.getJSONObject(i).getString("id") + "/picture?type=large").into(userView);
+            Picasso.with(this).load("https://graph.facebook.com/" + requests.getJSONObject(i).getString("user_id") + "/picture?type=large").into(userView);
             final int finalI = i;
             eachUser.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -158,16 +158,18 @@ public class EachProjectAdmin extends AppCompatActivity {
                     try {
                         new MaterialDialog.Builder(EachProjectAdmin.this)
                                 .title(requests.getJSONObject(finalI).getString("name"))
-                                .items(new String[]{"View Profile", "Accept Request"})
+                                .items(new String[]{"View Profile", "Accept Request", "Reject Request"})
                                 .itemsCallback(new MaterialDialog.ListCallback() {
                                     @Override
                                     public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
                                         try {
                                             if (which == 0) {
-                                                startActivity(new Intent(EachProjectAdmin.this, UserProfile.class).putExtra("userID", requests.getJSONObject(finalI).getString("id")));
+                                                startActivity(new Intent(EachProjectAdmin.this, UserProfile.class).putExtra("userID", requests.getJSONObject(finalI).getString("user_id")));
                                                 dialog.dismiss();
-                                            } else
+                                            } else if(which==1)
                                                 acceptRequest(requests.getJSONObject(finalI), dialog);
+                                            else
+                                                cancelRequest(requests.getJSONObject(finalI), dialog);
                                         } catch (Exception e) {}
                                     }
                                 })
@@ -185,9 +187,53 @@ public class EachProjectAdmin extends AppCompatActivity {
         }
     }
 
+    private void cancelRequest(final JSONObject jsonObject, final MaterialDialog dialogPrevious) {
+        final MaterialDialog dialog = new MaterialDialog.Builder(EachProjectAdmin.this)
+                .content("Please wait...")
+                .progress(true, 0)
+                .build();
+        dialog.show();
+        StringRequest request = new StringRequest(Request.Method.POST, "http://bsccsit.brainants.com/cancelrequest", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                dialog.dismiss();
+                dialogPrevious.dismiss();
+                if (response.toLowerCase().contains("true")) {
+                    loadFromInternet();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                dialog.dismiss();
+                Toast.makeText(EachProjectAdmin.this, "Unable to connect.", Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                try {
+                    params.put("project_id", String.valueOf(jsonObject.getInt("project_id")));
+                    params.put("user_id", String.valueOf(jsonObject.getInt("user_id_id")));
+                } catch (JSONException e) {
+                }
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Content-Type", "application/x-www-form-urlencoded");
+                return params;
+            }
+        };
+        request.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        Singleton.getInstance().getRequestQueue().add(request);
+    }
+
     private void acceptRequest(final JSONObject jsonObject, final MaterialDialog dialogPrevious) throws Exception {
         final MaterialDialog dialog = new MaterialDialog.Builder(EachProjectAdmin.this)
-                .content("Requesting...")
+                .content("Please wait...")
                 .progress(true, 0)
                 .build();
         dialog.show();
