@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
                 else if (mQuery.equals("community"))
                     navigate(navigationView.getMenu().findItem(R.id.community));
                 else if (mQuery.equals("forum"))
-                    navigate(navigationView.getMenu().getItem(R.id.forum));
+                    navigate(navigationView.getMenu().findItem(R.id.forum));
             }
         } else {
             manager.beginTransaction().replace(R.id.fragHolder, new NewsEvents()).commit();

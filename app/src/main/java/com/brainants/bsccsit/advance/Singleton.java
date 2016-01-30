@@ -234,5 +234,12 @@ public class Singleton {
         cursor.close();
         return count;
     }
+
+    public static int getEventCount() {
+        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM events", null);
+        int count = cursor.getCount();
+        cursor.close();
+        return count;
+    }
 }
 

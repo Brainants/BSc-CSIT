@@ -79,7 +79,8 @@ public class BackgroundTaskHandler extends GcmTaskService {
     public int onRunTask(TaskParams taskParams) {
         final int previousNews = Singleton.getNewsCount();
         NewsDownloader newsDownloader = new NewsDownloader();
-        newsDownloader.execute();
+        if (previousNews != 0)
+            newsDownloader.execute();
         newsDownloader.setTaskCompleteListener(new NewsDownloader.OnTaskCompleted() {
             @Override
             public void onTaskCompleted(boolean success) {
@@ -178,7 +179,8 @@ public class BackgroundTaskHandler extends GcmTaskService {
 
     private void NotifyNewNotification(int previousNotification) {
         Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM notifications", null);
-        for (int i = 0; i < previousNotification; i++) {
+        for (int i = previousNotification; i > 0; i--) {
+            cursor.moveToNext();
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(cursor.getString(2)));
             notification(cursor.getString(0),
