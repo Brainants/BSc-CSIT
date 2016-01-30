@@ -245,6 +245,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         } else if (item.getItemId() == R.id.action_notif) {
             startActivity(new Intent(MainActivity.this, Notification.class));
+            finish();
         }
 
 

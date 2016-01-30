@@ -19,24 +19,17 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.CustomView
     LayoutInflater inflater;
     private ArrayList<String> mTitles = new ArrayList<>(),
             mShorts = new ArrayList<>(),
-            mDetails = new ArrayList<>(),
-            mDates = new ArrayList<>(),
-            mAttachmentLinks = new ArrayList<>(),
-            mAttachmentTitles = new ArrayList<>();
+            mDates = new ArrayList<>();
     private ArrayList<Integer> mIds = new ArrayList<>();
     private Context context;
 
 
-    public NoticeAdapter(Context context, ArrayList<Integer> mIds, ArrayList<String> mTitles, ArrayList<String> mShorts, ArrayList<String> mDetails, ArrayList<String> mDates,
-                         ArrayList<String> mAttachmentLinks, ArrayList<String> mAttachmentTitles) {
+    public NoticeAdapter(Context context, ArrayList<Integer> mIds, ArrayList<String> mTitles, ArrayList<String> mShorts, ArrayList<String> mDates) {
         this.context = context;
         this.mIds = mIds;
         this.mTitles = mTitles;
         this.mShorts = mShorts;
-        this.mDetails = mDetails;
         this.mDates = mDates;
-        this.mAttachmentLinks = mAttachmentLinks;
-        this.mAttachmentTitles = mAttachmentTitles;
         inflater = LayoutInflater.from(context);
     }
 

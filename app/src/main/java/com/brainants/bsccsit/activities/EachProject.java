@@ -51,6 +51,7 @@ public class EachProject extends AppCompatActivity {
     String project_id;
     HorizontalScrollView horizontalScrollViewUser;
     boolean requested = false;
+    boolean isMember=false;
 
 
     @Override
@@ -231,6 +232,8 @@ public class EachProject extends AppCompatActivity {
             name.setText(users.getJSONObject(i).getString("name").split(" ")[0]);
             Picasso.with(this).load("https://graph.facebook.com/" + users.getJSONObject(i).getString("id") + "/picture?type=large").into(userView);
             userHolder.addView(eachUser, params);
+            if(users.getJSONObject(i).getString("id").equals(MyApp.getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getString("UserID", "")))
+                sendRequest.setVisibility(View.GONE);
             final int finalI = i;
             eachUser.setOnClickListener(new View.OnClickListener() {
                 @Override
