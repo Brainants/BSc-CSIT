@@ -1,6 +1,7 @@
 package com.brainants.bsccsit.advance;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
@@ -10,6 +11,7 @@ import android.view.View;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.brainants.bsccsit.activities.ProjectByTag;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.brainants.bsccsit.R;
 
@@ -169,9 +171,10 @@ public class Singleton {
         }
     }
 
-    public static FancyButton getTagView(Context context, String tag) {
+    public static FancyButton getTagView(final Context context, final String tag) {
         FancyButton button = (FancyButton) View.inflate(context, R.layout.tag_widget, null);
         button.setText(tag);
+
         return button;
     }
 

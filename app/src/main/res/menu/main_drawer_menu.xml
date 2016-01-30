@@ -50,6 +50,12 @@
             android:title="Admin Panel" />
 
         <item
+            android:id="@+id/logout"
+            android:checkable="false"
+            android:icon="@drawable/logout"
+            android:title="Logout" />
+
+        <item
             android:id="@+id/about"
             android:checkable="false"
             android:icon="@drawable/about"

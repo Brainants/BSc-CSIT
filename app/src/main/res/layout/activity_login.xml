@@ -34,10 +34,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="350dp"
-                android:gravity="center">
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_height="500dp">
 
                 <ImageView
                     android:id="@+id/logo"
@@ -61,24 +62,46 @@
                     android:textSize="25dp"
                     app:typeface="roboto_bold" />
 
-                <com.devspark.robototextview.widget.RobotoTextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:padding="10dp"
-                    android:text="Scroll Down"
-                    android:textColor="@color/white"
                     android:layout_alignParentBottom="true"
-                    android:textSize="20sp"
-                    app:typeface="roboto_bold" />
-            </RelativeLayout>
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    android:layout_marginTop="50dp">
+
+
+                    <com.devspark.robototextview.widget.RobotoTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Scroll Down"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        app:typeface="roboto_bold" />
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="15dp"
+                        android:src="@drawable/scroll_down" />
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="15dp"
+                        android:src="@drawable/scroll_down" />
+
+                </LinearLayout>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 discrollve:discrollve_alpha="true"
-                discrollve:discrollve_translation="fromRight|fromTop">
+                discrollve:discrollve_scaleX="true"
+                discrollve:discrollve_scaleY="true"
+                discrollve:discrollve_translation="fromRight|fromBottom">
 
                 <ImageView
                     android:layout_width="136dp"
@@ -116,7 +139,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 discrollve:discrollve_alpha="true"
-                discrollve:discrollve_translation="fromLeft|fromTop">
+                discrollve:discrollve_scaleX="true"
+                discrollve:discrollve_scaleY="true"
+                discrollve:discrollve_translation="fromLeft|fromBottom">
 
                 <ImageView
                     android:layout_width="136dp"
@@ -154,7 +179,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 discrollve:discrollve_alpha="true"
-                discrollve:discrollve_translation="fromRight|fromTop">
+                discrollve:discrollve_scaleX="true"
+                discrollve:discrollve_scaleY="true"
+                discrollve:discrollve_translation="fromRight|fromBottom">
 
                 <ImageView
                     android:layout_width="136dp"
@@ -192,7 +219,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 discrollve:discrollve_alpha="true"
-                discrollve:discrollve_translation="fromLeft|fromTop">
+                discrollve:discrollve_scaleX="true"
+                discrollve:discrollve_scaleY="true"
+                discrollve:discrollve_translation="fromLeft|fromBottom">
 
                 <ImageView
                     android:layout_width="136dp"
@@ -230,7 +259,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 discrollve:discrollve_alpha="true"
-                discrollve:discrollve_translation="fromRight|fromTop">
+                discrollve:discrollve_scaleX="true"
+                discrollve:discrollve_scaleY="true"
+                discrollve:discrollve_translation="fromRight|fromBottom">
 
                 <ImageView
                     android:layout_width="136dp"
@@ -270,7 +301,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginBottom="30dp"
+                android:layout_marginBottom="50dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
@@ -279,6 +310,8 @@
                 android:paddingRight="30dp"
                 android:paddingTop="10dp"
                 discrollve:discrollve_alpha="true"
+                discrollve:discrollve_scaleX="true"
+                discrollve:discrollve_scaleY="true"
                 discrollve:discrollve_translation="fromBottom"
                 fancy:fb_borderColor="#FFFFFF"
                 fancy:fb_defaultColor="#3b5998"
