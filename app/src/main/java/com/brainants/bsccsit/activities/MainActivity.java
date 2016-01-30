@@ -16,7 +16,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,9 +23,6 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.google.android.gms.gcm.GcmNetworkManager;
-import com.google.android.gms.gcm.PeriodicTask;
-import com.squareup.picasso.Picasso;
 import com.brainants.bsccsit.R;
 import com.brainants.bsccsit.admin.AdminPanel;
 import com.brainants.bsccsit.advance.BackgroundTaskHandler;
@@ -37,6 +33,9 @@ import com.brainants.bsccsit.fragments.NewsEvents;
 import com.brainants.bsccsit.fragments.Projects;
 import com.brainants.bsccsit.fragments.TuNotices;
 import com.brainants.bsccsit.fragments.eLibrary;
+import com.google.android.gms.gcm.GcmNetworkManager;
+import com.google.android.gms.gcm.PeriodicTask;
+import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -119,80 +118,7 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
-                int id = item.getItemId();
-                drawerLayout.closeDrawer(findViewById(R.id.naviView));
-                if (id == previous)
-                    return true;
-                fab.hide();
-                switch (id) {
-                    case R.id.newsEvent:
-                        setTitle("Home");
-                        current = "Home";
-                        item.setChecked(true);
-                        previous = id;
-                        manager.beginTransaction().replace(R.id.fragHolder, new NewsEvents()).commit();
-                        break;
-                    case R.id.TUNotices:
-                        setTitle("TU Notices");
-                        current = "TU Notices";
-                        item.setChecked(true);
-                        previous = id;
-                        manager.beginTransaction().replace(R.id.fragHolder, new TuNotices()).commit();
-                        break;
-                    case R.id.elibrary:
-                        setTitle("E-Library");
-                        item.setChecked(true);
-                        current = "E-Library";
-                        previous = id;
-                        manager.beginTransaction().replace(R.id.fragHolder, new eLibrary()).commit();
-                        break;
-                    case R.id.projects:
-                        setTitle("Projects");
-                        item.setChecked(true);
-                        current = "Projects";
-                        previous = id;
-                        manager.beginTransaction().replace(R.id.fragHolder, new Projects()).commit();
-                        break;
-                    case R.id.community:
-                        setTitle("Communities");
-                        item.setChecked(true);
-                        current = "Communities";
-                        previous = id;
-                        manager.beginTransaction().replace(R.id.fragHolder, new Community()).commit();
-                        break;
-                    case R.id.fourm:
-                        setTitle("Forum");
-                        item.setChecked(true);
-                        current = "Forum";
-                        previous = id;
-                        manager.beginTransaction().replace(R.id.fragHolder, new Forum()).commit();
-                        break;
-
-                    case R.id.setting:
-                        startActivity(new Intent(MainActivity.this, Settings.class));
-                        break;
-                    case R.id.adminPanel:
-                        startActivity(new Intent(MainActivity.this, AdminPanel.class));
-                        break;
-                    case R.id.about:
-                        startActivity(new Intent(MainActivity.this, AboutUs.class));
-                        break;
-                    case R.id.rate_us:
-                        new MaterialDialog.Builder(MainActivity.this)
-                                .title("Rate us 5 star")
-                                .content("Help us in development by rating us 5 star on play store.")
-                                .positiveText("Rate")
-                                .negativeText("Cancel")
-                                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                    @Override
-                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                        //todo call Play store
-                                    }
-                                })
-                                .build()
-                                .show();
-                        break;
-                }
+                navigate(item);
                 return true;
             }
         });
@@ -204,7 +130,105 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, UserProfile.class).putExtra("userID", getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getString("UserID", "")));
             }
         });
-        manager.beginTransaction().replace(R.id.fragHolder, new NewsEvents()).commit();
+        final Intent intent = getIntent();
+        final Uri uri = intent.getData();
+        if (uri != null) {
+            if ("brainants".equals(uri.getScheme()) && "main".equals(uri.getHost())) {
+                // Cool, we have a URI addressed to this activity!
+                String mQuery = uri.getQueryParameter("fragment");
+                if (mQuery.equals("home"))
+                    navigate(navigationView.getMenu().findItem(R.id.newsEvent));
+                else if (mQuery.equals("notice"))
+                    navigate(navigationView.getMenu().findItem(R.id.TUNotices));
+                else if (mQuery.equals("elibrary"))
+                    navigate(navigationView.getMenu().findItem(R.id.elibrary));
+                else if (mQuery.equals("projects"))
+                    navigate(navigationView.getMenu().findItem(R.id.projects));
+                else if (mQuery.equals("community"))
+                    navigate(navigationView.getMenu().findItem(R.id.community));
+                else if (mQuery.equals("fourm"))
+                    navigate(navigationView.getMenu().findItem(R.id.fourm));
+            }
+        } else {
+            manager.beginTransaction().replace(R.id.fragHolder, new NewsEvents()).commit();
+        }
+    }
+
+    private void navigate(MenuItem item) {
+        int id = item.getItemId();
+        drawerLayout.closeDrawer(findViewById(R.id.naviView));
+        if (id == previous)
+            return;
+        fab.hide();
+        switch (id) {
+            case R.id.newsEvent:
+                setTitle("Home");
+                current = "Home";
+                item.setChecked(true);
+                previous = id;
+                manager.beginTransaction().replace(R.id.fragHolder, new NewsEvents()).commit();
+                break;
+            case R.id.TUNotices:
+                setTitle("TU Notices");
+                current = "TU Notices";
+                item.setChecked(true);
+                previous = id;
+                manager.beginTransaction().replace(R.id.fragHolder, new TuNotices()).commit();
+                break;
+            case R.id.elibrary:
+                setTitle("E-Library");
+                item.setChecked(true);
+                current = "E-Library";
+                previous = id;
+                manager.beginTransaction().replace(R.id.fragHolder, new eLibrary()).commit();
+                break;
+            case R.id.projects:
+                setTitle("Projects");
+                item.setChecked(true);
+                current = "Projects";
+                previous = id;
+                manager.beginTransaction().replace(R.id.fragHolder, new Projects()).commit();
+                break;
+            case R.id.community:
+                setTitle("Communities");
+                item.setChecked(true);
+                current = "Communities";
+                previous = id;
+                manager.beginTransaction().replace(R.id.fragHolder, new Community()).commit();
+                break;
+            case R.id.fourm:
+                setTitle("Forum");
+                item.setChecked(true);
+                current = "Forum";
+                previous = id;
+                manager.beginTransaction().replace(R.id.fragHolder, new Forum()).commit();
+                break;
+
+            case R.id.setting:
+                startActivity(new Intent(MainActivity.this, Settings.class));
+                break;
+            case R.id.adminPanel:
+                startActivity(new Intent(MainActivity.this, AdminPanel.class));
+                break;
+            case R.id.about:
+                startActivity(new Intent(MainActivity.this, AboutUs.class));
+                break;
+            case R.id.rate_us:
+                new MaterialDialog.Builder(MainActivity.this)
+                        .title("Rate us 5 star")
+                        .content("Help us in development by rating us 5 star on play store.")
+                        .positiveText("Rate")
+                        .negativeText("Cancel")
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                //todo call Play store
+                            }
+                        })
+                        .build()
+                        .show();
+                break;
+        }
     }
 
     @Override
