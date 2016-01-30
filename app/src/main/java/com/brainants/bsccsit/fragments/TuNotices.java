@@ -144,7 +144,7 @@ public class TuNotices extends Fragment {
     private void fillRecy() {
         progressBar.setVisibility(View.GONE);
         swipeNotice.setVisibility(View.VISIBLE);
-        NoticeAdapter adapter = new NoticeAdapter(getActivity(), mIds, mTitles, mShorts, mDetails, mDates, mAttachmentLinks, mAttachmentTitles);
+        NoticeAdapter adapter = new NoticeAdapter(getActivity(), mIds, mTitles, mShorts,  mDates);
         recyclerViewNotice.setAdapter(adapter);
         recyclerViewNotice.setLayoutManager(new LinearLayoutManager(getActivity()));
 

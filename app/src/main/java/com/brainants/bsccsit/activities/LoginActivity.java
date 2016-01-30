@@ -256,12 +256,15 @@ public class LoginActivity extends AppCompatActivity {
 
     private void addEveryThingToSp(JSONObject response) {
         try {
+
             editor.putInt("semester", Integer.parseInt(response.getString("semester")));
             editor.putString("college", response.getString("college"));
             editor.putString("phone_number", response.getString("phone_number"));
             editor.putBoolean("admin", response.getInt("admin") == 1);
             editor.apply();
+
         } catch (Exception ignored) {
+
         }
     }
 

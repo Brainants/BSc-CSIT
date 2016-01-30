@@ -2,6 +2,8 @@ package com.brainants.bsccsit.activities;
 
 import android.app.DownloadManager;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -21,6 +23,9 @@ import mehdi.sakout.fancybuttons.FancyButton;
 public class NoticeDetails extends AppCompatActivity {
 
     FancyButton download;
+    private int noticeId;
+    private String attachmentTitle,attachmentLink;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,17 +37,27 @@ public class NoticeDetails extends AppCompatActivity {
         WebView noticeContent = (WebView) findViewById(R.id.noticeContent);
         download = (FancyButton) findViewById(R.id.downloadAttachment);
 
+        noticeId= getIntent().getIntExtra("notice_id",1);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setTitle("Notice");
-        noticeTitle.setText(getIntent().getStringExtra("noticeTitle"));
-        noticeDate.setText(Singleton.convertDate(getIntent().getStringExtra("noticeDate")));
 
-        final String attachmentTitle = getIntent().getStringExtra("noticeAttachmentTitle");
-        final String attachmentLink = getIntent().getStringExtra("noticeAttachmentLink");
+        SQLiteDatabase database = Singleton.getInstance().getDatabase();
+        Cursor cursor = database.rawQuery("SELECT * FROM notice WHERE id = '" + noticeId + "'",null);
+
+        while(cursor.moveToNext()) {
+            noticeTitle.setText(cursor.getString(cursor.getColumnIndex("title")));
+            noticeDate.setText(cursor.getString(cursor.getColumnIndex("date")));
+
+            attachmentTitle = cursor.getString(cursor.getColumnIndex("attachment_title"));
+            attachmentLink = cursor.getString(cursor.getColumnIndex("attachment_link"));
+
+        }
+
 
         noticeContent.loadDataWithBaseURL("", getIntent().getStringExtra("noticeDetail"), "text/html", "UTF-8", "");
 
@@ -51,10 +66,11 @@ public class NoticeDetails extends AppCompatActivity {
             download.setText("Download attachment");
         }
 
+        final String finalAttachmentLink = attachmentLink;
         download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(attachmentLink));
+                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(finalAttachmentLink));
                 request.setTitle(attachmentTitle);
                 request.setDescription("brainants.com");
                 request.allowScanningByMediaScanner();
