@@ -83,6 +83,8 @@ public class EachProjectAdmin extends AppCompatActivity {
         mScrollView.setVisibility(View.GONE);
         loading.setVisibility(View.VISIBLE);
         errorLayout.setVisibility(View.GONE);
+        horizontalScrollViewUser.setVisibility(View.VISIBLE);
+        horizontalScrollViewRequest.setVisibility(View.VISIBLE);
 
         StringRequest request = new StringRequest(Request.Method.POST, "http://bsccsit.brainants.com/getproject", new Response.Listener<String>() {
             @Override

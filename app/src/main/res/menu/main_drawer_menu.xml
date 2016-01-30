@@ -31,7 +31,7 @@
             android:title="Communities" />
 
         <item
-            android:id="@+id/fourm"
+            android:id="@+id/forum"
             android:icon="@drawable/forum"
             android:title="Forum" />
     </group>

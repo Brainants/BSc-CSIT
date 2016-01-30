@@ -25,6 +25,7 @@
         <activity
             android:name="com.brainants.bsccsit.activities.MainActivity"
             android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,9 +38,11 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="brainants" />
-                <data android:host="main" />
-                <data android:pathPattern="/.*" />
+                <data
+                    android:host="bsccsit"
+                    android:pathPrefix="/main"
+                    android:scheme="brainants" />
+
             </intent-filter>
         </activity>
         <activity
@@ -124,7 +127,9 @@
         <activity android:name="com.brainants.bsccsit.activities.EachProject" />
         <activity android:name="com.brainants.bsccsit.activities.UserProfile" />
         <activity android:name="com.brainants.bsccsit.activities.EachProjectAdmin" />
-        <activity android:name="com.brainants.bsccsit.activities.Notification" />
+        <activity
+            android:name="com.brainants.bsccsit.activities.Notification"
+            android:launchMode="singleTask" />
         <activity android:name="com.brainants.bsccsit.activities.ProjectByTag"></activity>
     </application>
 

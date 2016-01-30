@@ -73,11 +73,7 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.CustomView
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(context, NoticeDetails.class)
-                    .putExtra("noticeTitle", mTitles.get(getAdapterPosition()))
-                    .putExtra("noticeDetail", mDetails.get(getAdapterPosition()))
-                    .putExtra("noticeDate", mDates.get(getAdapterPosition()))
-                    .putExtra("noticeAttachmentLink", mAttachmentLinks.get(getAdapterPosition()))
-                    .putExtra("noticeAttachmentTitle", mAttachmentTitles.get(getAdapterPosition()));
+                    .putExtra("notice_id", mIds.get(getAdapterPosition()));
             context.startActivity(intent);
 
         }

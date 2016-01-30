@@ -16,6 +16,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -132,10 +133,12 @@ public class MainActivity extends AppCompatActivity {
         });
         final Intent intent = getIntent();
         final Uri uri = intent.getData();
+
         if (uri != null) {
-            if ("brainants".equals(uri.getScheme()) && "main".equals(uri.getHost())) {
+            if ("brainants".equals(uri.getScheme()) && "bsccsit".equals(uri.getHost())) {
                 // Cool, we have a URI addressed to this activity!
                 String mQuery = uri.getQueryParameter("fragment");
+                Log.d("Debug",mQuery);
                 if (mQuery.equals("home"))
                     navigate(navigationView.getMenu().findItem(R.id.newsEvent));
                 else if (mQuery.equals("notice"))
@@ -146,8 +149,8 @@ public class MainActivity extends AppCompatActivity {
                     navigate(navigationView.getMenu().findItem(R.id.projects));
                 else if (mQuery.equals("community"))
                     navigate(navigationView.getMenu().findItem(R.id.community));
-                else if (mQuery.equals("fourm"))
-                    navigate(navigationView.getMenu().findItem(R.id.fourm));
+                else if (mQuery.equals("forum"))
+                    navigate(navigationView.getMenu().getItem(R.id.forum));
             }
         } else {
             manager.beginTransaction().replace(R.id.fragHolder, new NewsEvents()).commit();
@@ -157,8 +160,6 @@ public class MainActivity extends AppCompatActivity {
     private void navigate(MenuItem item) {
         int id = item.getItemId();
         drawerLayout.closeDrawer(findViewById(R.id.naviView));
-        if (id == previous)
-            return;
         fab.hide();
         switch (id) {
             case R.id.newsEvent:
@@ -196,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
                 previous = id;
                 manager.beginTransaction().replace(R.id.fragHolder, new Community()).commit();
                 break;
-            case R.id.fourm:
+            case R.id.forum:
                 setTitle("Forum");
                 item.setChecked(true);
                 current = "Forum";
