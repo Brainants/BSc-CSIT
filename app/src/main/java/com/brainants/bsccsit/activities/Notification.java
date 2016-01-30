@@ -73,8 +73,9 @@ public class Notification extends AppCompatActivity {
         cursor.close();
         if (i == 0) {
             noNotifications.setVisibility(View.VISIBLE);
-        } else
+        } else {
             fillRecy();
+        }
     }
 
 

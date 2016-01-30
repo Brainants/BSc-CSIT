@@ -55,7 +55,7 @@ public class BackgroundTaskHandler extends GcmTaskService {
                 .setWhen(System.currentTimeMillis())
                 .setContentTitle(title)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                //.setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
+                .setVibrate(new long[]{100, 100})
                 .setLights(Color.BLUE, 3000, 3000)
                 .setSound(sound)
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
