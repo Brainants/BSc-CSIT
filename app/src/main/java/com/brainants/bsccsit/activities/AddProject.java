@@ -23,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
+import com.brainants.bsccsit.fragments.Projects;
 import com.devspark.robototextview.widget.RobotoTextView;
 import com.brainants.bsccsit.R;
 import com.brainants.bsccsit.advance.Singleton;
@@ -44,6 +45,8 @@ public class AddProject extends AppCompatActivity implements TextWatcher {
 
     Integer[] selectedPos = {};
     CharSequence[] selectedTxt = {};
+    String[] languages;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,12 +73,12 @@ public class AddProject extends AppCompatActivity implements TextWatcher {
         projectDesc.addTextChangedListener(this);
         noOfUsers.addTextChangedListener(this);
 
-
-        final String[] languages = getAllTags();
+        languages = getAllTags();
 
         tagChooser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                languages=getAllTags();
                 if (languages.length == 0) {
                     final MaterialDialog dialog = new MaterialDialog.Builder(AddProject.this)
                             .content("Fetching all tags...")
