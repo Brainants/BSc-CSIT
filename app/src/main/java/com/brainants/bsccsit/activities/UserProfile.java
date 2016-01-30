@@ -21,14 +21,14 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.brainants.bsccsit.R;
+import com.brainants.bsccsit.advance.Singleton;
 import com.devspark.robototextview.widget.RobotoTextView;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.squareup.picasso.Picasso;
-import com.brainants.bsccsit.R;
-import com.brainants.bsccsit.advance.Singleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -235,7 +235,7 @@ public class UserProfile extends AppCompatActivity {
                 public void onClick(View view) {
                     try {
                         startActivity(new Intent(UserProfile.this,EachProject.class)
-                                .putExtra("project_id",String.valueOf(admin.optJSONObject(finalI).getLong("id"))));
+                                .putExtra("project_id",String.valueOf(member.optJSONObject(finalI).getLong("id"))));
                     } catch (JSONException e) {}
                 }
             });

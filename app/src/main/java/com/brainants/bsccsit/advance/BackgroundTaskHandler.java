@@ -180,10 +180,10 @@ public class BackgroundTaskHandler extends GcmTaskService {
         Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM notifications", null);
         for (int i = 0; i < previousNotification; i++) {
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(cursor.getString(cursor.getColumnIndex("link"))));
-            notification(cursor.getString(cursor.getColumnIndex("title")),
-                    cursor.getString(cursor.getColumnIndex("desc")),
-                    cursor.getString(cursor.getColumnIndex("title")),
+            intent.setData(Uri.parse(cursor.getString(2)));
+            notification(cursor.getString(0),
+                    cursor.getString(1),
+                    cursor.getString(0),
                     new Random().nextInt(30 - 5) + 5,
                     intent,
                     this);

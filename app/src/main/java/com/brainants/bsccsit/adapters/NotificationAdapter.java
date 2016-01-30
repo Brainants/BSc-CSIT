@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.brainants.bsccsit.activities.Notification;
 import com.devspark.robototextview.widget.RobotoTextView;
 import com.brainants.bsccsit.R;
 
@@ -21,9 +22,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             desc = new ArrayList<>(),
             link = new ArrayList<>();
 
-    private Context context;
+    private Notification context;
 
-    public NotificationAdapter(Context context, ArrayList<String> title, ArrayList<String> desc, ArrayList<String> link) {
+    public NotificationAdapter(Notification context, ArrayList<String> title, ArrayList<String> desc, ArrayList<String> link) {
         inflater = LayoutInflater.from(context);
         this.title = title;
         this.desc = desc;
@@ -47,6 +48,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(link.get(position)));
                 context.startActivity(intent);
+                context.finish();
             }
         });
     }
