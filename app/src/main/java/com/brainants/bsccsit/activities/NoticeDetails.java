@@ -47,7 +47,7 @@ public class NoticeDetails extends AppCompatActivity {
         setTitle("Notice");
 
         SQLiteDatabase database = Singleton.getInstance().getDatabase();
-        Cursor cursor = database.rawQuery("SELECT * FROM notice WHERE id = '" + noticeId + "'",null);
+        Cursor cursor = database.rawQuery("SELECT * FROM notices WHERE id = '" + noticeId + "'",null);
 
         while(cursor.moveToNext()) {
             noticeTitle.setText(cursor.getString(cursor.getColumnIndex("title")));
