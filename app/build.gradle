@@ -47,6 +47,7 @@ dependencies {
     compile 'com.beardedhen:androidbootstrap:2.0.1'
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
     compile 'com.flaviofaria:kenburnsview:1.0.7'
+    compile 'com.github.flavienlaurent.discrollview:library:0.0.2@aar'
     compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
         transitive = true;
     }

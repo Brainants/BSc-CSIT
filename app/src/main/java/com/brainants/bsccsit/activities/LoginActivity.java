@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -16,6 +19,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.brainants.bsccsit.R;
+import com.brainants.bsccsit.advance.Singleton;
+import com.brainants.bsccsit.fragments.IntroFragment;
+import com.brainants.bsccsit.networking.MyCommunitiesDownloader;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -25,9 +32,8 @@ import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.brainants.bsccsit.R;
-import com.brainants.bsccsit.advance.Singleton;
-import com.brainants.bsccsit.networking.MyCommunitiesDownloader;
+import com.flaviofaria.kenburnsview.KenBurnsView;
+import com.flaviofaria.kenburnsview.Transition;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,7 +50,9 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferences.Editor editor;
     private SharedPreferences preferences;
     private MaterialDialog dialog;
-
+    ViewPager viewPager;
+    KenBurnsView mKenBurns;
+    int i = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +63,22 @@ public class LoginActivity extends AppCompatActivity {
         preferences = getSharedPreferences("loginInfo", MODE_PRIVATE);
 
         final FancyButton button = (FancyButton) findViewById(R.id.loginButton);
+        //viewPager = (ViewPager) findViewById(R.id.introViewPager);
+        mKenBurns = (KenBurnsView) findViewById(R.id.kenBurns);
+        mKenBurns.setTransitionListener(new KenBurnsView.TransitionListener() {
+            @Override
+            public void onTransitionStart(Transition transition) {
+
+            }
+
+            @Override
+            public void onTransitionEnd(Transition transition) {
+//                viewPager.setCurrentItem(i % 5, true);
+                i++;
+            }
+        });
+
+        // viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -245,5 +269,22 @@ public class LoginActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    class PagerAdapter extends FragmentStatePagerAdapter {
+
+        public PagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return IntroFragment.newInstance(position);
+        }
+
+        @Override
+        public int getCount() {
+            return 5;
+        }
     }
 }

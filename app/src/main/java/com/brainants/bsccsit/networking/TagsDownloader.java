@@ -34,7 +34,6 @@ public class TagsDownloader {
                     }
                     storeToDb();
                 } catch (JSONException e) {
-                    Log.d("AppTest", "No data like that");
                 }
 
             }
