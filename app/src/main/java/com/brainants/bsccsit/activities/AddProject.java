@@ -237,7 +237,7 @@ public class AddProject extends AppCompatActivity implements TextWatcher {
         return super.onOptionsItemSelected(item);
     }
 
-    private String[] getAllTags() {
+    public static String[] getAllTags() {
 
         Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM tags", null);
         String[] tags = new String[cursor.getCount()];

@@ -211,6 +211,34 @@ public class MainActivity extends AppCompatActivity {
             case R.id.adminPanel:
                 startActivity(new Intent(MainActivity.this, AdminPanel.class));
                 break;
+            case R.id.logout:
+                new MaterialDialog.Builder(this)
+                        .title("Logout")
+                        .content("Are you sure you want to logout?")
+                        .positiveText("Yes")
+                        .negativeText("No")
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                getSharedPreferences("loginInfo", MODE_PRIVATE).edit().clear().apply();
+                                getSharedPreferences("misc", MODE_PRIVATE).edit().clear().apply();
+                                getSharedPreferences("community", MODE_PRIVATE).edit().clear().apply();
+                                getSharedPreferences("notifications", MODE_PRIVATE).edit().clear().apply();
+                                Singleton.getInstance().getGcmScheduler().cancelTask("periodic",BackgroundTaskHandler.class);
+                                Singleton.getInstance().getDatabase().execSQL("DELETE FROM popularCommunities");
+                                Singleton.getInstance().getDatabase().execSQL("DELETE FROM eLibrary");
+                                Singleton.getInstance().getDatabase().execSQL("DELETE FROM myCommunities");
+                                Singleton.getInstance().getDatabase().execSQL("DELETE FROM news");
+                                Singleton.getInstance().getDatabase().execSQL("DELETE FROM events");
+                                Singleton.getInstance().getDatabase().execSQL("DELETE FROM projects");
+                                Singleton.getInstance().getDatabase().execSQL("DELETE FROM notices");
+                                Singleton.getInstance().getDatabase().execSQL("DELETE FROM notifications");
+                                startActivity(new Intent(MainActivity.this,LoginActivity.class));
+                                finish();
+                            }
+                        })
+                        .show();
+                break;
             case R.id.about:
                 startActivity(new Intent(MainActivity.this, AboutUs.class));
                 break;

@@ -1,12 +1,3 @@
-buildscript {
-    repositories {
-        maven { url 'https://maven.fabric.io/public' }
-    }
-
-    dependencies {
-        classpath 'io.fabric.tools:gradle:1.+'
-    }
-}
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
@@ -52,7 +43,6 @@ dependencies {
     compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'com.github.johnkil.android-robototextview:robototextview:2.4.2'
     compile 'com.google.android.gms:play-services-gcm:8.4.0'
-    compile 'com.romainpiel.shimmer:library:1.4.0@aar'
     compile 'com.beardedhen:androidbootstrap:2.0.1'
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
     compile 'com.flaviofaria:kenburnsview:1.0.7'

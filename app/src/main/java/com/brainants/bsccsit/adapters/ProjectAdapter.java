@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.brainants.bsccsit.activities.ProjectByTag;
 import com.devspark.robototextview.widget.RobotoTextView;
 import com.brainants.bsccsit.R;
 import com.brainants.bsccsit.activities.EachProject;
@@ -17,6 +18,8 @@ import com.brainants.bsccsit.advance.MyApp;
 import com.brainants.bsccsit.advance.Singleton;
 
 import java.util.ArrayList;
+
+import mehdi.sakout.fancybuttons.FancyButton;
 
 public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.VH> {
     private final Context context;
@@ -54,8 +57,16 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.VH> {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setMargins(4, 0, 4, 0);
         holder.tagsHolder.removeAllViews();
-        for (String tag : tagArray) {
-            holder.tagsHolder.addView(Singleton.getTagView(context, tag), params);
+        for (final String tag : tagArray) {
+            FancyButton button = Singleton.getTagView(context, tag);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    context.startActivity(new Intent(context, ProjectByTag.class)
+                            .putExtra("tag", tag));
+                }
+            });
+            holder.tagsHolder.addView(button, params);
         }
         holder.core.setOnClickListener(new View.OnClickListener() {
             @Override
