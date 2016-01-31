@@ -44,18 +44,19 @@
                 android:orientation="vertical">
 
 
-                <TextView
+                <com.devspark.robototextview.widget.RobotoTextView
                     android:id="@+id/noticeTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="3dp"
                     android:text="My name is Rojshan gaautam and i read in class IX "
-                    android:textColor="#000"
-                    android:textSize="27sp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:textSize="20sp"
+                    app:typeface="roboto_bold" />
 
 
-                <TextView
+                <com.devspark.robototextview.widget.RobotoTextView
                     android:id="@+id/noticeDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

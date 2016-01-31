@@ -54,6 +54,8 @@
             android:checkable="false"
             android:icon="@drawable/logout"
             android:title="Logout" />
+    </group>
+    <group android:checkableBehavior="none">
 
         <item
             android:id="@+id/about"

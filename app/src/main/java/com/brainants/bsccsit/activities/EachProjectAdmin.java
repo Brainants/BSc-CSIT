@@ -1,11 +1,9 @@
 package com.brainants.bsccsit.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
@@ -17,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -32,12 +29,11 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.brainants.bsccsit.advance.MyApp;
+import com.brainants.bsccsit.R;
+import com.brainants.bsccsit.advance.Singleton;
 import com.brainants.bsccsit.networking.TagsDownloader;
 import com.devspark.robototextview.widget.RobotoTextView;
 import com.squareup.picasso.Picasso;
-import com.brainants.bsccsit.R;
-import com.brainants.bsccsit.advance.Singleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -159,10 +155,16 @@ public class EachProjectAdmin extends AppCompatActivity {
     private Integer[] getPositions(CharSequence[] selectedTxt) {
         Integer[] selectedPos = new Integer[selectedTxt.length];
         Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM tags", null);
-        while (cursor.moveToNext()) {
-            if (cursor.getString(cursor.getColumnIndex("tag_name")).equals(selectedTxt[cursor.getPosition()]))
-                selectedPos[selectedPos.length] = cursor.getPosition();
+        int i = 0;
+        for (int j = 0; j < selectedTxt.length; j++) {
+            while (cursor.moveToNext()) {
+                if (cursor.getString(cursor.getColumnIndex("tag_name")).equals(selectedTxt[j])) {
+                    selectedPos[i] = cursor.getPosition();
+                    i++;
+                }
+            }
         }
+
         return new Integer[0];
     }
 
@@ -525,10 +527,11 @@ public class EachProjectAdmin extends AppCompatActivity {
     private void uploadChanges(final boolean shouldFinish) {
         final MaterialDialog dialog = new MaterialDialog.Builder(this)
                 .content("Updating...")
+                .progress(true,0)
                 .cancelable(false)
                 .build();
         dialog.show();
-        StringRequest request = new StringRequest("http://bsccsit.brainants.com/updateproject", new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.POST,"http://bsccsit.brainants.com/updateproject", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 dialog.dismiss();

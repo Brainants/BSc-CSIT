@@ -224,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
                                 getSharedPreferences("misc", MODE_PRIVATE).edit().clear().apply();
                                 getSharedPreferences("community", MODE_PRIVATE).edit().clear().apply();
                                 getSharedPreferences("notifications", MODE_PRIVATE).edit().clear().apply();
-                                Singleton.getInstance().getGcmScheduler().cancelTask("periodic",BackgroundTaskHandler.class);
+                                Singleton.getInstance().getGcmScheduler().cancelTask("periodic", BackgroundTaskHandler.class);
                                 Singleton.getInstance().getDatabase().execSQL("DELETE FROM popularCommunities");
                                 Singleton.getInstance().getDatabase().execSQL("DELETE FROM eLibrary");
                                 Singleton.getInstance().getDatabase().execSQL("DELETE FROM myCommunities");
@@ -233,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
                                 Singleton.getInstance().getDatabase().execSQL("DELETE FROM projects");
                                 Singleton.getInstance().getDatabase().execSQL("DELETE FROM notices");
                                 Singleton.getInstance().getDatabase().execSQL("DELETE FROM notifications");
-                                startActivity(new Intent(MainActivity.this,LoginActivity.class));
+                                startActivity(new Intent(MainActivity.this, LoginActivity.class));
                                 finish();
                             }
                         })
