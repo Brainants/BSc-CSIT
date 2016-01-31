@@ -2,6 +2,7 @@ package com.brainants.bsccsit.activities;
 
 import android.content.ContentValues;
 import android.content.res.ColorStateList;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -38,14 +39,13 @@ import java.util.Locale;
 public class FbEvent extends AppCompatActivity {
 
 
-    private String eventId;
+    private String eventId,eventName,eventPhoto;
     private ProgressBar progressBar;
     private LinearLayout errorMsg;
     private FloatingActionButton fab;
     private NestedScrollView nestedScrollEvent;
 
     private RobotoTextView event_name, event_description, event_place, event_location, event_street, event_time, hosted_by;
-    private String time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,16 +61,15 @@ public class FbEvent extends AppCompatActivity {
         hosted_by = (RobotoTextView) findViewById(R.id.eventHost);
 
         ImageView event_photo = (ImageView) findViewById(R.id.eventPhoto);
+
         fab = (FloatingActionButton) findViewById(R.id.eachEventFab);
+
         nestedScrollEvent = (NestedScrollView) findViewById(R.id.nestedScrollEvent);
+
         CollapsingToolbarLayout mCollapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.eventCollapse);
 
         eventId = getIntent().getStringExtra("eventID");
-        String eventName = getIntent().getStringExtra("eventName");
-        String eventImage = getIntent().getStringExtra("imageURL");
-        time = getIntent().getStringExtra("eventTime");
 
-        hosted_by.setText(getIntent().getStringExtra("eventHost"));
 
         progressBar = (ProgressBar) findViewById(R.id.progressbarFbEvent);
         errorMsg = (LinearLayout) findViewById(R.id.errorMessagePageEvent);
@@ -84,11 +83,7 @@ public class FbEvent extends AppCompatActivity {
         Date current = new Date();
         current.setTime(System.currentTimeMillis());
 
-        if (BackgroundTaskHandler.convertToSimpleDate(time)
-                .compareTo(current) > 0)
-            fab.show();
-        else
-            fab.hide();
+
 
         if (Singleton.isScheduledEvent(eventId)) {
             fab.setImageResource(R.drawable.calender_check_white);
@@ -109,7 +104,7 @@ public class FbEvent extends AppCompatActivity {
                     Snackbar.make(MainActivity.drawerLayout, "Remainder scheduled.", Snackbar.LENGTH_SHORT).show();
                     ContentValues values = new ContentValues();
                     values.put("eventID", eventId);
-                    values.put("created_time", time);
+                    //values.put("created_time", time);
                     Singleton.getInstance().getDatabase().insert("remainder", null, values);
                 }
             }
@@ -120,12 +115,20 @@ public class FbEvent extends AppCompatActivity {
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
+        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM events WHERE eventIDs ='" + eventId +"'",null);
+        while(cursor.moveToNext()) {
+            eventName = cursor.getString(cursor.getColumnIndex("names"));
+            eventPhoto = cursor.getString(cursor.getColumnIndex("fullImage"));
+        }
+
         mCollapsingToolbar.setTitle(eventName);
 
-        if (!eventImage.equals(""))
-            Picasso.with(this).load(eventImage).into(event_photo);
+        if (!eventPhoto.equals(""))
+            Picasso.with(this).load(eventPhoto).into(event_photo);
 
         downloadFromInternet();
+
     }
 
     private void downloadFromInternet() {
@@ -148,8 +151,7 @@ public class FbEvent extends AppCompatActivity {
                         JSONObject place = null;
                         JSONObject location = null;
 
-
-                        event_name.setText(details.getString("name"));
+                        event_name.setText( details.getString("name"));
 
                         try {
                             place = details.getJSONObject("place");
