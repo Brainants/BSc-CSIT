@@ -276,7 +276,6 @@ public class MainActivity extends AppCompatActivity {
             finish();
         } else if (item.getItemId()==R.id.action_feedback) {
             startActivity(new Intent(MainActivity.this, Feedback.class));
-            finish();
         }
 
 
@@ -288,9 +287,9 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.action_main, menu);
 
         if (Singleton.hasNewNotifications())
-            menu.getItem(0).setIcon(R.drawable.bell_fill);
+            menu.getItem(1).setIcon(R.drawable.bell_fill);
         else
-            menu.getItem(0).setIcon(R.drawable.bell_outline);
+            menu.getItem(1).setIcon(R.drawable.bell_outline);
 
         return true;
     }
