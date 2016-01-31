@@ -279,6 +279,9 @@ public class MainActivity extends AppCompatActivity {
         } else if (item.getItemId() == R.id.action_notif) {
             startActivity(new Intent(MainActivity.this, Notification.class));
             finish();
+        } else if (item.getItemId()==R.id.action_feedback) {
+            startActivity(new Intent(MainActivity.this, Feedback.class));
+            finish();
         }
 
 
