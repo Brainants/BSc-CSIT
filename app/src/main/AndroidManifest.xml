@@ -6,10 +6,10 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.SEND_DOWNLOAD_COMPLETED_INTENTS" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
-        android:name="com.brainants.bsccsit.advance.MyApp"
+        android:name=".advance.MyApp"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
@@ -23,7 +23,7 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name="com.brainants.bsccsit.activities.MainActivity"
+            android:name=".activities.MainActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -41,46 +41,38 @@
                     android:host="bsccsit"
                     android:pathPrefix="/main"
                     android:scheme="brainants" />
-
             </intent-filter>
         </activity>
-
         <activity
-            android:name="com.brainants.bsccsit.activities.LoginActivity"
+            android:name=".activities.LoginActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
-
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
         <activity
-            android:name="com.brainants.bsccsit.activities.CompleteLogin"
+            android:name=".activities.CompleteLogin"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:theme="@style/FullscreenTheme" />
-
         <activity
-            android:name="com.brainants.bsccsit.activities.Settings"
+            android:name=".activities.Settings"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
-
         <activity
-            android:name="com.brainants.bsccsit.activities.ImageViewActivity"
+            android:name=".activities.ImageViewActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
-
         <activity
-            android:name="com.brainants.bsccsit.activities.EachPost"
+            android:name=".activities.EachPost"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -91,7 +83,6 @@
                     android:host="bsccsit"
                     android:pathPrefix="/eachpost"
                     android:scheme="brainants" />
-
             </intent-filter>
         </activity>
 
@@ -100,34 +91,30 @@
             android:value="9cfaedb2af986a27f7bd621e43ec9f21adaf8e68" />
 
         <activity
-            android:name="com.brainants.bsccsit.activities.FbPage"
+            android:name=".activities.FbPage"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
-
             <data
                 android:host="bsccsit"
                 android:pathPrefix="/page"
                 android:scheme="brainants" />
         </activity>
-
         <activity
-            android:name="com.brainants.bsccsit.activities.AboutUs"
+            android:name=".activities.AboutUs"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
-
             <data
                 android:host="bsccsit"
                 android:pathPrefix="/about"
                 android:scheme="brainants" />
         </activity>
-
         <activity
-            android:name="com.brainants.bsccsit.admin.AdminPanel"
+            android:name=".admin.AdminPanel"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
 
         <service
-            android:name="com.brainants.bsccsit.advance.BackgroundTaskHandler"
+            android:name=".advance.BackgroundTaskHandler"
             android:exported="true"
             android:permission="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE">
             <intent-filter>
@@ -136,17 +123,16 @@
         </service>
 
         <activity
-            android:name="com.brainants.bsccsit.activities.FbEvent"
+            android:name=".activities.FbEvent"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
-
             <data
                 android:host="bsccsit"
                 android:pathPrefix="/event"
                 android:scheme="brainants" />
         </activity>
 
-        <receiver android:name="com.brainants.bsccsit.fragments.eLibraryPagerFragment$Receiver">
+        <receiver android:name=".fragments.eLibraryPagerFragment$Receiver">
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_DOWNLOAD_COMPLETE" />
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
@@ -155,19 +141,17 @@
         </receiver>
 
         <activity
-            android:name="com.brainants.bsccsit.activities.AddProject"
+            android:name=".activities.AddProject"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|adjustResize">
-
             <data
                 android:host="bsccsit"
                 android:pathPrefix="/addproject"
                 android:scheme="brainants" />
         </activity>
-
         <activity
-            android:name="com.brainants.bsccsit.activities.NoticeDetails"
+            android:name=".activities.NoticeDetails"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
             <data
@@ -175,9 +159,8 @@
                 android:pathPrefix="/notice"
                 android:scheme="brainants" />
         </activity>
-
         <activity
-            android:name="com.brainants.bsccsit.activities.EachProject"
+            android:name=".activities.EachProject"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
             <data
@@ -186,49 +169,43 @@
                 android:scheme="brainants" />
         </activity>
         <activity
-            android:name="com.brainants.bsccsit.activities.UserProfile"
+            android:name=".activities.UserProfile"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
-
             <data
                 android:host="bsccsit"
                 android:pathPrefix="/profile"
                 android:scheme="brainants" />
         </activity>
-
         <activity
-            android:name="com.brainants.bsccsit.activities.EachProjectAdmin"
+            android:name=".activities.EachProjectAdmin"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
-
             <data
                 android:host="bsccsit"
                 android:pathPrefix="/admineachproject"
                 android:scheme="brainants" />
         </activity>
-
         <activity
-            android:name="com.brainants.bsccsit.activities.Notification"
+            android:name=".activities.Notification"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
-
             <data
                 android:host="bsccsit"
                 android:pathPrefix="/notification"
                 android:scheme="brainants" />
         </activity>
-
         <activity
-            android:name="com.brainants.bsccsit.activities.ProjectByTag"
+            android:name=".activities.ProjectByTag"
             android:configChanges="orientation|keyboardHidden"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait">
-
             <data
                 android:host="bsccsit"
                 android:pathPrefix="/projectbytag"
                 android:scheme="brainants" />
         </activity>
+        <activity android:name=".activities.Feedback"></activity>
     </application>
 
 </manifest>

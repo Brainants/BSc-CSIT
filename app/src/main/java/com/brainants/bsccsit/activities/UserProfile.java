@@ -1,5 +1,6 @@
 package com.brainants.bsccsit.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -212,9 +213,15 @@ public class UserProfile extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     try {
-                        startActivity(new Intent(UserProfile.this,EachProjectAdmin.class)
-                                .putExtra("project_id",String.valueOf(admin.optJSONObject(finalI).getLong("id"))));
-                    } catch (JSONException e) {}
+                        if (admin.getJSONObject(finalI).getString("user_id").equals(getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getString("UserID", "")))
+                            startActivity(new Intent(UserProfile.this, EachProjectAdmin.class)
+                                    .putExtra("project_id", String.valueOf(admin.optJSONObject(finalI).getLong("id"))));
+                        else
+                            startActivity(new Intent(UserProfile.this, EachProject.class)
+                                .putExtra("project_id", String.valueOf(admin.optJSONObject(finalI).getLong("id"))));
+
+                    } catch (JSONException e) {
+                    }
                 }
             });
             projectHolder.addView(eachProject, params);
@@ -234,9 +241,10 @@ public class UserProfile extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     try {
-                        startActivity(new Intent(UserProfile.this,EachProject.class)
-                                .putExtra("project_id",String.valueOf(member.optJSONObject(finalI).getLong("id"))));
-                    } catch (JSONException e) {}
+                        startActivity(new Intent(UserProfile.this, EachProject.class)
+                                .putExtra("project_id", String.valueOf(member.optJSONObject(finalI).getLong("id"))));
+                    } catch (JSONException e) {
+                    }
                 }
             });
             projectHolder.addView(eachProject, params);

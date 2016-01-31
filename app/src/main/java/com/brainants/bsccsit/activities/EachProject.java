@@ -107,7 +107,7 @@ public class EachProject extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             try {
-                                startActivity(new Intent(EachProject.this,UserProfile.class).putExtra("user_id",String.valueOf(coreObject.getLong("user_id"))));
+                                startActivity(new Intent(EachProject.this,UserProfile.class).putExtra("userID",String.valueOf(coreObject.getLong("user_id"))));
                             } catch (JSONException e) {}
                         }
                     });
@@ -255,10 +255,16 @@ public class EachProject extends AppCompatActivity {
         String[] tag = tags.split(",");
         tagHolder.removeAllViews();
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        for (String eachTagString : tag) {
+        for (final String eachTagString : tag) {
             FancyButton eachTag = (FancyButton) LayoutInflater.from(this).inflate(R.layout.tag_widget, null);
             params.setMargins(4, 0, 4, 0);
             eachTag.setText(eachTagString);
+            eachTag.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(EachProject.this,ProjectByTag.class).putExtra("tag",eachTagString));
+                }
+            });
             tagHolder.addView(eachTag, params);
         }
     }

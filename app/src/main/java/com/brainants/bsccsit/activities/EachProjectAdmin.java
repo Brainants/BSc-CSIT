@@ -455,9 +455,16 @@ public class EachProjectAdmin extends AppCompatActivity {
         String[] tag = tags.split(",");
         tagHolder.removeAllViews();
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        for (String eachTagString : tag) {
+        for (final String eachTagString : tag) {
             FancyButton eachTag = (FancyButton) LayoutInflater.from(this).inflate(R.layout.tag_widget, null);
             params.setMargins(4, 0, 4, 0);
+            eachTag.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(EachProjectAdmin.this, ProjectByTag.class)
+                            .putExtra("tag", eachTagString));
+                }
+            });
             eachTag.setText(eachTagString);
             tagHolder.addView(eachTag, params);
         }

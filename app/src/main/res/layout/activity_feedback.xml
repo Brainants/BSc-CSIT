@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.brainants.bsccsit.activities.Feedback">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/feedBackToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:theme="@style/Theme.AppCompat" />
+
+    <com.devspark.robototextview.widget.RobotoTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="Your feedback on the app."
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp" />
+
+    <com.beardedhen.androidbootstrap.BootstrapEditText
+        android:id="@+id/projectDetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:gravity="center_horizontal"
+        android:lines="10"
+        android:maxLines="15"
+        app:bootstrapBrand="info"
+        app:bootstrapSize="lg" />
+
+    <mehdi.sakout.fancybuttons.FancyButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp"
+        fancy:fb_defaultColor="@color/colorAccent"
+        fancy:fb_radius="5dp"
+        fancy:fb_text="Suggest" />
+
+</LinearLayout>

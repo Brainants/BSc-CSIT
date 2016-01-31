@@ -35,8 +35,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            >
-
             <LinearLayout
                 android:id="@+id/mainBar"
                 android:layout_width="match_parent"
@@ -51,7 +49,6 @@
                     android:layout_margin="3dp"
                     android:text="My name is Rojshan gaautam and i read in class IX "
                     android:textColor="@color/black"
-                    android:gravity="center"
                     android:textSize="20sp"
                     app:typeface="roboto_bold" />
 

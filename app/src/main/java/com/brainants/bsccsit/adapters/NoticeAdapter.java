@@ -3,14 +3,15 @@ package com.brainants.bsccsit.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.devspark.robototextview.widget.RobotoTextView;
 import com.brainants.bsccsit.R;
 import com.brainants.bsccsit.activities.NoticeDetails;
 import com.brainants.bsccsit.advance.Singleton;
+import com.devspark.robototextview.widget.RobotoTextView;
 
 import java.util.ArrayList;
 
@@ -41,7 +42,7 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.CustomView
     @Override
     public void onBindViewHolder(CustomViewHolder holder, int position) {
         holder.title.setText(mTitles.get(position));
-        holder.shortDesc.setText(mShorts.get(position));
+        holder.shortDesc.setText(Html.fromHtml(mShorts.get(position)));
         holder.date.setText(Singleton.convertDate(mDates.get(position)));
     }
 
