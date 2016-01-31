@@ -205,7 +205,15 @@
                 android:pathPrefix="/projectbytag"
                 android:scheme="brainants" />
         </activity>
-        <activity android:name=".activities.Feedback"></activity>
+        <activity android:name=".activities.Feedback"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden">
+
+            <data
+                android:host="bsccsit"
+                android:pathPrefix="/feedback"
+                android:scheme="brainants" />
+        </activity>
     </application>
 
 </manifest>
