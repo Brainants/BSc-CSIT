@@ -5,15 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/addProjectCood"
     android:layout_width="match_parent"
-    android:fitsSystemWindows="true"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context="com.brainants.bsccsit.activities.AddProject">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarPage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:contentScrim="@color/colorPrimary">
 
@@ -23,8 +22,7 @@
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             android:theme="@style/Theme.AppCompat"
-            app:layout_collapseMode="pin"
-            app:layout_scrollFlags="scroll|enterAlways" />
+            app:layout_collapseMode="pin" />
     </android.support.design.widget.AppBarLayout>
 
 
@@ -147,9 +145,9 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:maxLength="1"
                     android:gravity="center"
                     android:inputType="number"
+                    android:maxLength="1"
                     android:maxLines="1"
                     app:bootstrapBrand="info"
                     app:bootstrapSize="lg" />

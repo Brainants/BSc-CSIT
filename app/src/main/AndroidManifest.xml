@@ -221,6 +221,7 @@
         <activity
             android:name="com.brainants.bsccsit.activities.ProjectByTag"
             android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait">
 
             <data

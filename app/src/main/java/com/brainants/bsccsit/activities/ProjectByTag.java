@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -82,7 +83,7 @@ public class ProjectByTag extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
 
-        StringRequest request = new StringRequest(Request.Method.GET, "http://bsccsit.brainants.com/tagprojects", new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.POST, "http://bsccsit.brainants.com/tagprojects", new Response.Listener<String>() {
             @Override
             public void onResponse(String res) {
                 try {
@@ -96,6 +97,7 @@ public class ProjectByTag extends AppCompatActivity {
                     }
                     fillRecy();
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }, new Response.ErrorListener() {
@@ -103,6 +105,7 @@ public class ProjectByTag extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 errorMsg.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
+                error.printStackTrace();
             }
         }){
             @Override
@@ -129,5 +132,12 @@ public class ProjectByTag extends AppCompatActivity {
         ProjectAdapter adapter = new ProjectAdapter(this, projectID, titles, user, tags, detail);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(this, Singleton.getSpanCount(this)));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()==android.R.id.home)
+            finish();
+        return super.onOptionsItemSelected(item);
     }
 }
