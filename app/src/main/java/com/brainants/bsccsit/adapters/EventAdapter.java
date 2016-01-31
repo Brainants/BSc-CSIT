@@ -117,11 +117,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.VH> {
             @Override
             public void onClick(View v) {
                 context.startActivity(new Intent(context, FbEvent.class)
-                        .putExtra("eventID", eventsIds.get(position))
-                        .putExtra("eventName", names.get(position))
-                        .putExtra("imageURL", imageURL.get(position))
-                        .putExtra("eventTime", time.get(position))
-                        .putExtra("eventHost", "Hosted By: " + hoster.get(position)));
+                        .putExtra("eventID", eventsIds.get(position)));
+
             }
         });
     }

@@ -124,13 +124,13 @@ public class TuNotices extends Fragment {
         int i = 0;
         while (cursor.moveToNext()) {
             i++;
-            mIds.add(cursor.getInt(0));
-            mTitles.add(cursor.getString(1));
-            mShorts.add(cursor.getString(2));
-            mDetails.add(cursor.getString(3));
-            mDates.add(cursor.getString(4));
-            mAttachmentLinks.add(cursor.getString(5));
-            mAttachmentTitles.add(cursor.getString(6));
+            mIds.add(cursor.getInt(cursor.getColumnIndex("id")));
+            mTitles.add(cursor.getString(cursor.getColumnIndex("title")));
+            mShorts.add(cursor.getString(cursor.getColumnIndex("short_desc")));
+            mDetails.add(cursor.getString(cursor.getColumnIndex("detail")));
+            mDates.add(cursor.getString(cursor.getColumnIndex("date")));
+            mAttachmentLinks.add(cursor.getString(cursor.getColumnIndex("attachment_link")));
+            mAttachmentTitles.add(cursor.getString(cursor.getColumnIndex("attachment_title")));
         }
         cursor.close();
         if (i == 0) {

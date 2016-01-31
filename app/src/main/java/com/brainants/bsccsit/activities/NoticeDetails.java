@@ -18,13 +18,15 @@ import android.widget.TextView;
 import com.brainants.bsccsit.R;
 import com.brainants.bsccsit.advance.Singleton;
 
+import org.w3c.dom.Text;
+
 import mehdi.sakout.fancybuttons.FancyButton;
 
 public class NoticeDetails extends AppCompatActivity {
 
     FancyButton download;
     private int noticeId;
-    private String attachmentTitle,attachmentLink;
+    private String attachmentTitle,attachmentLink, noticeText;
 
 
     @Override
@@ -35,6 +37,7 @@ public class NoticeDetails extends AppCompatActivity {
         TextView noticeTitle = (TextView) findViewById(R.id.noticeTitle);
         TextView noticeDate = (TextView) findViewById(R.id.noticeDate);
         WebView noticeContent = (WebView) findViewById(R.id.noticeContent);
+
         download = (FancyButton) findViewById(R.id.downloadAttachment);
 
         noticeId= getIntent().getIntExtra("notice_id",1);
@@ -51,26 +54,25 @@ public class NoticeDetails extends AppCompatActivity {
 
         while(cursor.moveToNext()) {
             noticeTitle.setText(cursor.getString(cursor.getColumnIndex("title")));
-            noticeDate.setText(cursor.getString(cursor.getColumnIndex("date")));
+            noticeDate.setText(Singleton.convertDate(cursor.getString(cursor.getColumnIndex("date"))));
 
             attachmentTitle = cursor.getString(cursor.getColumnIndex("attachment_title"));
             attachmentLink = cursor.getString(cursor.getColumnIndex("attachment_link"));
-
+            noticeText= cursor.getString(cursor.getColumnIndex("detail"));
         }
 
 
-        noticeContent.loadDataWithBaseURL("", getIntent().getStringExtra("noticeDetail"), "text/html", "UTF-8", "");
+        noticeContent.loadDataWithBaseURL("", noticeText, "text/html", "UTF-8", "");
 
         if (!attachmentTitle.equals("")) {
             download.setVisibility(View.VISIBLE);
             download.setText("Download attachment");
         }
 
-        final String finalAttachmentLink = attachmentLink;
         download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(finalAttachmentLink));
+                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(attachmentLink));
                 request.setTitle(attachmentTitle);
                 request.setDescription("brainants.com");
                 request.allowScanningByMediaScanner();
