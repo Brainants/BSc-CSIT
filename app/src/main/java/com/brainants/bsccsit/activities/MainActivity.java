@@ -160,11 +160,11 @@ public class MainActivity extends AppCompatActivity {
     private void navigate(MenuItem item) {
         int id = item.getItemId();
         drawerLayout.closeDrawer(findViewById(R.id.naviView));
-        fab.hide();
         switch (id) {
             case R.id.newsEvent:
                 setTitle("Home");
                 current = "Home";
+                fab.hide();
                 item.setChecked(true);
                 previous = id;
                 manager.beginTransaction().replace(R.id.fragHolder, new NewsEvents()).commit();
@@ -172,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.TUNotices:
                 setTitle("TU Notices");
                 current = "TU Notices";
+                fab.hide();
                 item.setChecked(true);
                 previous = id;
                 manager.beginTransaction().replace(R.id.fragHolder, new TuNotices()).commit();
@@ -179,12 +180,14 @@ public class MainActivity extends AppCompatActivity {
             case R.id.elibrary:
                 setTitle("E-Library");
                 item.setChecked(true);
+                fab.hide();
                 current = "E-Library";
                 previous = id;
                 manager.beginTransaction().replace(R.id.fragHolder, new eLibrary()).commit();
                 break;
             case R.id.projects:
                 setTitle("Projects");
+                fab.hide();
                 item.setChecked(true);
                 current = "Projects";
                 previous = id;
@@ -192,6 +195,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.community:
                 setTitle("Communities");
+                fab.hide();
                 item.setChecked(true);
                 current = "Communities";
                 previous = id;
@@ -199,6 +203,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.forum:
                 setTitle("Forum");
+                fab.hide();
                 item.setChecked(true);
                 current = "Forum";
                 previous = id;
