@@ -36,7 +36,8 @@
             android:title="Forum" />
     </group>
 
-    <group android:checkableBehavior="none">
+    <group android:checkableBehavior="none"
+        android:id="@+id/advanceMenu">
         <item
             android:id="@+id/setting"
             android:checkable="false"
@@ -55,7 +56,8 @@
             android:icon="@drawable/logout"
             android:title="Logout" />
     </group>
-    <group android:checkableBehavior="none">
+    <group android:checkableBehavior="none"
+        android:id="@+id/ourMenu">
 
         <item
             android:id="@+id/about"
