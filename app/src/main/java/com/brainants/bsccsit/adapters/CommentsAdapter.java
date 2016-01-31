@@ -51,7 +51,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.VH> {
             holder.timePost.setText(headerBundle.getString("time"));
             holder.namePost.setText(headerBundle.getString("name"));
             holder.messagePost.setText(headerBundle.getString("message"));
-            Log.d("Debug", headerBundle.getString("userId") );
             Picasso.with(context).load("https://graph.facebook.com/" + headerBundle.getString("userId") + "/picture?type=large").placeholder(R.drawable.user_place_holder).into(holder.imageViewPost);
             if (headerBundle.getString("imageURL").equals(""))
                 holder.imageViewPost.setVisibility(View.GONE);
