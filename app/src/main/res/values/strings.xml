@@ -73,4 +73,6 @@
         <item>First Semester</item>
         <item>First Semester</item>
     </string-array>
+
+    <string name="google_map_api">AIzaSyCW6m0JyYFBWgusxePr3n8mnuRQCP_zU2c</string>
 </resources>

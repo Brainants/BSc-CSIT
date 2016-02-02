@@ -99,35 +99,38 @@
             android:orientation="horizontal">
 
             <mehdi.sakout.fancybuttons.FancyButton
+                android:id="@+id/facebook"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
                 android:layout_weight="1"
                 fancy:fb_defaultColor="#3B5998"
                 fancy:fb_focusColor="#5B74A9"
-                fancy:fb_radius="20sp"
+                fancy:fb_radius="5sp"
                 fancy:fb_text="Facebook"
                 fancy:fb_textColor="@color/white" />
 
             <mehdi.sakout.fancybuttons.FancyButton
+                android:id="@+id/twitter"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
                 android:layout_weight="1"
                 fancy:fb_defaultColor="#55acee"
                 fancy:fb_focusColor="#8055acee"
-                fancy:fb_radius="20sp"
+                fancy:fb_radius="5sp"
                 fancy:fb_text="Twitter"
                 fancy:fb_textColor="@color/white" />
 
             <mehdi.sakout.fancybuttons.FancyButton
+                android:id="@+id/website"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
                 android:layout_weight="1"
                 fancy:fb_defaultColor="#9C27B0"
                 fancy:fb_focusColor="#CE93D8"
-                fancy:fb_radius="20sp"
+                fancy:fb_radius="5sp"
                 fancy:fb_text="Website"
                 fancy:fb_textColor="@color/white" />
         </LinearLayout>

@@ -25,16 +25,16 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:fitsSystemWindows="true"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true">
 
                 <ImageView
                     android:id="@+id/eventPhoto"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:fitsSystemWindows="true"
                     android:scaleType="centerCrop"
                     app:layout_collapseMode="parallax"
-                    android:fitsSystemWindows="true"
                     app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed" />
 
                 <View
@@ -47,8 +47,8 @@
                 android:id="@+id/eventToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:layout_collapseMode="pin"/>
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
@@ -94,6 +94,7 @@
                         app:typeface="roboto_italic" />
 
                     <LinearLayout
+                        android:id="@+id/locationLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
@@ -170,8 +171,8 @@
                     <com.devspark.robototextview.widget.RobotoTextView
                         android:id="@+id/eventDesc"
                         android:layout_width="match_parent"
-                        android:autoLink="web"
                         android:layout_height="wrap_content"
+                        android:autoLink="web"
                         android:text="Event description" />
 
                 </LinearLayout>
