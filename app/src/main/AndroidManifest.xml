@@ -205,15 +205,45 @@
                 android:pathPrefix="/projectbytag"
                 android:scheme="brainants" />
         </activity>
-        <activity android:name=".activities.Feedback"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden">
+        <activity
+            android:name=".activities.Feedback"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait">
 
             <data
                 android:host="bsccsit"
                 android:pathPrefix="/feedback"
                 android:scheme="brainants" />
         </activity>
+
+
+        <!--Below code is the config file for GCM!-->
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+                <category android:name="com.brainants.bsccsit" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.brainants.bsccsit.advance.MyIntentService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.brainants.bsccsit.advance.MyIDListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

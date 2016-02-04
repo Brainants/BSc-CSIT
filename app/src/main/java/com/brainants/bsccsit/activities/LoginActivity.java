@@ -22,6 +22,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.brainants.bsccsit.R;
 import com.brainants.bsccsit.advance.Singleton;
 import com.brainants.bsccsit.fragments.IntroFragment;
+import com.brainants.bsccsit.networking.GCMRegIdUploader;
 import com.brainants.bsccsit.networking.MyCommunitiesDownloader;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -169,6 +170,7 @@ public class LoginActivity extends AppCompatActivity {
             }).executeAsync();
             return;
         }
+        new GCMRegIdUploader().doInBackground();
         if (!preferences.getBoolean("checked", false)) {
             StringRequest request = new StringRequest(Request.Method.POST, "http://bsccsit.brainants.com/getuser", new Response.Listener<String>() {
                 @Override

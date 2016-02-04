@@ -4,17 +4,13 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.PowerManager;
 import android.support.v7.app.NotificationCompat;
 
-import com.google.android.gms.gcm.GcmTaskService;
-import com.google.android.gms.gcm.TaskParams;
 import com.brainants.bsccsit.R;
-import com.brainants.bsccsit.activities.MainActivity;
 import com.brainants.bsccsit.networking.EventsDownloader;
 import com.brainants.bsccsit.networking.MyCommunitiesUploader;
 import com.brainants.bsccsit.networking.NewsDownloader;
@@ -23,11 +19,12 @@ import com.brainants.bsccsit.networking.NotificationDownloader;
 import com.brainants.bsccsit.networking.PopularCommunitiesDownloader;
 import com.brainants.bsccsit.networking.TagsDownloader;
 import com.brainants.bsccsit.networking.eLibraryDownloader;
+import com.google.android.gms.gcm.GcmTaskService;
+import com.google.android.gms.gcm.TaskParams;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Random;
 
 public class BackgroundTaskHandler extends GcmTaskService {
 
@@ -84,9 +81,6 @@ public class BackgroundTaskHandler extends GcmTaskService {
         newsDownloader.setTaskCompleteListener(new NewsDownloader.OnTaskCompleted() {
             @Override
             public void onTaskCompleted(boolean success) {
-                if (success && (Singleton.getNewsCount() - previousNews) > 0 && Singleton.canShowNotif("news"))
-                    notification("New news arrived.", "You may like to read them.", "New news added."
-                            , notifNews, new Intent(MyApp.getContext(), MainActivity.class), MyApp.getContext());
             }
         });
 
@@ -105,12 +99,7 @@ public class BackgroundTaskHandler extends GcmTaskService {
         NotifDownloader.setOnTaskCompleteListener(new NotificationDownloader.ClickListener() {
             @Override
             public void OnTaskCompleted(boolean success) {
-                if (success) {
-                    if (Singleton.getNotifCount() > previousNews) {
-                        Singleton.setNotificationStatus(true);
-                        NotifyNewNotification(previousNotification);
-                    }
-                }
+
             }
         });
 
@@ -120,9 +109,6 @@ public class BackgroundTaskHandler extends GcmTaskService {
         communityDownloader.setTaskCompleteListener(new PopularCommunitiesDownloader.OnTaskCompleted() {
             @Override
             public void onTaskCompleted(boolean success) {
-                if (success && (Singleton.getCommunityCount() - previousCommunity) > 0 && Singleton.canShowNotif("community"))
-                    notification("New communities arrived.", "You may like to follow them.", "New Communities added."
-                            , notifCommunity, new Intent(Intent.ACTION_VIEW, Uri.parse("brainants://bsccsit/main?fragment=community")), MyApp.getContext());
             }
         });
 
@@ -143,9 +129,6 @@ public class BackgroundTaskHandler extends GcmTaskService {
         downloader.setTaskCompleteListener(new eLibraryDownloader.OnTaskCompleted() {
             @Override
             public void onTaskCompleted(boolean success) {
-                if (success && Singleton.getElibraryCount() > previousLibrary && Singleton.canShowNotif("elibrary"))
-                    notification("E-Library Updated", "New PDFs has been added. Check them out.", "E-Library Updated"
-                            , notifLibrary,  new Intent(Intent.ACTION_VIEW, Uri.parse("brainants://bsccsit/main?fragment=elibrary")), MyApp.getContext());
             }
         });
 
@@ -155,13 +138,7 @@ public class BackgroundTaskHandler extends GcmTaskService {
         noticeDownloader.setOnTaskCompleteListener(new NoticeDownloader.OnTaskCompleted() {
             @Override
             public void onTaskCompleted(boolean success) {
-                if (success && Singleton.canShowNotif("notice")) {
-                    if ((Singleton.noticeCount() - previousNotice) == 1) {
-                        // todo latest notice dekhaune notification();
-                    } else
-                        notification(Singleton.noticeCount() - previousNotice + " new TU Notices.", "New notices has been detected. Check them out.", "New notices avilable.",
-                                notifNotice,   new Intent(Intent.ACTION_VIEW, Uri.parse("brainants://bsccsit/main?fragment=notice")), MyApp.getContext());
-                }
+
             }
         });
 
@@ -175,20 +152,5 @@ public class BackgroundTaskHandler extends GcmTaskService {
         });
 
         return 1;
-    }
-
-    private void NotifyNewNotification(int previousNotification) {
-        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM notifications", null);
-        for (int i = 0; i < previousNotification; i++) {
-            cursor.moveToPosition(i);
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(cursor.getString(2)));
-            notification(cursor.getString(0),
-                    cursor.getString(1),
-                    cursor.getString(0),
-                    new Random().nextInt(30 - 5) + 5,
-                    intent,
-                    this);
-        }
-        cursor.close();
     }
 }
