@@ -1,6 +1,7 @@
 package com.brainants.bsccsit.activities;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -39,11 +41,17 @@ import java.util.Locale;
 public class FbEvent extends AppCompatActivity {
 
 
-    private String eventId,eventName,eventPhoto;
+    private String eventId;
+    private String eventName;
+    private String eventPhoto;
+    private String eventPlace;
+    private double latitude;
+    private double longitude;
     private ProgressBar progressBar;
     private LinearLayout errorMsg;
     private FloatingActionButton fab;
     private NestedScrollView nestedScrollEvent;
+    private LinearLayout locationLayout;
 
     private RobotoTextView event_name, event_description, event_place, event_location, event_street, event_time, hosted_by;
 
@@ -60,6 +68,7 @@ public class FbEvent extends AppCompatActivity {
         event_time = (RobotoTextView) findViewById(R.id.eventTime);
         hosted_by = (RobotoTextView) findViewById(R.id.eventHost);
 
+
         ImageView event_photo = (ImageView) findViewById(R.id.eventPhoto);
 
         fab = (FloatingActionButton) findViewById(R.id.eachEventFab);
@@ -69,6 +78,8 @@ public class FbEvent extends AppCompatActivity {
         CollapsingToolbarLayout mCollapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.eventCollapse);
 
         eventId = getIntent().getStringExtra("eventID");
+
+        locationLayout = (LinearLayout) findViewById(R.id.locationLayout);
 
 
         progressBar = (ProgressBar) findViewById(R.id.progressbarFbEvent);
@@ -129,6 +140,15 @@ public class FbEvent extends AppCompatActivity {
 
         downloadFromInternet();
 
+        locationLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(FbEvent.this,EventVenueMap.class)
+                        .putExtra("name",eventPlace)
+                        .putExtra("lat",latitude)
+                        .putExtra("long",longitude));
+            }
+        });
     }
 
     private void downloadFromInternet() {
@@ -203,7 +223,8 @@ public class FbEvent extends AppCompatActivity {
 
 
                         try {
-                            event_place.setText(place.getString("name"));
+                            eventPlace = place.getString("name");
+                            event_place.setText(eventPlace);
                         } catch (Exception e) {
                             event_place.setVisibility(View.GONE);
                         }
@@ -212,6 +233,15 @@ public class FbEvent extends AppCompatActivity {
                             event_location.setText(location.getString("city") + ", " + location.getString("country"));
                         } catch (Exception e) {
                             event_location.setVisibility(View.GONE);
+                        }
+
+                        try {
+                            latitude=location.getDouble("latitude");
+                            longitude=location.getDouble("longitude");
+                            Log.d("Apptest",latitude + "\n" + longitude);
+                        } catch (Exception e) {
+
+                            Log.d("Apptest","Error");
                         }
 
                         try {
