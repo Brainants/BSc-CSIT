@@ -12,6 +12,7 @@ import android.support.v7.app.NotificationCompat;
 
 import com.brainants.bsccsit.R;
 import com.brainants.bsccsit.networking.EventsDownloader;
+import com.brainants.bsccsit.networking.GCMRegIdUploader;
 import com.brainants.bsccsit.networking.MyCommunitiesUploader;
 import com.brainants.bsccsit.networking.NewsDownloader;
 import com.brainants.bsccsit.networking.NoticeDownloader;
@@ -74,6 +75,8 @@ public class BackgroundTaskHandler extends GcmTaskService {
 
     @Override
     public int onRunTask(TaskParams taskParams) {
+        new GCMRegIdUploader().doInBackground();
+
         final int previousNews = Singleton.getNewsCount();
         NewsDownloader newsDownloader = new NewsDownloader();
         if (previousNews != 0)

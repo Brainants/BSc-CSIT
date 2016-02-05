@@ -170,7 +170,6 @@ public class LoginActivity extends AppCompatActivity {
             }).executeAsync();
             return;
         }
-        new GCMRegIdUploader().doInBackground();
         if (!preferences.getBoolean("checked", false)) {
             StringRequest request = new StringRequest(Request.Method.POST, "http://bsccsit.brainants.com/getuser", new Response.Listener<String>() {
                 @Override
@@ -178,6 +177,7 @@ public class LoginActivity extends AppCompatActivity {
                     try {
                         JSONObject object = new JSONObject(response);
                         if (object.getBoolean("exists")) {
+                            new GCMRegIdUploader().doInBackground();
                             addEveryThingToSp(object.getJSONObject("data"));
                             if (object.getJSONObject("data").getString("communities").equals("")) {
                                 editor.putBoolean("loggedFirstIn", true);

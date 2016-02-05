@@ -27,6 +27,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.brainants.bsccsit.R;
 import com.brainants.bsccsit.advance.Singleton;
+import com.brainants.bsccsit.networking.GCMRegIdUploader;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -112,6 +113,7 @@ public class CompleteLoginForm extends Fragment implements AdapterView.OnItemSel
                     editor.putString("college",college.getSelectedItem().toString());
                     editor.putBoolean("formFilled",true);
                     editor.apply();
+                    new GCMRegIdUploader().doInBackground();
 
 /*                    Answers.getInstance().logLogin(new LoginEvent()
                             .putMethod("Facebook")

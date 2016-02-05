@@ -39,7 +39,7 @@ public class GCMRegIdUploader {
                         protected Map<String, String> getParams() {
                             Map<String, String> params = new HashMap<>();
                             params.put("user_id", MyApp.getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getString("UserID", ""));
-                            params.put("gcm_regid", token);
+                            params.put("reg_id", token);
                             return params;
                         }
 

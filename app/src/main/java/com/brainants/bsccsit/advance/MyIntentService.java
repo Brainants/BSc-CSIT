@@ -19,9 +19,18 @@ import java.util.Random;
 public class MyIntentService extends GcmListenerService {
     @Override
     public void onMessageReceived(String from, Bundle data) {
+        if(!Singleton.canShowNotif(data.getString("tag","UNKNOWN")))
+            return;
         NotificationCompat.Builder notificationCompat = new NotificationCompat.Builder(this);
         Uri sound = Uri.parse("android.resource://"
                 + getPackageName() + "/" + R.raw.notification);
+
+        NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
+        bigText.bigText(data.getString("message"));
+        bigText.setBigContentTitle(data.getString("title"));
+
+        notificationCompat.setStyle(bigText);
+
         notificationCompat.setAutoCancel(true)
                 .setTicker(data.getString("title"))
                 .setWhen(System.currentTimeMillis())
