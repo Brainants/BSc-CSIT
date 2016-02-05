@@ -7,7 +7,6 @@
     android:id="@+id/coreNoticeDetails"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff"
     android:fitsSystemWindows="true"
     tools:context="com.brainants.bsccsit.activities.NoticeDetails">
 
@@ -21,8 +20,7 @@
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             android:theme="@style/Theme.AppCompat"
-            app:layout_collapseMode="pin"
-            app:layout_scrollFlags="scroll|enterAlways" />
+            />
 
     </android.support.design.widget.AppBarLayout>
 

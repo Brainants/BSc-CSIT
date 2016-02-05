@@ -2,11 +2,13 @@ package com.brainants.bsccsit.adapters;
 
 import android.content.Context;
 import android.os.Environment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.devspark.robototextview.widget.RobotoTextView;
 import com.brainants.bsccsit.R;
@@ -42,8 +44,10 @@ public class eLibraryAdapter extends RecyclerView.Adapter<eLibraryAdapter.VH> {
     public void onBindViewHolder(VH holder, int position) {
         holder.name.setText(titles.get(position));
         holder.source.setText("Source: " + source.get(position));
-        if (eLibraryAdapter.checkExistance(fileType, fileName.get(position)))
+        if (eLibraryAdapter.checkExistance(fileType, fileName.get(position))) {
             holder.icon.setImageResource(R.drawable.open);
+        }
+
         else
             holder.icon.setImageResource(R.drawable.download);
     }
@@ -67,20 +71,24 @@ public class eLibraryAdapter extends RecyclerView.Adapter<eLibraryAdapter.VH> {
     }
 
     public class VH extends RecyclerView.ViewHolder {
-        RobotoTextView name, source;
+        RobotoTextView name, source,view;
         ImageView icon;
+        RelativeLayout coreFile;
 
         public VH(final View itemView) {
             super(itemView);
             name = (RobotoTextView) itemView.findViewById(R.id.fileTitle);
             source = (RobotoTextView) itemView.findViewById(R.id.fileSource);
             icon = (ImageView) itemView.findViewById(R.id.fileImage);
-            icon.setOnClickListener(new View.OnClickListener() {
+            coreFile = (RelativeLayout) itemView.findViewById(R.id.coreFile);
+
+            coreFile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     clickListener.onIconClick(itemView, getAdapterPosition());
                 }
             });
+
         }
     }
 }
