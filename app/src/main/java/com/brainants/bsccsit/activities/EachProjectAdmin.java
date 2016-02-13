@@ -90,7 +90,11 @@ public class EachProjectAdmin extends AppCompatActivity {
             }
         });
 
-        project_id = getIntent().getStringExtra("project_id");
+        try {
+            project_id = getIntent().getStringExtra("project_id");
+        }catch (Exception e){
+            project_id=getIntent().getData().getQueryParameter("project_id");
+        }
         loadFromInternet();
     }
 

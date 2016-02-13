@@ -1,9 +1,13 @@
 package com.brainants.bsccsit.adapters;
 
+import android.Manifest;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.provider.CalendarContract;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -89,14 +93,24 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.VH> {
         else
             holder.addToSchedule.setVisibility(View.GONE);
 
-        if (Singleton.isScheduledEvent(eventsIds.get(position))) {
+        if (Singleton.isScheduledEvent(eventsIds.get(position)) != -1) {
             holder.addToSchedule.setImageResource(R.drawable.calender_check);
             holder.addToSchedule.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Snackbar.make(MainActivity.drawerLayout, "Remainder removed.", Snackbar.LENGTH_SHORT).show();
-                    Singleton.getInstance().getDatabase().execSQL("DELETE FROM remainder WHERE eventID = " + eventsIds.get(position));
-                    notifyItemChanged(position + 1);
+                    String[] selArgs =
+                            new String[]{Long.toString(Singleton.isScheduledEvent(eventsIds.get(position)))};
+                    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_GRANTED) {
+                                context.getContentResolver().
+                                        delete(
+
+                                                CalendarContract.Events.CONTENT_URI,
+                                                CalendarContract.Events._ID + " =? ",
+                                                selArgs);
+                        context.getSharedPreferences("event",Context.MODE_PRIVATE).edit().putLong(eventsIds.get(position),-1).apply();
+                        notifyItemChanged(position + 1);
+
+                    }
                 }
             });
         } else {
@@ -105,10 +119,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.VH> {
                 @Override
                 public void onClick(View v) {
                     Snackbar.make(MainActivity.drawerLayout, "Remainder scheduled.", Snackbar.LENGTH_SHORT).show();
-                    ContentValues values = new ContentValues();
-                    values.put("eventID", eventsIds.get(position));
-                    values.put("created_time", time.get(position));
-                    Singleton.getInstance().getDatabase().insert("remainder", null, values);
                     notifyItemChanged(position + 1);
                 }
             });
@@ -164,11 +174,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.VH> {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return cal.get(Calendar.DAY_OF_MONTH) + "";
-
     }
 
     private Date convertToSimpleDate(String created_time) {
-
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZZZZZ", Locale.US);
         try {
             return simpleDateFormat.parse(created_time);
@@ -179,7 +187,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.VH> {
 
     @Override
     public int getItemCount() {
-        return (names.size() + 2) < 32 ? (names.size() + 2) : 32;
+        return (names.size() + 2) < 12 ? (names.size() + 2) : 12;
     }
 
     @Override
@@ -195,7 +203,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.VH> {
         RobotoTextView nameHolder, monthHolder, dayHolder, hosterHolder, headerText;
         ImageView imageHolder, addToSchedule;
         LinearLayout eachEventCore;
-
 
         public VH(View itemView) {
             super(itemView);

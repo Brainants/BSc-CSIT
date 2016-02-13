@@ -194,18 +194,20 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true" />
     </RelativeLayout>
-
+<FrameLayout
+    android:layout_width="wrap_content"
+    app:layout_anchor="@id/eventAppbar"
+    android:layout_margin="16dp"
+    app:layout_anchorGravity="bottom|right|end"
+    android:layout_height="wrap_content">
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/eachEventFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
         android:clickable="true"
         android:src="@drawable/calender_plus"
-        app:backgroundTint="@color/white"
-        app:layout_anchor="@id/eventAppbar"
-        app:layout_anchorGravity="bottom|right|end" />
-
+        app:backgroundTint="@color/white"/>
+</FrameLayout>
     <LinearLayout
         android:id="@+id/errorMessagePageEvent"
         android:layout_width="match_parent"

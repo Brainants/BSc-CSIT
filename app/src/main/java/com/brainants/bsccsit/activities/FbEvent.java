@@ -1,14 +1,19 @@
 package com.brainants.bsccsit.activities;
 
+import android.Manifest;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +25,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.brainants.bsccsit.advance.MyApp;
 import com.devspark.robototextview.widget.RobotoTextView;
 import com.facebook.AccessToken;
 import com.facebook.FacebookRequestError;
@@ -34,9 +41,13 @@ import com.brainants.bsccsit.advance.Singleton;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class FbEvent extends AppCompatActivity {
 
@@ -52,7 +63,7 @@ public class FbEvent extends AppCompatActivity {
     private FloatingActionButton fab;
     private NestedScrollView nestedScrollEvent;
     private LinearLayout locationLayout;
-
+    String startTime = "", endTime = "";
     private RobotoTextView event_name, event_description, event_place, event_location, event_street, event_time, hosted_by;
 
     @Override
@@ -91,12 +102,8 @@ public class FbEvent extends AppCompatActivity {
             }
         });
 
-        Date current = new Date();
-        current.setTime(System.currentTimeMillis());
 
-
-
-        if (Singleton.isScheduledEvent(eventId)) {
+        if (Singleton.isScheduledEvent(eventId)!=-1) {
             fab.setImageResource(R.drawable.calender_check_white);
             fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorAccent)));
         }
@@ -104,20 +111,7 @@ public class FbEvent extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Singleton.isScheduledEvent(eventId)) {
-                    fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(FbEvent.this, R.color.white)));
-                    fab.setImageResource(R.drawable.calender_plus);
-                    Snackbar.make(MainActivity.drawerLayout, "Remainder removed.", Snackbar.LENGTH_SHORT).show();
-                    Singleton.getInstance().getDatabase().execSQL("DELETE FROM remainder WHERE eventID = " + eventId);
-                } else {
-                    fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(FbEvent.this, R.color.colorAccent)));
-                    fab.setImageResource(R.drawable.calender_check_white);
-                    Snackbar.make(MainActivity.drawerLayout, "Remainder scheduled.", Snackbar.LENGTH_SHORT).show();
-                    ContentValues values = new ContentValues();
-                    values.put("eventID", eventId);
-                    //values.put("created_time", time);
-                    Singleton.getInstance().getDatabase().insert("remainder", null, values);
-                }
+                addEvent();
             }
         });
 
@@ -127,8 +121,8 @@ public class FbEvent extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM events WHERE eventIDs ='" + eventId +"'",null);
-        while(cursor.moveToNext()) {
+        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM events WHERE eventIDs ='" + eventId + "'", null);
+        while (cursor.moveToNext()) {
             eventName = cursor.getString(cursor.getColumnIndex("names"));
             eventPhoto = cursor.getString(cursor.getColumnIndex("fullImage"));
         }
@@ -143,16 +137,15 @@ public class FbEvent extends AppCompatActivity {
         locationLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(FbEvent.this,EventVenueMap.class)
-                        .putExtra("name",eventPlace)
-                        .putExtra("lat",latitude)
-                        .putExtra("long",longitude));
+                startActivity(new Intent(FbEvent.this, EventVenueMap.class)
+                        .putExtra("name", eventPlace)
+                        .putExtra("lat", latitude)
+                        .putExtra("long", longitude));
             }
         });
     }
 
     private void downloadFromInternet() {
-
         errorMsg.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
         nestedScrollEvent.setVisibility(View.GONE);
@@ -171,7 +164,7 @@ public class FbEvent extends AppCompatActivity {
                         JSONObject place = null;
                         JSONObject location = null;
 
-                        event_name.setText( details.getString("name"));
+                        event_name.setText(details.getString("name"));
 
                         try {
                             place = details.getJSONObject("place");
@@ -191,11 +184,18 @@ public class FbEvent extends AppCompatActivity {
 
 
                         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZZZZZ", Locale.US);
-                        String startTime = null, endTime = null;
 
                         try {
                             startTime = details.getString("start_time");
                             endTime = details.getString("end_time");
+
+                            Date current = new Date();
+                            current.setTime(System.currentTimeMillis());
+
+                            if(current.compareTo(format.parse(startTime))<0)
+                                fab.setVisibility(View.GONE);
+                            else
+                                fab.setVisibility(View.VISIBLE);
 
 
                             String strMonthStart = (String) android.text.format.DateFormat.format("MMM", format.parse(startTime));
@@ -236,12 +236,12 @@ public class FbEvent extends AppCompatActivity {
                         }
 
                         try {
-                            latitude=location.getDouble("latitude");
-                            longitude=location.getDouble("longitude");
-                            Log.d("Apptest",latitude + "\n" + longitude);
+                            latitude = location.getDouble("latitude");
+                            longitude = location.getDouble("longitude");
+                            Log.d("Apptest", latitude + "\n" + longitude);
                         } catch (Exception e) {
 
-                            Log.d("Apptest","Error");
+                            Log.d("Apptest", "Error");
                         }
 
                         try {
@@ -255,19 +255,58 @@ public class FbEvent extends AppCompatActivity {
                     } catch (Exception ignored) {
                     }
                 }
-
-
             }
 
 
         }).executeAsync();
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home)
             finish();
         return true;
+    }
+
+    private void addEvent() {
+        long calId = Singleton.calenderID(this);
+        long startTimeForomDate;
+        try {
+            SimpleDateFormat sfd = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZZZZZ", Locale.US);
+            startTimeForomDate= sfd.parse(startTime).getTime();
+        } catch (ParseException e) {
+            return;
+        }
+
+        ContentValues values = new ContentValues();
+        values.put(CalendarContract.Events.DTSTART, startTimeForomDate);
+        values.put(CalendarContract.Events.DTEND, startTimeForomDate);
+        values.put(CalendarContract.Events.TITLE, event_name.getText().toString());
+        values.put(CalendarContract.Events.EVENT_LOCATION, event_place.getText().toString());
+        values.put(CalendarContract.Events.CALENDAR_ID, calId);
+        values.put(CalendarContract.Events.EVENT_TIMEZONE, "Asia/Kathmandu");
+        values.put(CalendarContract.Events.DESCRIPTION,event_description.getText().toString());
+// reasonable defaults exist:
+        values.put(CalendarContract.Events.ACCESS_LEVEL, CalendarContract.Events.ACCESS_PRIVATE);
+        values.put(CalendarContract.Events.SELF_ATTENDEE_STATUS,
+                CalendarContract.Events.STATUS_CONFIRMED);
+        values.put(CalendarContract.Events.ALL_DAY, 1);
+        values.put(CalendarContract.Events.ORGANIZER, hosted_by.getText().toString());
+        values.put(CalendarContract.Events.GUESTS_CAN_INVITE_OTHERS, 1);
+        values.put(CalendarContract.Events.GUESTS_CAN_MODIFY, 1);
+        values.put(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
+        if (ActivityCompat.checkSelfPermission(FbEvent.this, Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_GRANTED) {
+
+            Uri uri = getContentResolver().insert(CalendarContract.Events.CONTENT_URI, values);
+            long addedEventId = new Long(uri.getLastPathSegment());
+
+            values.clear();
+            values.put(CalendarContract.Reminders.EVENT_ID, addedEventId);
+            values.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
+            values.put(CalendarContract.Reminders.MINUTES, 60);
+            getContentResolver().insert(CalendarContract.Reminders.CONTENT_URI, values);
+            getSharedPreferences("event",MODE_PRIVATE).edit().putLong(eventId,addedEventId).apply();
+        }
+
     }
 }

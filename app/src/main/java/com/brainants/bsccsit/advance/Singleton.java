@@ -1,12 +1,19 @@
 package com.brainants.bsccsit.advance;
 
+import android.Manifest;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
+import android.provider.CalendarContract;
+import android.support.v4.app.ActivityCompat;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.View;
 
 import com.android.volley.RequestQueue;
@@ -118,17 +125,8 @@ public class Singleton {
         }
     }
 
-    public static boolean isScheduledEvent(String eventId) {
-        return false;
-        //// TODO: 1/24/2016 hoge one
-        /*Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM remainder WHERE eventID = " + eventId, null);
-        if (cursor.moveToNext()) {
-            cursor.close();
-            return true;
-        } else {
-            cursor.close();
-            return false;
-        }*/
+    public static long isScheduledEvent(String eventId) {
+        return MyApp.getContext().getSharedPreferences("event",Context.MODE_PRIVATE).getLong(eventId,-1);
     }
 
     public static String getSemester() {
@@ -243,6 +241,56 @@ public class Singleton {
         int count = cursor.getCount();
         cursor.close();
         return count;
+    }
+
+    public static long calenderID(Context context) {
+        return context.getSharedPreferences("event",Context.MODE_PRIVATE).getLong("calenderID",createCalender(context));
+    }
+
+    public static long createCalender(Context context){
+        ContentValues values = new ContentValues();
+        values.put(
+                CalendarContract.Calendars.ACCOUNT_NAME,
+                "brainants_bsccsit");
+        values.put(
+                CalendarContract.Calendars.ACCOUNT_TYPE,
+                CalendarContract.ACCOUNT_TYPE_LOCAL);
+        values.put(
+                CalendarContract.Calendars.NAME,
+                "BSc CSIT Calender");
+        values.put(
+                CalendarContract.Calendars.CALENDAR_DISPLAY_NAME,
+                "BSc CSIT Calender");
+        values.put(
+                CalendarContract.Calendars.CALENDAR_COLOR,
+                0xff009688);
+        values.put(
+                CalendarContract.Calendars.CALENDAR_ACCESS_LEVEL,
+                CalendarContract.Calendars.CAL_ACCESS_OWNER);
+        values.put(
+                CalendarContract.Calendars.OWNER_ACCOUNT,
+                "info@brainants.com");
+        values.put(
+                CalendarContract.Calendars.CALENDAR_TIME_ZONE,
+                "Europe/Berlin");
+        values.put(
+                CalendarContract.Calendars.SYNC_EVENTS,
+                1);
+        Uri.Builder builder =
+                CalendarContract.Calendars.CONTENT_URI.buildUpon();
+        builder.appendQueryParameter(
+                CalendarContract.Calendars.ACCOUNT_NAME,
+                "com.brainants.bsccsit");
+        builder.appendQueryParameter(
+                CalendarContract.Calendars.ACCOUNT_TYPE,
+                CalendarContract.ACCOUNT_TYPE_LOCAL);
+        builder.appendQueryParameter(
+                CalendarContract.CALLER_IS_SYNCADAPTER,
+                "true");
+        Uri uri =
+                context.getContentResolver().insert(builder.build(), values);
+        context.getSharedPreferences("event",Context.MODE_PRIVATE).edit().putLong("calenderID",Long.valueOf(uri.getLastPathSegment())).apply();
+        return Long.valueOf(uri.getLastPathSegment());
     }
 }
 

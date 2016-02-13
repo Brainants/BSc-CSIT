@@ -51,7 +51,6 @@ public class EachProject extends AppCompatActivity {
     String project_id;
     HorizontalScrollView horizontalScrollViewUser;
     boolean requested = false;
-    boolean isMember=false;
 
 
     @Override
@@ -83,7 +82,11 @@ public class EachProject extends AppCompatActivity {
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("");
-        project_id = getIntent().getStringExtra("project_id");
+        try {
+            project_id = getIntent().getStringExtra("project_id");
+        }catch (Exception e){
+            project_id=getIntent().getData().getQueryParameter("project_id");
+        }
         loadFromInternet();
     }
 
