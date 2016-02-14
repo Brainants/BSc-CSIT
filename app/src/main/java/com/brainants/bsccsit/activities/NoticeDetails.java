@@ -18,8 +18,6 @@ import android.widget.TextView;
 import com.brainants.bsccsit.R;
 import com.brainants.bsccsit.advance.Singleton;
 
-import org.w3c.dom.Text;
-
 import mehdi.sakout.fancybuttons.FancyButton;
 
 public class NoticeDetails extends AppCompatActivity {

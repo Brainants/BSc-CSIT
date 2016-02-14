@@ -1,7 +1,7 @@
 package com.brainants.bsccsit.activities;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.brainants.bsccsit.R;
 import com.google.android.gms.maps.CameraUpdateFactory;

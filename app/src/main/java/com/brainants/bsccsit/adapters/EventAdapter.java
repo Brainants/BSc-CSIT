@@ -1,13 +1,7 @@
 package com.brainants.bsccsit.adapters;
 
-import android.Manifest;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.provider.CalendarContract;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,12 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.devspark.robototextview.widget.RobotoTextView;
-import com.squareup.picasso.Picasso;
 import com.brainants.bsccsit.R;
 import com.brainants.bsccsit.activities.FbEvent;
-import com.brainants.bsccsit.activities.MainActivity;
-import com.brainants.bsccsit.advance.Singleton;
+import com.devspark.robototextview.widget.RobotoTextView;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -66,12 +58,12 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.VH> {
         else if (position == (noOfUpcomming + 1) && names.size() == noOfUpcomming)
             holder.headerText.setText("No Past events");
         else if (position <= noOfUpcomming)
-            fillCard(holder, position - 1, true);
+            fillCard(holder, position - 1);
         else if (position > noOfUpcomming)
-            fillCard(holder, position - 2, false);
+            fillCard(holder, position - 2);
     }
 
-    public void fillCard(final VH holder, final int position, boolean isUpcoming) {
+    public void fillCard(final VH holder, final int position) {
 
         holder.nameHolder.setText(names.get(position));
 
@@ -88,41 +80,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.VH> {
             holder.imageHolder.setVisibility(View.VISIBLE);
         }
 
-        if (isUpcoming)
-            holder.addToSchedule.setVisibility(View.VISIBLE);
-        else
-            holder.addToSchedule.setVisibility(View.GONE);
-
-        if (Singleton.isScheduledEvent(eventsIds.get(position)) != -1) {
-            holder.addToSchedule.setImageResource(R.drawable.calender_check);
-            holder.addToSchedule.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String[] selArgs =
-                            new String[]{Long.toString(Singleton.isScheduledEvent(eventsIds.get(position)))};
-                    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_GRANTED) {
-                                context.getContentResolver().
-                                        delete(
-
-                                                CalendarContract.Events.CONTENT_URI,
-                                                CalendarContract.Events._ID + " =? ",
-                                                selArgs);
-                        context.getSharedPreferences("event",Context.MODE_PRIVATE).edit().putLong(eventsIds.get(position),-1).apply();
-                        notifyItemChanged(position + 1);
-
-                    }
-                }
-            });
-        } else {
-            holder.addToSchedule.setImageResource(R.drawable.calender_plus);
-            holder.addToSchedule.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Snackbar.make(MainActivity.drawerLayout, "Remainder scheduled.", Snackbar.LENGTH_SHORT).show();
-                    notifyItemChanged(position + 1);
-                }
-            });
-        }
         holder.eachEventCore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -201,7 +158,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.VH> {
 
     public class VH extends RecyclerView.ViewHolder {
         RobotoTextView nameHolder, monthHolder, dayHolder, hosterHolder, headerText;
-        ImageView imageHolder, addToSchedule;
+        ImageView imageHolder;
         LinearLayout eachEventCore;
 
         public VH(View itemView) {
@@ -210,7 +167,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.VH> {
             monthHolder = (RobotoTextView) itemView.findViewById(R.id.monthTxt);
             dayHolder = (RobotoTextView) itemView.findViewById(R.id.dayTxt);
             hosterHolder = (RobotoTextView) itemView.findViewById(R.id.eventHoster);
-            addToSchedule = (ImageView) itemView.findViewById(R.id.addToCalender);
             imageHolder = (ImageView) itemView.findViewById(R.id.eventCoverImage);
             headerText = (RobotoTextView) itemView.findViewById(R.id.headerTextView);
             eachEventCore = (LinearLayout) itemView.findViewById(R.id.eachEventCore);

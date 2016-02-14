@@ -23,11 +23,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
-import com.brainants.bsccsit.fragments.Projects;
-import com.devspark.robototextview.widget.RobotoTextView;
 import com.brainants.bsccsit.R;
 import com.brainants.bsccsit.advance.Singleton;
 import com.brainants.bsccsit.networking.TagsDownloader;
+import com.devspark.robototextview.widget.RobotoTextView;
 
 import java.util.HashMap;
 import java.util.Map;

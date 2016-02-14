@@ -5,10 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.devspark.robototextview.widget.RobotoTextView;
-import com.squareup.picasso.Picasso;
 import com.brainants.bsccsit.R;
 import com.brainants.bsccsit.widget.TouchImageView;
+import com.devspark.robototextview.widget.RobotoTextView;
+import com.squareup.picasso.Picasso;
 
 public class ImageViewActivity extends AppCompatActivity {
 

@@ -10,23 +10,20 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.brainants.bsccsit.advance.MyApp;
+import com.brainants.bsccsit.R;
+import com.brainants.bsccsit.advance.Singleton;
 import com.devspark.robototextview.widget.RobotoTextView;
 import com.facebook.AccessToken;
 import com.facebook.FacebookRequestError;
@@ -34,20 +31,14 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.squareup.picasso.Picasso;
-import com.brainants.bsccsit.R;
-import com.brainants.bsccsit.advance.BackgroundTaskHandler;
-import com.brainants.bsccsit.advance.Singleton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Locale;
-import java.util.TimeZone;
 
 public class FbEvent extends AppCompatActivity {
 
@@ -192,7 +183,7 @@ public class FbEvent extends AppCompatActivity {
                             Date current = new Date();
                             current.setTime(System.currentTimeMillis());
 
-                            if(current.compareTo(format.parse(startTime))<0)
+                            if(current.compareTo(format.parse(startTime))>0)
                                 fab.setVisibility(View.GONE);
                             else
                                 fab.setVisibility(View.VISIBLE);
@@ -238,10 +229,8 @@ public class FbEvent extends AppCompatActivity {
                         try {
                             latitude = location.getDouble("latitude");
                             longitude = location.getDouble("longitude");
-                            Log.d("Apptest", latitude + "\n" + longitude);
                         } catch (Exception e) {
 
-                            Log.d("Apptest", "Error");
                         }
 
                         try {
@@ -250,7 +239,6 @@ public class FbEvent extends AppCompatActivity {
                         } catch (Exception e) {
                             event_street.setVisibility(View.GONE);
                         }
-
                         nestedScrollEvent.setVisibility(View.VISIBLE);
                     } catch (Exception ignored) {
                     }

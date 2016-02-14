@@ -39,18 +39,16 @@
         </LinearLayout>
 
 
-
-
-            <ImageView
-                android:id="@+id/fileImage"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_margin="8dp"
-                android:padding="5dp"
-                android:src="@drawable/open" />
+        <ImageView
+            android:id="@+id/fileImage"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="8dp"
+            android:padding="5dp"
+            android:src="@drawable/open" />
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>

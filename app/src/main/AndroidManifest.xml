@@ -228,6 +228,9 @@
                 android:pathPrefix="/feedback"
                 android:scheme="brainants" />
         </activity>
+        <activity android:name=".activities.EventVenueMap"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"/>
 
         <!--Below code is the config file for GCM!-->
         <receiver

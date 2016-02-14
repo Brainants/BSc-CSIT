@@ -9,13 +9,13 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.brainants.bsccsit.activities.ProjectByTag;
-import com.devspark.robototextview.widget.RobotoTextView;
 import com.brainants.bsccsit.R;
 import com.brainants.bsccsit.activities.EachProject;
 import com.brainants.bsccsit.activities.EachProjectAdmin;
+import com.brainants.bsccsit.activities.ProjectByTag;
 import com.brainants.bsccsit.advance.MyApp;
 import com.brainants.bsccsit.advance.Singleton;
+import com.devspark.robototextview.widget.RobotoTextView;
 
 import java.util.ArrayList;
 

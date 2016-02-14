@@ -9,10 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
 import com.brainants.bsccsit.R;
 import com.brainants.bsccsit.activities.EachPost;
 import com.brainants.bsccsit.activities.ImageViewActivity;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 

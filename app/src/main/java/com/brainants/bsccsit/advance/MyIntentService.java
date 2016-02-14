@@ -26,21 +26,21 @@ public class MyIntentService extends GcmListenerService {
                 + getPackageName() + "/" + R.raw.notification);
 
         NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
-        bigText.bigText(data.getString("message"));
-        bigText.setBigContentTitle(data.getString("title"));
+        bigText.bigText(data.getString("message").replace("{{name}}",Singleton.getName()));
+        bigText.setBigContentTitle(data.getString("title").replace("{{name}}",Singleton.getName()));
 
         notificationCompat.setStyle(bigText);
 
         notificationCompat.setAutoCancel(true)
-                .setTicker(data.getString("title"))
+                .setTicker(data.getString("title").replace("{{name}}",Singleton.getName()))
                 .setWhen(System.currentTimeMillis())
-                .setContentTitle(data.getString("title"))
+                .setContentTitle(data.getString("title").replace("{{name}}",Singleton.getName()))
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setVibrate(new long[]{100, 100})
                 .setLights(Color.BLUE, 3000, 3000)
                 .setSound(sound)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
-                .setContentText(data.getString("message"));
+                .setContentText(data.getString("message").replace("{{name}}",Singleton.getName()));
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(Intent.ACTION_VIEW,Uri.parse(data.getString("link"))), PendingIntent.FLAG_UPDATE_CURRENT);
         notificationCompat.setContentIntent(pendingIntent);

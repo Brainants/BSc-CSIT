@@ -4,12 +4,12 @@ import android.content.ContentValues;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import com.brainants.bsccsit.advance.BackgroundTaskHandler;
+import com.brainants.bsccsit.advance.Singleton;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
-import com.brainants.bsccsit.advance.BackgroundTaskHandler;
-import com.brainants.bsccsit.advance.Singleton;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

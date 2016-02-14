@@ -2,7 +2,6 @@ package com.brainants.bsccsit.networking;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -50,7 +49,6 @@ public class GCMRegIdUploader {
                             return params;
                         }
                     });
-                    Log.d("Debug",token);
                 } catch (IOException e) {
                     token = "Failed" + e;
                 }

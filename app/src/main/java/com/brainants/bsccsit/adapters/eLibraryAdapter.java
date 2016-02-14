@@ -2,7 +2,6 @@ package com.brainants.bsccsit.adapters;
 
 import android.content.Context;
 import android.os.Environment;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.devspark.robototextview.widget.RobotoTextView;
 import com.brainants.bsccsit.R;
 import com.brainants.bsccsit.advance.Singleton;
+import com.devspark.robototextview.widget.RobotoTextView;
 
 import java.io.File;
 import java.util.ArrayList;

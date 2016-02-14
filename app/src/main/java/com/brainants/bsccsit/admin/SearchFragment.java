@@ -20,13 +20,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.brainants.bsccsit.R;
+import com.brainants.bsccsit.adapters.FacebookSearchAdapter;
+import com.brainants.bsccsit.advance.Singleton;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
-import com.brainants.bsccsit.R;
-import com.brainants.bsccsit.adapters.FacebookSearchAdapter;
-import com.brainants.bsccsit.advance.Singleton;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

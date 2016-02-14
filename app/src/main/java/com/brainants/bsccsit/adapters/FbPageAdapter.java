@@ -9,10 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.facebook.login.widget.ProfilePictureView;
-import com.squareup.picasso.Picasso;
 import com.brainants.bsccsit.R;
 import com.brainants.bsccsit.activities.ImageViewActivity;
+import com.facebook.login.widget.ProfilePictureView;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;

@@ -8,11 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.devspark.robototextview.widget.RobotoTextView;
-import com.squareup.picasso.Picasso;
 import com.brainants.bsccsit.R;
 import com.brainants.bsccsit.activities.FbPage;
 import com.brainants.bsccsit.advance.Singleton;
+import com.devspark.robototextview.widget.RobotoTextView;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 

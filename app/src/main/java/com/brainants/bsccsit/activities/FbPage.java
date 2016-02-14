@@ -14,14 +14,14 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
+import com.brainants.bsccsit.R;
+import com.brainants.bsccsit.adapters.FbPageAdapter;
+import com.brainants.bsccsit.advance.Singleton;
 import com.facebook.AccessToken;
 import com.facebook.FacebookRequestError;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
-import com.brainants.bsccsit.R;
-import com.brainants.bsccsit.adapters.FbPageAdapter;
-import com.brainants.bsccsit.advance.Singleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;

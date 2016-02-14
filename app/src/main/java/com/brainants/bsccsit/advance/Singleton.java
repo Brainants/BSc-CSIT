@@ -1,26 +1,20 @@
 package com.brainants.bsccsit.advance;
 
-import android.Manifest;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.provider.CalendarContract;
-import android.support.v4.app.ActivityCompat;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.View;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.brainants.bsccsit.activities.ProjectByTag;
-import com.google.android.gms.gcm.GcmNetworkManager;
 import com.brainants.bsccsit.R;
+import com.google.android.gms.gcm.GcmNetworkManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -91,6 +85,9 @@ public class Singleton {
         cursor.close();
         return string;
     }
+     public static String getName(){
+         return MyApp.getContext().getSharedPreferences("loginInfo",Context.MODE_PRIVATE).getString("FirstName","User");
+     }
 
     public static ArrayList<String> getFollowingArray() {
         Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT FbID FROM myCommunities", null);
@@ -260,7 +257,7 @@ public class Singleton {
                 "BSc CSIT Calender");
         values.put(
                 CalendarContract.Calendars.CALENDAR_DISPLAY_NAME,
-                "BSc CSIT Calender");
+                "BSc CSIT Events Calender");
         values.put(
                 CalendarContract.Calendars.CALENDAR_COLOR,
                 0xff009688);

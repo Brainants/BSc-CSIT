@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.brainants.bsccsit.R;
+import com.brainants.bsccsit.adapters.CommentsAdapter;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -27,8 +29,6 @@ import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.brainants.bsccsit.R;
-import com.brainants.bsccsit.adapters.CommentsAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -147,6 +147,7 @@ public class EachPost extends AppCompatActivity {
             public void onCompleted(GraphResponse response) {
                 if (response.getError() != null) {
                     errorLayout.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
                 } else {
                     JSONObject object = response.getJSONObject();
                     try {

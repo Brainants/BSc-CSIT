@@ -19,6 +19,10 @@ import android.widget.ProgressBar;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.brainants.bsccsit.R;
+import com.brainants.bsccsit.activities.MainActivity;
+import com.brainants.bsccsit.adapters.ForumAdapter;
+import com.brainants.bsccsit.advance.Singleton;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -29,10 +33,6 @@ import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.brainants.bsccsit.R;
-import com.brainants.bsccsit.activities.MainActivity;
-import com.brainants.bsccsit.adapters.ForumAdapter;
-import com.brainants.bsccsit.advance.Singleton;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

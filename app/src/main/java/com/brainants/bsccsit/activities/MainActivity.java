@@ -16,7 +16,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -138,7 +137,6 @@ public class MainActivity extends AppCompatActivity {
             if ("brainants".equals(uri.getScheme()) && "bsccsit".equals(uri.getHost())) {
                 // Cool, we have a URI addressed to this activity!
                 String mQuery = uri.getQueryParameter("fragment");
-                Log.d("Debug", mQuery);
                 if (mQuery.equals("home"))
                     navigate(navigationView.getMenu().findItem(R.id.newsEvent));
                 else if (mQuery.equals("notice"))

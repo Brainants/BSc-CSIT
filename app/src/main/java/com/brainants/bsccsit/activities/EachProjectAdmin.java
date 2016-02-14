@@ -10,7 +10,6 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -269,7 +268,6 @@ public class EachProjectAdmin extends AppCompatActivity {
                     });
                 } else {
                     selectedPos = getPositions(selectedTxt);
-                    Log.d("debug",selectedPos.toString()+selectedTxt.toString());
                     new MaterialDialog.Builder(EachProjectAdmin.this)
                             .title("Select your tag")
                             .items(languages)

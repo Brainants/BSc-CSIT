@@ -1,6 +1,5 @@
 package com.brainants.bsccsit.adapters;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.CardView;
@@ -9,9 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.brainants.bsccsit.R;
 import com.brainants.bsccsit.activities.Notification;
 import com.devspark.robototextview.widget.RobotoTextView;
-import com.brainants.bsccsit.R;
 
 import java.util.ArrayList;
 
