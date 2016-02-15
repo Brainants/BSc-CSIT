@@ -20,28 +20,28 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.VH> {
 
     private View Header;
-    private ArrayList<String> posterId, names,times, message;
+    private ArrayList<String> posterId, names, times, message;
     private LayoutInflater inflater;
     private Context context;
     private Bundle headerBundle;
 
     public CommentsAdapter(Context context, Bundle headerBundle, ArrayList<String> posterId,
-                           ArrayList<String> names, ArrayList<String> times, ArrayList<String> message){
-        this.posterId=posterId;
-        this.names=names;
+                           ArrayList<String> names, ArrayList<String> times, ArrayList<String> message) {
+        this.posterId = posterId;
+        this.names = names;
         this.context = context;
         this.headerBundle = headerBundle;
-        this.times=times;
-        this.message=message;
-        inflater=LayoutInflater.from(context);
+        this.times = times;
+        this.message = message;
+        inflater = LayoutInflater.from(context);
     }
 
     @Override
     public VH onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType==0)
+        if (viewType == 0)
             return new VH(inflater.inflate(R.layout.each_post_header, parent, false));
         else
-            return new VH(inflater.inflate(R.layout.comment_each,parent,false));
+            return new VH(inflater.inflate(R.layout.comment_each, parent, false));
     }
 
     @Override
@@ -65,7 +65,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.VH> {
 
     @Override
     public int getItemCount() {
-        return names.size()+1;
+        return names.size() + 1;
     }
 
     @Override

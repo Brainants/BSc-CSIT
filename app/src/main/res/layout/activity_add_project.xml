@@ -10,7 +10,6 @@
     tools:context="com.brainants.bsccsit.activities.AddProject">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/appBarPage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"

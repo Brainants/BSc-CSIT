@@ -7,6 +7,8 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.brainants.bsccsit.R;
+import com.brainants.bsccsit.advance.MyApp;
 import com.brainants.bsccsit.advance.Singleton;
 
 import org.json.JSONArray;
@@ -21,7 +23,7 @@ public class TagsDownloader {
     private ClickListener listener;
 
     public void doInBackground() {
-        String url = "http://bsccsit.brainants.com/alltags";
+        String url = MyApp.getContext().getString(R.string.allTags);
         JsonArrayRequest request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {

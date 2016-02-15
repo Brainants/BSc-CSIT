@@ -72,7 +72,7 @@ public class ProjectByTag extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
 
-        StringRequest request = new StringRequest(Request.Method.POST, "http://bsccsit.brainants.com/tagprojects", new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.POST, getString(R.string.tagProjects), new Response.Listener<String>() {
             @Override
             public void onResponse(String res) {
                 try {
@@ -96,7 +96,7 @@ public class ProjectByTag extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
                 error.printStackTrace();
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
@@ -125,7 +125,7 @@ public class ProjectByTag extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId()==android.R.id.home)
+        if (item.getItemId() == android.R.id.home)
             finish();
         return super.onOptionsItemSelected(item);
     }

@@ -27,15 +27,15 @@
             app:civ_border_width="1dp" />
 
 
-            <com.devspark.robototextview.widget.RobotoTextView
-                android:id="@+id/nameSearch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:maxLines="2"
-                android:text="Aawaz Gyawali"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/colorPrimary" />
+        <com.devspark.robototextview.widget.RobotoTextView
+            android:id="@+id/nameSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:maxLines="2"
+            android:text="Aawaz Gyawali"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/colorPrimary" />
 
 
         <com.devspark.robototextview.widget.RobotoTextView

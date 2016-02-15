@@ -24,8 +24,6 @@ public class Notification extends AppCompatActivity {
     private RecyclerView recy;
     private RobotoTextView noNotifications;
 
-    private NotificationAdapter adapter;
-
     ArrayList<String> title = new ArrayList<>(),
             desc = new ArrayList<>(),
             link = new ArrayList<>();
@@ -81,15 +79,15 @@ public class Notification extends AppCompatActivity {
 
     private void fillRecy() {
         recy.setVisibility(View.VISIBLE);
-        adapter = new NotificationAdapter(this, title, desc, link);
+        NotificationAdapter adapter = new NotificationAdapter(this, title, desc, link);
         recy.setLayoutManager(new LinearLayoutManager(this));
         recy.setAdapter(adapter);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home){
-            startActivity(new Intent(this,MainActivity.class));
+        if (item.getItemId() == android.R.id.home) {
+            startActivity(new Intent(this, MainActivity.class));
             finish();
         }
         return super.onOptionsItemSelected(item);
@@ -98,6 +96,6 @@ public class Notification extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(this,MainActivity.class));
+        startActivity(new Intent(this, MainActivity.class));
     }
 }

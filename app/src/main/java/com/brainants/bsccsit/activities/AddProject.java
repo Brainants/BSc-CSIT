@@ -77,7 +77,7 @@ public class AddProject extends AppCompatActivity implements TextWatcher {
         tagChooser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                languages=getAllTags();
+                languages = getAllTags();
                 if (languages.length == 0) {
                     final MaterialDialog dialog = new MaterialDialog.Builder(AddProject.this)
                             .content("Fetching all tags...")
@@ -144,7 +144,7 @@ public class AddProject extends AppCompatActivity implements TextWatcher {
                         .progress(true, 0)
                         .build();
                 dialog.show();
-                StringRequest request = new StringRequest(Request.Method.POST, "http://bsccsit.brainants.com/addproject", new Response.Listener<String>() {
+                StringRequest request = new StringRequest(Request.Method.POST, getString(R.string.addProject), new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         dialog.dismiss();

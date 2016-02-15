@@ -84,8 +84,8 @@ public class EachProject extends AppCompatActivity {
         setTitle("");
         try {
             project_id = getIntent().getStringExtra("project_id");
-        }catch (Exception e){
-            project_id=getIntent().getData().getQueryParameter("project_id");
+        } catch (Exception e) {
+            project_id = getIntent().getData().getQueryParameter("project_id");
         }
         loadFromInternet();
     }
@@ -95,7 +95,7 @@ public class EachProject extends AppCompatActivity {
         loading.setVisibility(View.VISIBLE);
         errorLayout.setVisibility(View.GONE);
 
-        StringRequest request = new StringRequest(Request.Method.POST, "http://bsccsit.brainants.com/getproject", new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.POST, getString(R.string.getProject), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -110,8 +110,9 @@ public class EachProject extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             try {
-                                startActivity(new Intent(EachProject.this,UserProfile.class).putExtra("userID",String.valueOf(coreObject.getLong("user_id"))));
-                            } catch (JSONException e) {}
+                                startActivity(new Intent(EachProject.this, UserProfile.class).putExtra("userID", String.valueOf(coreObject.getLong("user_id"))));
+                            } catch (JSONException e) {
+                            }
                         }
                     });
                     fillTags(coreObject.getString("tags"));
@@ -185,7 +186,7 @@ public class EachProject extends AppCompatActivity {
                 else
                     method = "request";
 
-                StringRequest request = new StringRequest(Request.Method.POST, "http://bsccsit.brainants.com/" + method, new Response.Listener<String>() {
+                StringRequest request = new StringRequest(Request.Method.POST, getString(R.string.coreLinkForProject) + method, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         dialog.dismiss();
@@ -224,7 +225,7 @@ public class EachProject extends AppCompatActivity {
 
     private void fillUsers(JSONObject admin, final JSONArray users) throws Exception {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(0,0,4,0);
+        params.setMargins(0, 0, 4, 0);
         managedBy.setText(admin.getString("name"));
         userHolder.removeAllViews();
         for (int i = 0; i < users.length(); i++) {
@@ -235,7 +236,7 @@ public class EachProject extends AppCompatActivity {
             name.setText(users.getJSONObject(i).getString("name").split(" ")[0]);
             Picasso.with(this).load("https://graph.facebook.com/" + users.getJSONObject(i).getString("id") + "/picture?type=large").into(userView);
             userHolder.addView(eachUser, params);
-            if(users.getJSONObject(i).getString("id").equals(MyApp.getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getString("UserID", "")))
+            if (users.getJSONObject(i).getString("id").equals(MyApp.getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getString("UserID", "")))
                 sendRequest.setVisibility(View.GONE);
             final int finalI = i;
             eachUser.setOnClickListener(new View.OnClickListener() {
@@ -265,7 +266,7 @@ public class EachProject extends AppCompatActivity {
             eachTag.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(EachProject.this,ProjectByTag.class).putExtra("tag",eachTagString));
+                    startActivity(new Intent(EachProject.this, ProjectByTag.class).putExtra("tag", eachTagString));
                 }
             });
             tagHolder.addView(eachTag, params);

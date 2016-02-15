@@ -36,35 +36,35 @@ public class BasicCommunityChooser extends Fragment {
     public static FacebookSearchAdapter adapter;
     private RecyclerView recyclerView;
     private FloatingActionButton fab;
-    private int following=Singleton.getFollowingArray().size()-1;
+    private int following = Singleton.getFollowingArray().size() - 1;
     private MaterialDialog dialog;
-    private ArrayList<String> names=new ArrayList<>(),
-            extra=new ArrayList<>(),
-            ids=new ArrayList<>();
+    private ArrayList<String> names = new ArrayList<>(),
+            extra = new ArrayList<>(),
+            ids = new ArrayList<>();
     private LinearLayout error;
     private SharedPreferences.Editor editor;
     private View view;
 
-    public BasicCommunityChooser(){
-        
+    public BasicCommunityChooser() {
+
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        editor =getActivity().getSharedPreferences("loginInfo", Context.MODE_PRIVATE).edit();
+        editor = getActivity().getSharedPreferences("loginInfo", Context.MODE_PRIVATE).edit();
 
-        dialog=new MaterialDialog.Builder(getActivity())
+        dialog = new MaterialDialog.Builder(getActivity())
                 .content("Loading...")
-                .progress(true,0)
+                .progress(true, 0)
                 .build();
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MyApp.getContext().getSharedPreferences("community", Context.MODE_PRIVATE).edit().putBoolean("changedComm", true).apply();
-                editor.putBoolean("loggedIn",true);
+                editor.putBoolean("loggedIn", true);
                 editor.apply();
 
                 final MaterialDialog dialog = new MaterialDialog.Builder(getContext())
@@ -100,16 +100,16 @@ public class BasicCommunityChooser extends Fragment {
     }
 
     private void fillFromDatabase() {
-        int count=0;
+        int count = 0;
         Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM popularCommunities", null);
         while (cursor.moveToNext()) {
             count++;
             names.add(cursor.getString(cursor.getColumnIndex("Title")));
             extra.add(cursor.getString(cursor.getColumnIndex("ExtraText")));
             ids.add(cursor.getString(cursor.getColumnIndex("FbID")));
-            }
+        }
         cursor.close();
-        if(count==0)
+        if (count == 0)
             downloadFromInternet();
         else
             fillRecyclerView();
@@ -123,7 +123,7 @@ public class BasicCommunityChooser extends Fragment {
             @Override
             public void onTaskCompleted(boolean success) {
                 dialog.dismiss();
-                if(success)
+                if (success)
                     fillFromDatabase();
                 else
                     error.setVisibility(View.VISIBLE);
@@ -131,24 +131,24 @@ public class BasicCommunityChooser extends Fragment {
         });
     }
 
-    private void fillRecyclerView(){
+    private void fillRecyclerView() {
         recyclerView.setVisibility(View.VISIBLE);
-        adapter = new FacebookSearchAdapter(getActivity(),"my", names, extra, ids);
+        adapter = new FacebookSearchAdapter(getActivity(), "my", names, extra, ids);
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         adapter.setOnClickListener(new FacebookSearchAdapter.ClickListener() {
             @Override
             public void onClick(FancyButton view, int position) {
-                if (Singleton.checkExistInFollowing(ids.get(position))){
+                if (Singleton.checkExistInFollowing(ids.get(position))) {
                     following--;
-                    Singleton.getInstance().getDatabase().execSQL("DELETE FROM myCommunities WHERE FbID = "+ids.get(position));
-                }else {
-                    ContentValues values=new ContentValues();
-                    values.put("Title",names.get(position));
-                    values.put("FbID",ids.get(position));
+                    Singleton.getInstance().getDatabase().execSQL("DELETE FROM myCommunities WHERE FbID = " + ids.get(position));
+                } else {
+                    ContentValues values = new ContentValues();
+                    values.put("Title", names.get(position));
+                    values.put("FbID", ids.get(position));
                     following++;
-                    values.put("ExtraText",extra.get(position));
-                    Singleton.getInstance().getDatabase().insert("myCommunities",null,values);
+                    values.put("ExtraText", extra.get(position));
+                    Singleton.getInstance().getDatabase().insert("myCommunities", null, values);
                 }
                 finilizeFAB();
                 adapter.notifyItemChanged(position);
@@ -157,7 +157,7 @@ public class BasicCommunityChooser extends Fragment {
     }
 
     private void finilizeFAB() {
-        if (following>=5)
+        if (following >= 5)
             fab.show();
         else
             fab.hide();
@@ -166,9 +166,9 @@ public class BasicCommunityChooser extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView= (RecyclerView) view.findViewById(R.id.rectChooseCommu);
-        fab= (FloatingActionButton) view.findViewById(R.id.doneRegButton);
-        error= (LinearLayout) view.findViewById(R.id.errorMessageReg);
+        recyclerView = (RecyclerView) view.findViewById(R.id.rectChooseCommu);
+        fab = (FloatingActionButton) view.findViewById(R.id.doneRegButton);
+        error = (LinearLayout) view.findViewById(R.id.errorMessageReg);
         fab.hide();
         error.setOnClickListener(new View.OnClickListener() {
             @Override

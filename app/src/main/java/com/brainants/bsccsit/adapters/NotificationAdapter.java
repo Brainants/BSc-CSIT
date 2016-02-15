@@ -28,13 +28,13 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         this.title = title;
         this.desc = desc;
         this.link = link;
-        this.context=context;
+        this.context = context;
 
     }
 
     @Override
     public CustomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new CustomViewHolder(inflater.inflate(R.layout.notification_each_post,parent,false));
+        return new CustomViewHolder(inflater.inflate(R.layout.notification_each_post, parent, false));
     }
 
     @Override
@@ -60,12 +60,13 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public class CustomViewHolder extends RecyclerView.ViewHolder {
         RobotoTextView notifTitle, notifDesc;
         CardView coreLayout;
+
         public CustomViewHolder(View itemView) {
             super(itemView);
 
             notifTitle = (RobotoTextView) itemView.findViewById(R.id.notifTitle);
             notifDesc = (RobotoTextView) itemView.findViewById(R.id.notifDescription);
-            coreLayout= (CardView) itemView;
+            coreLayout = (CardView) itemView;
             itemView.setClickable(true);
 
         }

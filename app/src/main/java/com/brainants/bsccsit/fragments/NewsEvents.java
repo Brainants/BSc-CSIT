@@ -18,6 +18,7 @@ public class NewsEvents extends Fragment {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
+
     public NewsEvents() {
     }
 
@@ -32,11 +33,11 @@ public class NewsEvents extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tabLayout= (TabLayout) view.findViewById(R.id.tavView);
-        viewPager= (ViewPager) view.findViewById(R.id.viewPager);
+        tabLayout = (TabLayout) view.findViewById(R.id.tavView);
+        viewPager = (ViewPager) view.findViewById(R.id.viewPager);
     }
 
-    class PagerAdapter extends FragmentStatePagerAdapter{
+    class PagerAdapter extends FragmentStatePagerAdapter {
 
         public PagerAdapter(FragmentManager fm) {
             super(fm);
@@ -44,18 +45,18 @@ public class NewsEvents extends Fragment {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            if(position==0)
+            if (position == 0)
                 return "News";
-            else if (position==1)
+            else if (position == 1)
                 return "Events";
             return super.getPageTitle(position);
         }
 
         @Override
         public Fragment getItem(int position) {
-            if (position==0)
+            if (position == 0)
                 return new News();
-            else  if (position==1)
+            else if (position == 1)
                 return new Events();
             return null;
         }

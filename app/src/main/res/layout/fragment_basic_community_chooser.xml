@@ -13,13 +13,13 @@
         android:textColor="@color/colorPrimary"
         android:id="@+id/headerTitleComm"
         android:gravity="center_horizontal"
-        android:text="Follow at least five communities"/>
+        android:text="Follow at least five communities" />
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:id="@+id/rectChooseCommu"
         android:layout_below="@+id/headerTitleComm"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -19,30 +19,30 @@ import java.util.Random;
 public class MyIntentService extends GcmListenerService {
     @Override
     public void onMessageReceived(String from, Bundle data) {
-        if(!Singleton.canShowNotif(data.getString("tag","UNKNOWN")))
+        if (!Singleton.canShowNotif(data.getString("tag", "UNKNOWN")))
             return;
         NotificationCompat.Builder notificationCompat = new NotificationCompat.Builder(this);
         Uri sound = Uri.parse("android.resource://"
                 + getPackageName() + "/" + R.raw.notification);
 
         NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
-        bigText.bigText(data.getString("message").replace("{{name}}",Singleton.getName()));
-        bigText.setBigContentTitle(data.getString("title").replace("{{name}}",Singleton.getName()));
+        bigText.bigText(data.getString("message").replace("{{name}}", Singleton.getName()));
+        bigText.setBigContentTitle(data.getString("title").replace("{{name}}", Singleton.getName()));
 
         notificationCompat.setStyle(bigText);
 
         notificationCompat.setAutoCancel(true)
-                .setTicker(data.getString("title").replace("{{name}}",Singleton.getName()))
+                .setTicker(data.getString("title").replace("{{name}}", Singleton.getName()))
                 .setWhen(System.currentTimeMillis())
-                .setContentTitle(data.getString("title").replace("{{name}}",Singleton.getName()))
+                .setContentTitle(data.getString("title").replace("{{name}}", Singleton.getName()))
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setVibrate(new long[]{100, 100})
                 .setLights(Color.BLUE, 3000, 3000)
                 .setSound(sound)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
-                .setContentText(data.getString("message").replace("{{name}}",Singleton.getName()));
+                .setContentText(data.getString("message").replace("{{name}}", Singleton.getName()));
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(Intent.ACTION_VIEW,Uri.parse(data.getString("link"))), PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(Intent.ACTION_VIEW, Uri.parse(data.getString("link"))), PendingIntent.FLAG_UPDATE_CURRENT);
         notificationCompat.setContentIntent(pendingIntent);
         NotificationManager notificationManagerCompat = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManagerCompat.notify(new Random(3000).nextInt(), notificationCompat.build());

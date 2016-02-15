@@ -10,6 +10,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.brainants.bsccsit.R;
 import com.brainants.bsccsit.advance.MyApp;
 import com.brainants.bsccsit.advance.Singleton;
 
@@ -23,7 +24,7 @@ public class eLibraryDownloader {
     private OnTaskCompleted listener;
 
     public Void doInBackground(Void... params) {
-        StringRequest request = new StringRequest(Request.Method.POST, "http://bsccsit.brainants.com/getelibrary", new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.POST, MyApp.getContext().getString(R.string.getElibrary), new Response.Listener<String>() {
             @Override
             public void onResponse(String res) {
                 SQLiteDatabase database = Singleton.getInstance().getDatabase();

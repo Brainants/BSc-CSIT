@@ -27,11 +27,11 @@ import java.util.Date;
 
 public class Events extends Fragment {
 
-    ArrayList<String> names=new ArrayList<>(),
-            created_time=new ArrayList<>(),
-            eventIDs=new ArrayList<>(),
-            hosters=new ArrayList<>(),
-            fullImage=new ArrayList<>();
+    ArrayList<String> names = new ArrayList<>(),
+            created_time = new ArrayList<>(),
+            eventIDs = new ArrayList<>(),
+            hosters = new ArrayList<>(),
+            fullImage = new ArrayList<>();
 
     private RecyclerView recyclerView;
     private ProgressBar progress;
@@ -50,11 +50,11 @@ public class Events extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerViewEvent);
-        progress= (ProgressBar) view.findViewById(R.id.progressEvent);
-        error= (LinearLayout) view.findViewById(R.id.errorMessageEvent);
-        swipeLayout= (SwipeRefreshLayout) view.findViewById(R.id.swipeEvents);
+        progress = (ProgressBar) view.findViewById(R.id.progressEvent);
+        error = (LinearLayout) view.findViewById(R.id.errorMessageEvent);
+        swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeEvents);
         swipeLayout.setVisibility(View.GONE);
-        this.view=view;
+        this.view = view;
         error.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,15 +77,15 @@ public class Events extends Fragment {
     }
 
     private void fillFromDatabase() {
-        int count=0;
-        noOfUpcoming=0;
+        int count = 0;
+        noOfUpcoming = 0;
         names.clear();
         eventIDs.clear();
         fullImage.clear();
         hosters.clear();
         created_time.clear();
-        Cursor cursor= Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM events",null);
-        while(cursor.moveToNext()){
+        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM events", null);
+        while (cursor.moveToNext()) {
             count++;
             names.add(cursor.getString(cursor.getColumnIndex("names")));
             eventIDs.add(cursor.getString(cursor.getColumnIndex("eventIDs")));
@@ -93,14 +93,14 @@ public class Events extends Fragment {
             hosters.add(cursor.getString(cursor.getColumnIndex("hosters")));
             created_time.add(cursor.getString(cursor.getColumnIndex("created_time")));
             if (BackgroundTaskHandler.convertToSimpleDate(cursor.getString(cursor.getColumnIndex("created_time")))
-                    .compareTo(current)>0)
+                    .compareTo(current) > 0)
                 noOfUpcoming++;
         }
         cursor.close();
-        if(count==0) {
+        if (count == 0) {
             progress.setVisibility(View.VISIBLE);
             downloadFromInternet(true);
-        }else
+        } else
             setToAdapter();
     }
 
@@ -114,12 +114,12 @@ public class Events extends Fragment {
                     return;
                 progress.setVisibility(View.GONE);
                 swipeLayout.setRefreshing(false);
-                if(success)
+                if (success)
                     fillFromDatabase();
                 else if (first)
                     error.setVisibility(View.VISIBLE);
                 else
-                    Snackbar.make(view,"Unable to update.",Snackbar.LENGTH_SHORT).setAction("Retry", new View.OnClickListener() {
+                    Snackbar.make(view, "Unable to update.", Snackbar.LENGTH_SHORT).setAction("Retry", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             swipeLayout.setRefreshing(true);
@@ -150,16 +150,16 @@ public class Events extends Fragment {
     private void setToAdapter() {
         progress.setVisibility(View.GONE);
         swipeLayout.setVisibility(View.VISIBLE);
-        recyclerView.setAdapter(new EventAdapter(getActivity(),noOfUpcoming,names,eventIDs,created_time,hosters,fullImage));
+        recyclerView.setAdapter(new EventAdapter(getActivity(), noOfUpcoming, names, eventIDs, created_time, hosters, fullImage));
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                if(position==0)
+                if (position == 0)
                     return 2;
-                else if(position<=noOfUpcoming)
+                else if (position <= noOfUpcoming)
                     return Singleton.getSizeName(getContext());
-                else if(position==(noOfUpcoming+1))
+                else if (position == (noOfUpcoming + 1))
                     return 2;
                 else
                     return Singleton.getSizeName(getContext());

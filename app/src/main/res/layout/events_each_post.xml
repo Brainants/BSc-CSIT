@@ -103,7 +103,6 @@
                 android:background="#ddd" />
 
             <ImageView
-                android:id="@+id/addToCalender"
                 android:layout_width="48dp"
                 android:layout_height="match_parent"
                 android:padding="10dp"

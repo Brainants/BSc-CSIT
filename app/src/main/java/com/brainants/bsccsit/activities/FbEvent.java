@@ -5,17 +5,22 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -93,16 +98,18 @@ public class FbEvent extends AppCompatActivity {
             }
         });
 
+        handleFab();
 
-        if (Singleton.isScheduledEvent(eventId)!=-1) {
-            fab.setImageResource(R.drawable.calender_check_white);
-            fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorAccent)));
-        }
+        hideFab();
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addEvent();
+                if (Singleton.isScheduledEvent(eventId) == -1)
+                    addEvent();
+                else
+                    deleteEvent();
+                handleFab();
             }
         });
 
@@ -134,6 +141,74 @@ public class FbEvent extends AppCompatActivity {
                         .putExtra("long", longitude));
             }
         });
+    }
+
+    private void deleteEvent() {
+        String[] selArgs =
+                new String[]{Long.toString(Singleton.isScheduledEvent(eventId))};
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_GRANTED) {
+            getContentResolver().
+                    delete(
+                            CalendarContract.Events.CONTENT_URI,
+                            CalendarContract.Events._ID + " =? ",
+                            selArgs);
+            getSharedPreferences("event", MODE_PRIVATE).edit().putLong(eventId, -1).apply();
+            Snackbar.make(findViewById(R.id.eventCoordinator), "Remainder removed from your calender", Snackbar.LENGTH_SHORT).show();
+        }
+    }
+
+    private void addEvent() {
+        long calId = Singleton.calenderID(this);
+        long startTimeForomDate;
+        try {
+            SimpleDateFormat sfd = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZZZZZ", Locale.US);
+            startTimeForomDate = sfd.parse(startTime).getTime();
+        } catch (ParseException e) {
+            return;
+        }
+
+        ContentValues values = new ContentValues();
+        values.put(CalendarContract.Events.DTSTART, startTimeForomDate);
+        values.put(CalendarContract.Events.DTEND, startTimeForomDate);
+        values.put(CalendarContract.Events.TITLE, event_name.getText().toString());
+        values.put(CalendarContract.Events.EVENT_LOCATION, event_place.getText().toString());
+        values.put(CalendarContract.Events.CALENDAR_ID, calId);
+        values.put(CalendarContract.Events.EVENT_TIMEZONE, "Asia/Kathmandu");
+        values.put(CalendarContract.Events.DESCRIPTION, event_description.getText().toString());
+// reasonable defaults exist:
+        values.put(CalendarContract.Events.ACCESS_LEVEL, CalendarContract.Events.ACCESS_PRIVATE);
+        values.put(CalendarContract.Events.SELF_ATTENDEE_STATUS,
+                CalendarContract.Events.STATUS_CONFIRMED);
+        values.put(CalendarContract.Events.ALL_DAY, 1);
+        values.put(CalendarContract.Events.ORGANIZER, hosted_by.getText().toString());
+        values.put(CalendarContract.Events.GUESTS_CAN_INVITE_OTHERS, 1);
+        values.put(CalendarContract.Events.GUESTS_CAN_MODIFY, 1);
+        values.put(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
+        if (ActivityCompat.checkSelfPermission(FbEvent.this, Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_GRANTED) {
+
+            Uri uri = getContentResolver().insert(CalendarContract.Events.CONTENT_URI, values);
+            long addedEventId = new Long(uri.getLastPathSegment());
+
+            values.clear();
+            values.put(CalendarContract.Reminders.EVENT_ID, addedEventId);
+            values.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
+            values.put(CalendarContract.Reminders.MINUTES, 60);
+            getContentResolver().insert(CalendarContract.Reminders.CONTENT_URI, values);
+            getSharedPreferences("event", MODE_PRIVATE).edit().putLong(eventId, addedEventId).apply();
+            Snackbar.make(findViewById(R.id.eventCoordinator), "Remainder added to your calender", Snackbar.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private void handleFab() {
+        if (Singleton.isScheduledEvent(eventId) != -1) {
+            fab.setImageResource(R.drawable.calender_check_white);
+            fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorAccent)));
+        } else {
+            fab.setImageResource(R.drawable.calender_plus);
+            fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.white)));
+        }
+
     }
 
     private void downloadFromInternet() {
@@ -183,10 +258,10 @@ public class FbEvent extends AppCompatActivity {
                             Date current = new Date();
                             current.setTime(System.currentTimeMillis());
 
-                            if(current.compareTo(format.parse(startTime))>0)
-                                fab.setVisibility(View.GONE);
+                            if (current.compareTo(format.parse(startTime)) > 0)
+                                hideFab();
                             else
-                                fab.setVisibility(View.VISIBLE);
+                                showFab();
 
 
                             String strMonthStart = (String) android.text.format.DateFormat.format("MMM", format.parse(startTime));
@@ -256,45 +331,28 @@ public class FbEvent extends AppCompatActivity {
         return true;
     }
 
-    private void addEvent() {
-        long calId = Singleton.calenderID(this);
-        long startTimeForomDate;
-        try {
-            SimpleDateFormat sfd = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZZZZZ", Locale.US);
-            startTimeForomDate= sfd.parse(startTime).getTime();
-        } catch (ParseException e) {
-            return;
-        }
+    private void showFab() {
+        CoordinatorLayout.LayoutParams p = new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.WRAP_CONTENT, CoordinatorLayout.LayoutParams.WRAP_CONTENT);
+        p.anchorGravity = Gravity.BOTTOM | Gravity.END;
+        p.setAnchorId(R.id.eventAppbar);
+        p.setMargins(0, 0, (int) convertDpToPixel(16), 0);
+        fab.setLayoutParams(p);
+        fab.setVisibility(View.VISIBLE);
+    }
 
-        ContentValues values = new ContentValues();
-        values.put(CalendarContract.Events.DTSTART, startTimeForomDate);
-        values.put(CalendarContract.Events.DTEND, startTimeForomDate);
-        values.put(CalendarContract.Events.TITLE, event_name.getText().toString());
-        values.put(CalendarContract.Events.EVENT_LOCATION, event_place.getText().toString());
-        values.put(CalendarContract.Events.CALENDAR_ID, calId);
-        values.put(CalendarContract.Events.EVENT_TIMEZONE, "Asia/Kathmandu");
-        values.put(CalendarContract.Events.DESCRIPTION,event_description.getText().toString());
-// reasonable defaults exist:
-        values.put(CalendarContract.Events.ACCESS_LEVEL, CalendarContract.Events.ACCESS_PRIVATE);
-        values.put(CalendarContract.Events.SELF_ATTENDEE_STATUS,
-                CalendarContract.Events.STATUS_CONFIRMED);
-        values.put(CalendarContract.Events.ALL_DAY, 1);
-        values.put(CalendarContract.Events.ORGANIZER, hosted_by.getText().toString());
-        values.put(CalendarContract.Events.GUESTS_CAN_INVITE_OTHERS, 1);
-        values.put(CalendarContract.Events.GUESTS_CAN_MODIFY, 1);
-        values.put(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
-        if (ActivityCompat.checkSelfPermission(FbEvent.this, Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_GRANTED) {
+    private void hideFab() {
+        CoordinatorLayout.LayoutParams p = new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.WRAP_CONTENT, CoordinatorLayout.LayoutParams.WRAP_CONTENT);
+        p.anchorGravity = Gravity.BOTTOM | Gravity.END;
+        p.setAnchorId(View.NO_ID);
+        p.setMargins(0, 0, (int) convertDpToPixel(16), 0);
+        fab.setLayoutParams(p);
+        fab.setVisibility(View.GONE);
+    }
 
-            Uri uri = getContentResolver().insert(CalendarContract.Events.CONTENT_URI, values);
-            long addedEventId = new Long(uri.getLastPathSegment());
-
-            values.clear();
-            values.put(CalendarContract.Reminders.EVENT_ID, addedEventId);
-            values.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
-            values.put(CalendarContract.Reminders.MINUTES, 60);
-            getContentResolver().insert(CalendarContract.Reminders.CONTENT_URI, values);
-            getSharedPreferences("event",MODE_PRIVATE).edit().putLong(eventId,addedEventId).apply();
-        }
-
+    public float convertDpToPixel(float dp) {
+        Resources resources = getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float px = dp * (metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        return px;
     }
 }

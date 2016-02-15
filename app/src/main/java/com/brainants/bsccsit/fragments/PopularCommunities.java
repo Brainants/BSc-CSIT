@@ -30,9 +30,9 @@ public class PopularCommunities extends Fragment {
     public static FacebookSearchAdapter adapter;
     private RecyclerView recyclerview;
     private View core;
-    private ArrayList<String> names=new ArrayList<>(),
-            extra=new ArrayList<>(),
-            ids=new ArrayList<>();
+    private ArrayList<String> names = new ArrayList<>(),
+            extra = new ArrayList<>(),
+            ids = new ArrayList<>();
     private ProgressBar progress;
     private LinearLayout error;
 
@@ -49,8 +49,8 @@ public class PopularCommunities extends Fragment {
         fillFromDatabase();
     }
 
-    private void fillFromDatabase(){
-        int count=0;
+    private void fillFromDatabase() {
+        int count = 0;
         Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM popularCommunities", null);
         while (cursor.moveToNext()) {
             count++;
@@ -59,38 +59,38 @@ public class PopularCommunities extends Fragment {
             ids.add(cursor.getString(cursor.getColumnIndex("FbID")));
         }
         cursor.close();
-        if(count==0) {
+        if (count == 0) {
             progress.setVisibility(View.VISIBLE);
             downloadFromInternet();
-        }else
+        } else
             fillRecyclerView();
     }
 
-    private void fillRecyclerView(){
+    private void fillRecyclerView() {
         recyclerview.setVisibility(View.VISIBLE);
-        adapter = new FacebookSearchAdapter(getActivity(),"my", names, extra, ids);
+        adapter = new FacebookSearchAdapter(getActivity(), "my", names, extra, ids);
         recyclerview.setAdapter(adapter);
-        recyclerview.setLayoutManager(new GridLayoutManager(getActivity(),2));
+        recyclerview.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         adapter.setOnClickListener(new FacebookSearchAdapter.ClickListener() {
             @Override
             public void onClick(FancyButton view, int position) {
-                if (Singleton.checkExistInFollowing(ids.get(position))){
+                if (Singleton.checkExistInFollowing(ids.get(position))) {
                     if (Singleton.getFollowingArray().size() <= 6) {
                         Snackbar.make(core, "You must follow at least 5 communities.", Snackbar.LENGTH_SHORT).show();
                         return;
                     }
-                    Singleton.getInstance().getDatabase().execSQL("DELETE FROM myCommunities WHERE FbID = "+ids.get(position));
-                    Snackbar.make(core,names.get(position)+" removed Successfully.",Snackbar.LENGTH_SHORT).show();
+                    Singleton.getInstance().getDatabase().execSQL("DELETE FROM myCommunities WHERE FbID = " + ids.get(position));
+                    Snackbar.make(core, names.get(position) + " removed Successfully.", Snackbar.LENGTH_SHORT).show();
                     FollowingCommunities.adapter.removeBySearch(ids.get(position));
-                }else {
-                    ContentValues values=new ContentValues();
-                    values.put("Title",names.get(position));
-                    values.put("FbID",ids.get(position));
-                    values.put("ExtraText",extra.get(position));
-                    Singleton.getInstance().getDatabase().insert("myCommunities",null,values);
-                    Snackbar.make(core,names.get(position)+" added Successfully.",Snackbar.LENGTH_SHORT).show();
-                    FollowingCommunities.adapter.addItem(names.get(position),ids.get(position),extra.get(position));
-                    getActivity().getSharedPreferences("community", Context.MODE_PRIVATE).edit().putBoolean("changedComm",true).apply();
+                } else {
+                    ContentValues values = new ContentValues();
+                    values.put("Title", names.get(position));
+                    values.put("FbID", ids.get(position));
+                    values.put("ExtraText", extra.get(position));
+                    Singleton.getInstance().getDatabase().insert("myCommunities", null, values);
+                    Snackbar.make(core, names.get(position) + " added Successfully.", Snackbar.LENGTH_SHORT).show();
+                    FollowingCommunities.adapter.addItem(names.get(position), ids.get(position), extra.get(position));
+                    getActivity().getSharedPreferences("community", Context.MODE_PRIVATE).edit().putBoolean("changedComm", true).apply();
                 }
                 adapter.notifyItemChanged(position);
             }
@@ -100,10 +100,10 @@ public class PopularCommunities extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        this.core=view;
-        recyclerview= (RecyclerView) view.findViewById(R.id.popularRecy);
-        progress= (ProgressBar) view.findViewById(R.id.progressCommunities);
-        error= (LinearLayout) view.findViewById(R.id.errorMessageCommunities);
+        this.core = view;
+        recyclerview = (RecyclerView) view.findViewById(R.id.popularRecy);
+        progress = (ProgressBar) view.findViewById(R.id.progressCommunities);
+        error = (LinearLayout) view.findViewById(R.id.errorMessageCommunities);
         recyclerview.setVisibility(View.GONE);
         error.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,7 +125,7 @@ public class PopularCommunities extends Fragment {
                 if (!MainActivity.current.equals("Communities"))
                     return;
                 progress.setVisibility(View.GONE);
-                if(success)
+                if (success)
                     fillFromDatabase();
                 else
                     error.setVisibility(View.VISIBLE);

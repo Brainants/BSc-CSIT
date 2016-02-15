@@ -19,25 +19,25 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.VH>{
+public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.VH> {
     private final Context context;
     LayoutInflater inflater;
     ArrayList<String> names, time, ids, message, imageURL;
 
     public NewsAdapter(Context context, ArrayList<String> names, ArrayList<String> time
-            , ArrayList<String> ids, ArrayList<String> message, ArrayList<String> imageURL){
-        inflater=LayoutInflater.from(context);
-        this.context=context;
-        this.names=names;
-        this.time=time;
-        this.ids=ids;
-        this.message=message;
-        this.imageURL=imageURL;
+            , ArrayList<String> ids, ArrayList<String> message, ArrayList<String> imageURL) {
+        inflater = LayoutInflater.from(context);
+        this.context = context;
+        this.names = names;
+        this.time = time;
+        this.ids = ids;
+        this.message = message;
+        this.imageURL = imageURL;
     }
 
     @Override
     public VH onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new VH(inflater.inflate(R.layout.news_each_post,parent,false));
+        return new VH(inflater.inflate(R.layout.news_each_post, parent, false));
     }
 
     @Override
@@ -58,17 +58,17 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.VH>{
             holder.messageHolder.setVisibility(View.VISIBLE);
         }
 
-        if(imageURL.get(position).equals(""))
+        if (imageURL.get(position).equals(""))
             holder.imageHolder.setVisibility(View.GONE);
-        else{
+        else {
             Picasso.with(context).load(imageURL.get(position)).into(holder.imageHolder);
             holder.imageHolder.setVisibility(View.VISIBLE);
             holder.imageHolder.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     context.startActivity(new Intent(context, ImageViewActivity.class)
-                            .putExtra("ImageURL",imageURL.get(position))
-                            .putExtra("desc",message.get(position)));
+                            .putExtra("ImageURL", imageURL.get(position))
+                            .putExtra("desc", message.get(position)));
                 }
             });
         }
@@ -85,14 +85,14 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.VH>{
 
     private void openFbPage(int position) {
         context.startActivity(new Intent(context, FbPage.class)
-                            .putExtra("id",ids.get(position))
-                            .putExtra("name",names.get(position))
-                            .putExtra("details",getPageCategory(position)));
+                .putExtra("id", ids.get(position))
+                .putExtra("name", names.get(position))
+                .putExtra("details", getPageCategory(position)));
     }
 
     private String getPageCategory(int pos) {
-        Cursor cursor= Singleton.getInstance().getDatabase().rawQuery("SELECT ExtraText FROM popularCommunities WHERE FbID = "+ids.get(pos),null);
-        if(cursor.moveToNext())
+        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT ExtraText FROM popularCommunities WHERE FbID = " + ids.get(pos), null);
+        if (cursor.moveToNext())
             return cursor.getString(cursor.getColumnIndex("ExtraText"));
         else
             return "Community";
@@ -110,11 +110,11 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.VH>{
 
         public VH(View itemView) {
             super(itemView);
-            nameHolder= (TextView) itemView.findViewById(R.id.nameOfPoster);
-            timeHolder= (TextView) itemView.findViewById(R.id.timeOfPost);
-            messageHolder= (TextView) itemView.findViewById(R.id.messageOfPost);
-            imageHolder= (ImageView) itemView.findViewById(R.id.imageOfPost);
-            profilePicHolder= (ProfilePictureView) itemView.findViewById(R.id.imageOfPoster);
+            nameHolder = (TextView) itemView.findViewById(R.id.nameOfPoster);
+            timeHolder = (TextView) itemView.findViewById(R.id.timeOfPost);
+            messageHolder = (TextView) itemView.findViewById(R.id.messageOfPost);
+            imageHolder = (ImageView) itemView.findViewById(R.id.imageOfPost);
+            profilePicHolder = (ProfilePictureView) itemView.findViewById(R.id.imageOfPoster);
         }
     }
 }

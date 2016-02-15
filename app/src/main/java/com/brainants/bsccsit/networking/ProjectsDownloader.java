@@ -9,6 +9,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.brainants.bsccsit.R;
+import com.brainants.bsccsit.advance.MyApp;
 import com.brainants.bsccsit.advance.Singleton;
 
 import org.json.JSONArray;
@@ -19,7 +21,7 @@ public class ProjectsDownloader extends AsyncTask<Void, Void, Void> {
 
     @Override
     public Void doInBackground(Void... params) {
-        StringRequest request = new StringRequest(Request.Method.GET, "http://bsccsit.brainants.com/allprojects", new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.GET, MyApp.getContext().getString(R.string.allProjects), new Response.Listener<String>() {
             @Override
             public void onResponse(String res) {
                 SQLiteDatabase database = Singleton.getInstance().getDatabase();

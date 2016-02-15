@@ -34,8 +34,8 @@ public class Community extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tabLayout= (TabLayout) view.findViewById(R.id.tabLayoutCommunity);
-        viewPager= (ViewPager) view.findViewById(R.id.viewPagerCommunity);
+        tabLayout = (TabLayout) view.findViewById(R.id.tabLayoutCommunity);
+        viewPager = (ViewPager) view.findViewById(R.id.viewPagerCommunity);
     }
 
     class PagerAdapter extends FragmentStatePagerAdapter {
@@ -46,18 +46,18 @@ public class Community extends Fragment {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            if(position==0)
+            if (position == 0)
                 return "Popular";
-            else if (position==1)
+            else if (position == 1)
                 return "Following";
             return super.getPageTitle(position);
         }
 
         @Override
         public Fragment getItem(int position) {
-            if (position==0)
+            if (position == 0)
                 return new PopularCommunities();
-            else if(position==1)
+            else if (position == 1)
                 return new FollowingCommunities();
             return null;
         }

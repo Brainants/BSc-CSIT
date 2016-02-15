@@ -10,6 +10,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.brainants.bsccsit.R;
 import com.brainants.bsccsit.advance.MyApp;
 import com.brainants.bsccsit.advance.Singleton;
 import com.facebook.AccessToken;
@@ -31,7 +32,7 @@ public class MyCommunitiesDownloader {
     private OnTaskCompleted listener;
 
     public void doInBackground() {
-        String url = "http://bsccsit.brainants.com/getusercommunities";
+        String url = MyApp.getContext().getString(R.string.getUserCommunities);
         final StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

@@ -24,18 +24,18 @@ public class FbPageAdapter extends RecyclerView.Adapter<FbPageAdapter.VH> {
     private Context context;
 
     public FbPageAdapter(Context context, ArrayList<String> names, ArrayList<String> time, ArrayList<String> ids, ArrayList<String> messages, ArrayList<String> imageURL) {
-    inflater = LayoutInflater.from(context);
+        inflater = LayoutInflater.from(context);
         this.names = names;
         this.time = time;
         this.ids = ids;
-        this.context=context;
+        this.context = context;
         this.message = messages;
         this.imageURL = imageURL;
     }
 
     @Override
     public FbPageAdapter.VH onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new VH(inflater.inflate(R.layout.news_each_post,parent,false));
+        return new VH(inflater.inflate(R.layout.news_each_post, parent, false));
     }
 
     @Override
@@ -50,7 +50,7 @@ public class FbPageAdapter extends RecyclerView.Adapter<FbPageAdapter.VH> {
             holder.messageHolder.setVisibility(View.VISIBLE);
         }
 
-        if(imageURL.get(position).equals(""))
+        if (imageURL.get(position).equals(""))
             holder.imageHolder.setVisibility(View.GONE);
         else {
             Picasso.with(context).load(imageURL.get(position)).into(holder.imageHolder);
@@ -59,8 +59,8 @@ public class FbPageAdapter extends RecyclerView.Adapter<FbPageAdapter.VH> {
                 @Override
                 public void onClick(View v) {
                     context.startActivity(new Intent(context, ImageViewActivity.class)
-                            .putExtra("ImageURL",imageURL.get(position))
-                            .putExtra("desc",message.get(position)));
+                            .putExtra("ImageURL", imageURL.get(position))
+                            .putExtra("desc", message.get(position)));
                 }
             });
         }
@@ -78,10 +78,9 @@ public class FbPageAdapter extends RecyclerView.Adapter<FbPageAdapter.VH> {
         String regex = "\\(?\\b(http://|www[.])[-A-Za-z0-9+&amp;@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&amp;@#/%=~_()|]";
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(text);
-        while(m.find()) {
+        while (m.find()) {
             String urlStr = m.group();
-            if (urlStr.startsWith("(") && urlStr.endsWith(")"))
-            {
+            if (urlStr.startsWith("(") && urlStr.endsWith(")")) {
                 urlStr = urlStr.substring(1, urlStr.length() - 1);
             }
             links.add(urlStr);

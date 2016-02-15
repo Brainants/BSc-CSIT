@@ -93,7 +93,7 @@ public class UserProfile extends AppCompatActivity {
 
     private void fetchFromInternet() {
 
-        StringRequest arrayRequest = new StringRequest(Request.Method.POST, "http://bsccsit.brainants.com/getprofile", new Response.Listener<String>() {
+        StringRequest arrayRequest = new StringRequest(Request.Method.POST, getString(R.string.getProfile), new Response.Listener<String>() {
             @Override
             public void onResponse(String resp) {
                 progress.setVisibility(View.GONE);
@@ -218,7 +218,7 @@ public class UserProfile extends AppCompatActivity {
                                     .putExtra("project_id", String.valueOf(admin.optJSONObject(finalI).getLong("id"))));
                         else
                             startActivity(new Intent(UserProfile.this, EachProject.class)
-                                .putExtra("project_id", String.valueOf(admin.optJSONObject(finalI).getLong("id"))));
+                                    .putExtra("project_id", String.valueOf(admin.optJSONObject(finalI).getLong("id"))));
 
                     } catch (JSONException e) {
                     }

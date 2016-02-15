@@ -13,7 +13,7 @@ import com.brainants.bsccsit.R;
 import mehdi.sakout.fancybuttons.FancyButton;
 
 public class AboutUs extends AppCompatActivity {
-    private FancyButton facebook, twitter,website;
+    private FancyButton facebook, twitter, website;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,9 +27,9 @@ public class AboutUs extends AppCompatActivity {
         setTitle("About Us");
 
 
-        facebook= (FancyButton) findViewById(R.id.facebook);
-        twitter= (FancyButton) findViewById(R.id.twitter);
-        website= (FancyButton) findViewById(R.id.website);
+        facebook = (FancyButton) findViewById(R.id.facebook);
+        twitter = (FancyButton) findViewById(R.id.twitter);
+        website = (FancyButton) findViewById(R.id.website);
 
         facebook.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -14,6 +14,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import com.brainants.bsccsit.R;
 import com.brainants.bsccsit.adapters.eLibraryAdapter;
 import com.brainants.bsccsit.advance.Singleton;
+import com.devspark.robototextview.widget.RobotoTextView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -35,6 +37,7 @@ public class eLibraryPagerFragment extends Fragment {
     private RecyclerView recy;
     private String[] types = {"syllabus", "notes", "old_question", "solutions"};
     private View core;
+    private RobotoTextView nofilesMsg;
 
 
     public eLibraryPagerFragment() {
@@ -53,12 +56,15 @@ public class eLibraryPagerFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         core = view;
+        nofilesMsg = (RobotoTextView) view.findViewById(R.id.nofilesMsg);
+        nofilesMsg.setText(Html.fromHtml("No files found.<br>Mail us at <font color=#FFC107>info@brainants.com</font> to add files."));
         recy = (RecyclerView) view.findViewById(R.id.recyELibrary);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        nofilesMsg.setVisibility(View.GONE);
         filFromDatabase(types[getArguments().getInt("position")]);
     }
 
@@ -78,6 +84,8 @@ public class eLibraryPagerFragment extends Fragment {
         recy.setLayoutManager(new GridLayoutManager(getActivity(), Singleton.getSpanCount(getContext())));
         eLibraryAdapter adapter = new eLibraryAdapter(getActivity(), types[getArguments().getInt("position")], Title, Source, FileName);
         recy.setAdapter(adapter);
+        if (Title.size() == 0)
+            nofilesMsg.setVisibility(View.VISIBLE);
         adapter.setOnCLickListener(new eLibraryAdapter.ClickListener() {
             @Override
             public void onIconClick(View view, int position) {
@@ -118,7 +126,7 @@ public class eLibraryPagerFragment extends Fragment {
                     DownloadManager manager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
                     manager.enqueue(request);
 
-                    Snackbar.make(core.findViewById(R.id.coreLibrary), "Download has begun.", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(core.findViewById(R.id.coreLibrary), "Download is in Queue.", Snackbar.LENGTH_SHORT).show();
                 }
             }
         });

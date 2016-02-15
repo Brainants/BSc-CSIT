@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.VH>{
+public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.VH> {
     private final Context context;
     LayoutInflater inflater;
     ArrayList<String> names, time, ids, postIds,
@@ -27,22 +27,22 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.VH>{
 
     public ForumAdapter(Context context, ArrayList<String> names, ArrayList<String> time
             , ArrayList<String> ids, ArrayList<String> postIds, ArrayList<String> message, ArrayList<String> imageURL
-            , ArrayList<Integer> likes, ArrayList<Integer> comments){
-        inflater=LayoutInflater.from(context);
-        this.context=context;
-        this.names=names;
-        this.time=time;
-        this.ids=ids;
-        this.message=message;
-        this.imageURL=imageURL;
-        this.likes=likes;
-        this.postIds=postIds;
-        this.comments=comments;
+            , ArrayList<Integer> likes, ArrayList<Integer> comments) {
+        inflater = LayoutInflater.from(context);
+        this.context = context;
+        this.names = names;
+        this.time = time;
+        this.ids = ids;
+        this.message = message;
+        this.imageURL = imageURL;
+        this.likes = likes;
+        this.postIds = postIds;
+        this.comments = comments;
     }
 
     @Override
     public VH onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new VH(inflater.inflate(R.layout.forum_each_post,parent,false));
+        return new VH(inflater.inflate(R.layout.forum_each_post, parent, false));
     }
 
     @Override
@@ -53,19 +53,19 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.VH>{
         holder.likesHolder.setText(likes.get(position).toString());
         holder.commentsHolder.setText(comments.get(position).toString());
 
-        if(imageURL.get(position).equals(""))
+        if (imageURL.get(position).equals(""))
             holder.imageHolder.setVisibility(View.GONE);
-        else{
+        else {
             Picasso.with(context).load(imageURL.get(position)).into(holder.imageHolder);
             holder.imageHolder.setVisibility(View.VISIBLE);
             holder.imageHolder.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     context.startActivity(new Intent(context, ImageViewActivity.class)
-                            .putExtra("ImageURL",imageURL.get(position))
-                            .putExtra("like",likes.get(position)+"")
-                            .putExtra("comment",comments.get(position)+"")
-                            .putExtra("desc",message.get(position)));
+                            .putExtra("ImageURL", imageURL.get(position))
+                            .putExtra("like", likes.get(position) + "")
+                            .putExtra("comment", comments.get(position) + "")
+                            .putExtra("desc", message.get(position)));
                 }
             });
         }
@@ -85,23 +85,23 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.VH>{
 
         public VH(View itemView) {
             super(itemView);
-            nameHolder= (TextView) itemView.findViewById(R.id.nameOfPoster);
-            timeHolder= (TextView) itemView.findViewById(R.id.timeOfPost);
-            messageHolder= (TextView) itemView.findViewById(R.id.messageOfPost);
-            likesHolder= (TextView) itemView.findViewById(R.id.likeOfPost);
-            commentsHolder= (TextView) itemView.findViewById(R.id.commentOfPost);
-            imageHolder= (ImageView) itemView.findViewById(R.id.imageOfPost);
-            profilePicHolder= (CircleImageView) itemView.findViewById(R.id.imageOfPoster);
+            nameHolder = (TextView) itemView.findViewById(R.id.nameOfPoster);
+            timeHolder = (TextView) itemView.findViewById(R.id.timeOfPost);
+            messageHolder = (TextView) itemView.findViewById(R.id.messageOfPost);
+            likesHolder = (TextView) itemView.findViewById(R.id.likeOfPost);
+            commentsHolder = (TextView) itemView.findViewById(R.id.commentOfPost);
+            imageHolder = (ImageView) itemView.findViewById(R.id.imageOfPost);
+            profilePicHolder = (CircleImageView) itemView.findViewById(R.id.imageOfPoster);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     context.startActivity(new Intent(context, EachPost.class).
-                            putExtra("postID",postIds.get(getAdapterPosition())).
-                            putExtra("userId",ids.get(getAdapterPosition())).
-                            putExtra("message",message.get(getAdapterPosition())).
-                            putExtra("imageURL",imageURL.get(getAdapterPosition())).
-                            putExtra("name",names.get(getAdapterPosition())).
-                            putExtra("time",time.get(getAdapterPosition())));
+                            putExtra("postID", postIds.get(getAdapterPosition())).
+                            putExtra("userId", ids.get(getAdapterPosition())).
+                            putExtra("message", message.get(getAdapterPosition())).
+                            putExtra("imageURL", imageURL.get(getAdapterPosition())).
+                            putExtra("name", names.get(getAdapterPosition())).
+                            putExtra("time", time.get(getAdapterPosition())));
                 }
             });
         }

@@ -7,6 +7,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.brainants.bsccsit.R;
+import com.brainants.bsccsit.advance.MyApp;
 import com.brainants.bsccsit.advance.Singleton;
 
 import org.json.JSONArray;
@@ -19,7 +21,7 @@ public class PopularCommunitiesDownloader {
     private OnTaskCompleted listener;
 
     public void doInBackground() {
-        String url = "http://bsccsit.brainants.com/allcommunities";
+        String url = MyApp.getContext().getString(R.string.allCommunities);
         final JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {

@@ -4,9 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -21,7 +18,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.brainants.bsccsit.R;
 import com.brainants.bsccsit.advance.Singleton;
-import com.brainants.bsccsit.fragments.IntroFragment;
 import com.brainants.bsccsit.networking.GCMRegIdUploader;
 import com.brainants.bsccsit.networking.MyCommunitiesDownloader;
 import com.facebook.AccessToken;
@@ -171,7 +167,7 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
         if (!preferences.getBoolean("checked", false)) {
-            StringRequest request = new StringRequest(Request.Method.POST, "http://bsccsit.brainants.com/getuser", new Response.Listener<String>() {
+            StringRequest request = new StringRequest(Request.Method.POST, getString(R.string.getUser), new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     try {

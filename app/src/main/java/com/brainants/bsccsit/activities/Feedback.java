@@ -23,7 +23,7 @@ public class Feedback extends AppCompatActivity {
         setContentView(R.layout.activity_feedback);
 
         final FancyButton suggest = (FancyButton) findViewById(R.id.suggest);
-        final BootstrapEditText suggestText  = (BootstrapEditText) findViewById(R.id.feedbackText);
+        final BootstrapEditText suggestText = (BootstrapEditText) findViewById(R.id.feedbackText);
 
 
         suggest.setOnClickListener(new View.OnClickListener() {
@@ -44,7 +44,7 @@ public class Feedback extends AppCompatActivity {
                     }
                     finish();
                 } else {
-                    Toast.makeText(Feedback.this,"Please, don't leave the field empty!!",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Feedback.this, "Please, don't leave the field empty!!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -57,7 +57,7 @@ public class Feedback extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId()==android.R.id.home)
+        if (item.getItemId() == android.R.id.home)
             finish();
         return super.onOptionsItemSelected(item);
 

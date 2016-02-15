@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
-            android:theme="@style/Theme.AppCompat"/>
+            android:theme="@style/Theme.AppCompat" />
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView
@@ -63,6 +63,7 @@
             android:text="Tap to retry."
             android:textColor="@color/colorAccent" />
     </LinearLayout>
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabEachPost"
         android:layout_width="wrap_content"

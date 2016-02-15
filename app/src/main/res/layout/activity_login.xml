@@ -50,7 +50,6 @@
 
 
                 <com.devspark.robototextview.widget.RobotoTextView
-                    android:id="@+id/appTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/logo"

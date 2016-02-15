@@ -7,7 +7,6 @@
     tools:context=".admin.AdminPanel">
 
     <fragment
-        android:id="@+id/searchFrag"
         android:name="com.brainants.bsccsit.admin.SearchFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

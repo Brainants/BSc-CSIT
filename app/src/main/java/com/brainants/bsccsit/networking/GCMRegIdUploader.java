@@ -20,7 +20,7 @@ import java.util.Map;
 public class GCMRegIdUploader {
     String token;
 
-    public void doInBackground()  {
+    public void doInBackground() {
         new AsyncTask<Void, Void, Void>() {
 
             @Override
@@ -28,7 +28,7 @@ public class GCMRegIdUploader {
                 InstanceID instanceID = InstanceID.getInstance(MyApp.getContext());
                 try {
                     token = instanceID.getToken(MyApp.getContext().getString(R.string.gcm_defaultSenderId), GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
-                    Singleton.getInstance().getRequestQueue().add(new StringRequest(Request.Method.POST, "http://bsccsit.brainants.com/addregid", new Response.Listener<String>() {
+                    Singleton.getInstance().getRequestQueue().add(new StringRequest(Request.Method.POST, MyApp.getContext().getString(R.string.addRegId), new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
                             MyApp.getContext().getSharedPreferences("notification", Context.MODE_PRIVATE).edit().putBoolean("updatedGCM", true).apply();

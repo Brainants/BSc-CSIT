@@ -45,9 +45,7 @@ public class eLibraryAdapter extends RecyclerView.Adapter<eLibraryAdapter.VH> {
         holder.source.setText("Source: " + source.get(position));
         if (eLibraryAdapter.checkExistance(fileType, fileName.get(position))) {
             holder.icon.setImageResource(R.drawable.open);
-        }
-
-        else
+        } else
             holder.icon.setImageResource(R.drawable.download);
     }
 
@@ -70,7 +68,7 @@ public class eLibraryAdapter extends RecyclerView.Adapter<eLibraryAdapter.VH> {
     }
 
     public class VH extends RecyclerView.ViewHolder {
-        RobotoTextView name, source,view;
+        RobotoTextView name, source, view;
         ImageView icon;
         RelativeLayout coreFile;
 

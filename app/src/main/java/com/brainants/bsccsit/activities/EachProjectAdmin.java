@@ -91,8 +91,8 @@ public class EachProjectAdmin extends AppCompatActivity {
 
         try {
             project_id = getIntent().getStringExtra("project_id");
-        }catch (Exception e){
-            project_id=getIntent().getData().getQueryParameter("project_id");
+        } catch (Exception e) {
+            project_id = getIntent().getData().getQueryParameter("project_id");
         }
         loadFromInternet();
     }
@@ -104,7 +104,7 @@ public class EachProjectAdmin extends AppCompatActivity {
         horizontalScrollViewUser.setVisibility(View.VISIBLE);
         horizontalScrollViewRequest.setVisibility(View.VISIBLE);
 
-        StringRequest request = new StringRequest(Request.Method.POST, "http://bsccsit.brainants.com/getproject", new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.POST, getString(R.string.getProject), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -344,7 +344,7 @@ public class EachProjectAdmin extends AppCompatActivity {
                 .progress(true, 0)
                 .build();
         dialog.show();
-        StringRequest request = new StringRequest(Request.Method.POST, "http://bsccsit.brainants.com/cancelrequest", new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.POST, getString(R.string.cancelRequest), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 dialog.dismiss();
@@ -388,7 +388,7 @@ public class EachProjectAdmin extends AppCompatActivity {
                 .progress(true, 0)
                 .build();
         dialog.show();
-        StringRequest request = new StringRequest(Request.Method.POST, "http://bsccsit.brainants.com/accept", new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.POST, getString(R.string.acceptRequest), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 dialog.dismiss();
@@ -538,11 +538,11 @@ public class EachProjectAdmin extends AppCompatActivity {
     private void uploadChanges(final boolean shouldFinish) {
         final MaterialDialog dialog = new MaterialDialog.Builder(this)
                 .content("Updating...")
-                .progress(true,0)
+                .progress(true, 0)
                 .cancelable(false)
                 .build();
         dialog.show();
-        StringRequest request = new StringRequest(Request.Method.POST,"http://bsccsit.brainants.com/updateproject", new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.POST, getString(R.string.updateProject), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 dialog.dismiss();

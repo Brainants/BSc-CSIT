@@ -139,7 +139,7 @@ public class Settings extends AppCompatActivity {
                 .cancelable(false)
                 .build();
         progress.show();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://bsccsit.brainants.com/updateusersemester", new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, getString(R.string.updateSemester), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 progress.dismiss();

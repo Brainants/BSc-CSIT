@@ -85,9 +85,10 @@ public class Singleton {
         cursor.close();
         return string;
     }
-     public static String getName(){
-         return MyApp.getContext().getSharedPreferences("loginInfo",Context.MODE_PRIVATE).getString("FirstName","User");
-     }
+
+    public static String getName() {
+        return MyApp.getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getString("FirstName", "User");
+    }
 
     public static ArrayList<String> getFollowingArray() {
         Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT FbID FROM myCommunities", null);
@@ -123,7 +124,7 @@ public class Singleton {
     }
 
     public static long isScheduledEvent(String eventId) {
-        return MyApp.getContext().getSharedPreferences("event",Context.MODE_PRIVATE).getLong(eventId,-1);
+        return MyApp.getContext().getSharedPreferences("event", Context.MODE_PRIVATE).getLong(eventId, -1);
     }
 
     public static String getSemester() {
@@ -219,11 +220,11 @@ public class Singleton {
     }
 
     public static boolean hasNewNotifications() {
-        return MyApp.getContext().getSharedPreferences("notifications",Context.MODE_PRIVATE).getBoolean("hasNewNotif",false);
+        return MyApp.getContext().getSharedPreferences("notifications", Context.MODE_PRIVATE).getBoolean("hasNewNotif", false);
     }
 
-    public static void setNotificationStatus(boolean hasNew){
-        MyApp.getContext().getSharedPreferences("notifications",Context.MODE_PRIVATE).edit().putBoolean("hasNewNotif",hasNew).apply();
+    public static void setNotificationStatus(boolean hasNew) {
+        MyApp.getContext().getSharedPreferences("notifications", Context.MODE_PRIVATE).edit().putBoolean("hasNewNotif", hasNew).apply();
     }
 
     public static int getNotifCount() {
@@ -241,10 +242,10 @@ public class Singleton {
     }
 
     public static long calenderID(Context context) {
-        return context.getSharedPreferences("event",Context.MODE_PRIVATE).getLong("calenderID",createCalender(context));
+        return context.getSharedPreferences("event", Context.MODE_PRIVATE).getLong("calenderID", createCalender(context));
     }
 
-    public static long createCalender(Context context){
+    public static long createCalender(Context context) {
         ContentValues values = new ContentValues();
         values.put(
                 CalendarContract.Calendars.ACCOUNT_NAME,
@@ -286,7 +287,7 @@ public class Singleton {
                 "true");
         Uri uri =
                 context.getContentResolver().insert(builder.build(), values);
-        context.getSharedPreferences("event",Context.MODE_PRIVATE).edit().putLong("calenderID",Long.valueOf(uri.getLastPathSegment())).apply();
+        context.getSharedPreferences("event", Context.MODE_PRIVATE).edit().putLong("calenderID", Long.valueOf(uri.getLastPathSegment())).apply();
         return Long.valueOf(uri.getLastPathSegment());
     }
 }

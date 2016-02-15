@@ -254,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                //todo call Play store
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.brainants.com")));
                             }
                         })
                         .build()
@@ -277,11 +277,7 @@ public class MainActivity extends AppCompatActivity {
         } else if (item.getItemId() == R.id.action_notif) {
             startActivity(new Intent(MainActivity.this, Notification.class));
             finish();
-        } else if (item.getItemId()==R.id.action_feedback) {
-            startActivity(new Intent(MainActivity.this, Feedback.class));
         }
-
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -290,9 +286,9 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.action_main, menu);
 
         if (Singleton.hasNewNotifications())
-            menu.getItem(1).setIcon(R.drawable.bell_fill);
+            menu.findItem(R.id.action_notif).setIcon(R.drawable.bell_fill);
         else
-            menu.getItem(1).setIcon(R.drawable.bell_outline);
+            menu.findItem(R.id.action_notif).setIcon(R.drawable.bell_outline);
 
         return true;
     }

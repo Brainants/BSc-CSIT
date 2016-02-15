@@ -24,7 +24,7 @@ public class NoticeDetails extends AppCompatActivity {
 
     FancyButton download;
     private int noticeId;
-    private String attachmentTitle,attachmentLink, noticeText;
+    private String attachmentTitle, attachmentLink, noticeText;
 
 
     @Override
@@ -38,7 +38,7 @@ public class NoticeDetails extends AppCompatActivity {
 
         download = (FancyButton) findViewById(R.id.downloadAttachment);
 
-        noticeId= getIntent().getIntExtra("notice_id",1);
+        noticeId = getIntent().getIntExtra("notice_id", 1);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -48,15 +48,15 @@ public class NoticeDetails extends AppCompatActivity {
         setTitle("Notice");
 
         SQLiteDatabase database = Singleton.getInstance().getDatabase();
-        Cursor cursor = database.rawQuery("SELECT * FROM notices WHERE id = '" + noticeId + "'",null);
+        Cursor cursor = database.rawQuery("SELECT * FROM notices WHERE id = '" + noticeId + "'", null);
 
-        while(cursor.moveToNext()) {
+        while (cursor.moveToNext()) {
             noticeTitle.setText(cursor.getString(cursor.getColumnIndex("title")));
             noticeDate.setText(Singleton.convertDate(cursor.getString(cursor.getColumnIndex("date"))));
 
             attachmentTitle = cursor.getString(cursor.getColumnIndex("attachment_title"));
             attachmentLink = cursor.getString(cursor.getColumnIndex("attachment_link"));
-            noticeText= cursor.getString(cursor.getColumnIndex("detail"));
+            noticeText = cursor.getString(cursor.getColumnIndex("detail"));
         }
 
 

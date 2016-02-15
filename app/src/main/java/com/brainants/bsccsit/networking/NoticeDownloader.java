@@ -6,6 +6,8 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.brainants.bsccsit.R;
+import com.brainants.bsccsit.advance.MyApp;
 import com.brainants.bsccsit.advance.Singleton;
 
 import org.json.JSONArray;
@@ -28,7 +30,7 @@ public class NoticeDownloader {
     private ArrayList<Integer> mIds = new ArrayList<>();
 
     public void doInBackground() {
-        String url = "http://bsccsit.brainants.com/allnotices";
+        String url = MyApp.getContext().getString(R.string.allNotices);
         JsonArrayRequest arrayRequest = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
