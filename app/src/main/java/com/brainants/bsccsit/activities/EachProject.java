@@ -8,7 +8,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -85,10 +84,9 @@ public class EachProject extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("");
         try {
-            project_id = getIntent().getStringExtra("project_id");
-        } catch (Exception e) {
             project_id = getIntent().getData().getQueryParameter("project_id");
-            Log.d("debug", project_id);
+        } catch (Exception e) {
+            project_id = getIntent().getStringExtra("project_id");
         }
         loadFromInternet();
     }

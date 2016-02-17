@@ -90,9 +90,9 @@ public class EachProjectAdmin extends AppCompatActivity {
         });
 
         try {
-            project_id = getIntent().getStringExtra("project_id");
-        } catch (Exception e) {
             project_id = getIntent().getData().getQueryParameter("project_id");
+        } catch (Exception e) {
+            project_id = getIntent().getStringExtra("project_id");
         }
         loadFromInternet();
     }
@@ -110,7 +110,13 @@ public class EachProjectAdmin extends AppCompatActivity {
                 try {
                     mScrollView.setVisibility(View.VISIBLE);
                     loading.setVisibility(View.GONE);
-                    JSONObject coreObject = new JSONObject(response);
+                    JSONObject object = new JSONObject(response);
+                    if (object.getBoolean("error")) {
+                        Toast.makeText(EachProjectAdmin.this, "Server error, please try in a little bit.", Toast.LENGTH_SHORT).show();
+                        finish();
+                        return;
+                    }
+                    final JSONObject coreObject = object.getJSONObject("data");
                     title.setText(coreObject.getString("title"));
                     setTitle(coreObject.getString("title"));
                     detail.setText(coreObject.getString("description"));

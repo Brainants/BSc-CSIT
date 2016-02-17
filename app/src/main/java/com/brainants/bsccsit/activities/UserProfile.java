@@ -57,7 +57,11 @@ public class UserProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
-        userID = getIntent().getStringExtra("userID");
+        try {
+            userID = getIntent().getData().getQueryParameter("user_id");
+        } catch (Exception e) {
+            userID = getIntent().getStringExtra("userID");
+        }
         setTitle("");
 
         setSupportActionBar((Toolbar) findViewById(R.id.profileToolbar));
