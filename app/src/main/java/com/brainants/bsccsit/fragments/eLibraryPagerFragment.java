@@ -12,6 +12,7 @@ import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -90,7 +91,10 @@ public class eLibraryPagerFragment extends Fragment {
             @Override
             public void onIconClick(View view, int position) {
                 if (eLibraryAdapter.checkExistance(types[getArguments().getInt("position")], FileName.get(position))) {
-
+                    if (!Singleton.isPermissionGiven()) {
+                        Singleton.requestPermission((AppCompatActivity) getActivity());
+                        return;
+                    }
                     File file = new File(Environment.getExternalStorageDirectory() + "/" + Singleton.getSemester() + "/" + types[getArguments().getInt("position")] +
                             "/" + FileName.get(position));
                     Intent intent = new Intent(Intent.ACTION_VIEW);

@@ -179,7 +179,6 @@ public class FbEvent extends AppCompatActivity {
         values.put(CalendarContract.Events.ACCESS_LEVEL, CalendarContract.Events.ACCESS_PRIVATE);
         values.put(CalendarContract.Events.SELF_ATTENDEE_STATUS,
                 CalendarContract.Events.STATUS_CONFIRMED);
-        values.put(CalendarContract.Events.ALL_DAY, 1);
         values.put(CalendarContract.Events.ORGANIZER, hosted_by.getText().toString());
         values.put(CalendarContract.Events.GUESTS_CAN_INVITE_OTHERS, 1);
         values.put(CalendarContract.Events.GUESTS_CAN_MODIFY, 1);

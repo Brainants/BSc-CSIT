@@ -24,7 +24,6 @@ public class eLibrary extends Fragment {
 
     public eLibrary() {
         // Required empty public constructor
-        //// TODO: 1/23/2016 ali smart banauna chha
     }
 
 
