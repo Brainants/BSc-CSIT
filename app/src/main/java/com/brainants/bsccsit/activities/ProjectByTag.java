@@ -21,6 +21,7 @@ import com.brainants.bsccsit.adapters.ProjectAdapter;
 import com.brainants.bsccsit.advance.Singleton;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -76,7 +77,11 @@ public class ProjectByTag extends AppCompatActivity {
             @Override
             public void onResponse(String res) {
                 try {
-                    JSONArray response = new JSONArray(res);
+                    JSONObject object = new JSONObject(res);
+                    if (object.getBoolean("error")) {
+                        return;
+                    }
+                    JSONArray response = object.getJSONArray("data");
                     for (int i = 0; i < response.length(); i++) {
                         titles.add(response.getJSONObject(i).getString("title"));
                         detail.add(response.getJSONObject(i).getString("description"));

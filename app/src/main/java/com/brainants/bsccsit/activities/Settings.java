@@ -25,6 +25,9 @@ import com.android.volley.toolbox.StringRequest;
 import com.brainants.bsccsit.R;
 import com.brainants.bsccsit.advance.Singleton;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -144,9 +147,19 @@ public class Settings extends AppCompatActivity {
             public void onResponse(String response) {
                 progress.dismiss();
                 choser.dismiss();
-                Singleton.getInstance().getDatabase().delete("eLibrary", null, null);
-                getSharedPreferences("loginInfo", MODE_PRIVATE).edit().putInt("semester", sem).apply();
-                Snackbar.make(findViewById(R.id.settingsCore), "Semester updated.", Snackbar.LENGTH_SHORT).show();
+                JSONObject object = null;
+                try {
+                    object = new JSONObject(response);
+                    if (!object.getBoolean("error")) {
+                        Singleton.getInstance().getDatabase().delete("eLibrary", null, null);
+                        getSharedPreferences("loginInfo", MODE_PRIVATE).edit().putInt("semester", sem).apply();
+                        Snackbar.make(findViewById(R.id.settingsCore), "Semester updated.", Snackbar.LENGTH_SHORT).show();
+                    } else {
+                        Snackbar.make(findViewById(R.id.settingsCore), "Something went wrong. Try again later.", Snackbar.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override

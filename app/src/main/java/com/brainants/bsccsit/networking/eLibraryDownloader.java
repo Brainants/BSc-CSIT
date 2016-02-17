@@ -15,6 +15,7 @@ import com.brainants.bsccsit.advance.MyApp;
 import com.brainants.bsccsit.advance.Singleton;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +32,10 @@ public class eLibraryDownloader {
                 database.delete("eLibrary", null, null);
                 ContentValues values = new ContentValues();
                 try {
-                    JSONArray response = new JSONArray(res);
+                    JSONObject core = new JSONObject(res);
+                    if (core.getBoolean("error"))
+                        return;
+                    JSONArray response = core.getJSONArray("data");
                     for (int i = 0; i < response.length(); i++) {
                         values.clear();
                         values.put("Title", response.getJSONObject(i).getString("title"));

@@ -172,7 +172,7 @@ public class LoginActivity extends AppCompatActivity {
                 public void onResponse(String response) {
                     try {
                         JSONObject object = new JSONObject(response);
-                        if (object.getBoolean("exists")) {
+                        if (!object.getBoolean("error")) {
                             new GCMRegIdUploader().doInBackground();
                             addEveryThingToSp(object.getJSONObject("data"));
                             if (object.getJSONObject("data").getString("communities").equals("")) {
@@ -232,6 +232,7 @@ public class LoginActivity extends AppCompatActivity {
             downloader.setTaskCompleteListener(new MyCommunitiesDownloader.OnTaskCompleted() {
                 @Override
                 public void onTaskCompleted(boolean success) {
+                    dialog.dismiss();
                     if (success) {
                         editor.putBoolean("loggedIn", true);
                         editor.apply();
@@ -245,7 +246,6 @@ public class LoginActivity extends AppCompatActivity {
                                 postFbLoginWork();
                             }
                         }).show();
-                        dialog.dismiss();
                     }
                 }
             });

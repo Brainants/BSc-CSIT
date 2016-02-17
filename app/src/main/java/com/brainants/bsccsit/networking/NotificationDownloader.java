@@ -27,8 +27,7 @@ public class NotificationDownloader {
     ClickListener listener;
 
     public void doInBackground() {
-        String url = MyApp.getContext().getString(R.string.allNotifications);
-        JsonArrayRequest request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
+        JsonArrayRequest request = new JsonArrayRequest(MyApp.getContext().getString(R.string.allNotifications), new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 try {

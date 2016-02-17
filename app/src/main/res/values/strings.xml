@@ -67,25 +67,29 @@
     <string name="Close">Close</string>
 
     <string name="google_map_api">AIzaSyCW6m0JyYFBWgusxePr3n8mnuRQCP_zU2c</string>
+    <string name="getUser">http://brainants.com/apis/bsccsit/v1/getuser</string>
+    <string name="getElibrary">http://brainants.com/apis/bsccsit/v1/getelibrary</string>
+    <string name="getUserCommunities">http://brainants.com/apis/bsccsit/v1/getusercommunities</string>
+    <string name="updateUserCommunities">http://brainants.com/apis/bsccsit/v1/updateusercommunities</string>
 
-    <string name="addProject">http://bsccsit.brainants.com/addproject</string>
-    <string name="coreLinkForProject">http://bsccsit.brainants.com/</string>
-    <string name="getProject">http://bsccsit.brainants.com/getproject</string>
-    <string name="acceptRequest">http://bsccsit.brainants.com/accept</string>
-    <string name="cancelRequest">http://bsccsit.brainants.com/cancelrequest</string>
-    <string name="updateProject">http://bsccsit.brainants.com/updateproject</string>
-    <string name="getUser">http://bsccsit.brainants.com/getuser</string>
-    <string name="tagProjects">http://bsccsit.brainants.com/tagprojects</string>
-    <string name="updateSemester">http://bsccsit.brainants.com/updateusersemester</string>
-    <string name="getProfile">http://bsccsit.brainants.com/getprofile</string>
-    <string name="login">http://bsccsit.brainants.com/login</string>
-    <string name="getElibrary">http://bsccsit.brainants.com/getelibrary</string>
-    <string name="addRegId">http://bsccsit.brainants.com/addregid</string>
-    <string name="getUserCommunities">http://bsccsit.brainants.com/getusercommunities</string>
-    <string name="updateUserCommunities">http://bsccsit.brainants.com/updateusercommunities</string>
-    <string name="allNotices">http://bsccsit.brainants.com/allnotices</string>
-    <string name="allNotifications">http://bsccsit.brainants.com/allnotifications</string>
-    <string name="allCommunities">http://bsccsit.brainants.com/allcommunities</string>
-    <string name="allProjects">http://bsccsit.brainants.com/allprojects</string>
-    <string name="allTags">http://bsccsit.brainants.com/alltags</string>
+    <string name="addProject">http://brainants.com/apis/bsccsit/v1/addproject</string>
+    <string name="coreLinkForProject">http://brainants.com/apis/bsccsit/v1/</string>
+    <string name="getProject">http://brainants.com/apis/bsccsit/v1/getproject</string>
+    <string name="acceptRequest">http://brainants.com/apis/bsccsit/v1/accept</string>
+    <string name="cancelRequest">http://brainants.com/apis/bsccsit/v1/cancelrequest</string>
+    <string name="updateProject">http://brainants.com/apis/bsccsit/v1/updateproject</string>
+    <string name="tagProjects">http://brainants.com/apis/bsccsit/v1/tagprojects</string>
+    <string name="updateSemester">http://brainants.com/apis/bsccsit/v1/updateusersemester</string>
+    <string name="getProfile">http://brainants.com/apis/bsccsit/v1/getprofile</string>
+    <string name="login">http://brainants.com/apis/bsccsit/v1/login</string>
+    <string name="addRegId">http://brainants.com/apis/bsccsit/v1/addregid</string>
+
+
+    <string name="allNotices">http://brainants.com/apis/bsccsit/v1/allnotices</string>
+    <string name="allNotifications">http://brainants.com/apis/bsccsit/v1/allnotifications</string>
+    <string name="allCommunities">http://brainants.com/apis/bsccsit/v1/allcommunities</string>
+    <string name="allProjects">http://brainants.com/apis/bsccsit/v1/allprojects</string>
+    <string name="allTags">http://brainants.com/apis/bsccsit/v1/alltags</string>
+
+
 </resources>

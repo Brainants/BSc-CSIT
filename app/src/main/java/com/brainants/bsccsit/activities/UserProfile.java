@@ -99,7 +99,12 @@ public class UserProfile extends AppCompatActivity {
                 progress.setVisibility(View.GONE);
                 errorLayout.setVisibility(View.GONE);
                 try {
-                    JSONObject response = new JSONObject(resp);
+                    JSONObject core = new JSONObject(resp);
+                    if (core.getBoolean("error")) {
+                        errorLayout.setVisibility(View.VISIBLE);
+                        return;
+                    }
+                    JSONObject response = core.getJSONObject("data");
                     JSONObject userObject = response.getJSONObject("user");
                     collapsingToolbarLayout.setTitle(userObject.getString("name"));
                     email.setText(userObject.getString("email"));

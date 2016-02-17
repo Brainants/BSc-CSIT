@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.AuthFailureError;
@@ -28,6 +29,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.brainants.bsccsit.R;
 import com.brainants.bsccsit.advance.Singleton;
 import com.brainants.bsccsit.networking.GCMRegIdUploader;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.LoginEvent;
+
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -106,32 +111,37 @@ public class CompleteLoginForm extends Fragment implements AdapterView.OnItemSel
         StringRequest request = new StringRequest(Request.Method.POST, getActivity().getString(R.string.login), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                if (response.contains("success")) {
-                    dialog.dismiss();
-                    editor.putInt("semester", semester.getSelectedItemPosition());
-                    editor.putString("phone_number", phoneNo.getText().toString());
-                    editor.putString("college", college.getSelectedItem().toString());
-                    editor.putBoolean("formFilled", true);
-                    editor.apply();
-                    new GCMRegIdUploader().doInBackground();
+                dialog.dismiss();
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if (object.getBoolean("error")) {
+                        Toast.makeText(getContext(), "Something went wrong. Try again later.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        editor.putInt("semester", semester.getSelectedItemPosition());
+                        editor.putString("phone_number", phoneNo.getText().toString());
+                        editor.putString("college", college.getSelectedItem().toString());
+                        editor.putBoolean("formFilled", true);
+                        editor.apply();
+                        new GCMRegIdUploader().doInBackground();
+                        Answers.getInstance().logLogin(new LoginEvent()
+                                .putMethod("Facebook")
+                                .putSuccess(true));
 
-/*                    Answers.getInstance().logLogin(new LoginEvent()
-                            .putMethod("Facebook")
-                            .putSuccess(true));
-*/
-                    getActivity().getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.completeFragHolder, new BasicCommunityChooser())
-                            .commit();
+                        getActivity().getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.completeFragHolder, new BasicCommunityChooser())
+                                .commit();
+                    }
+                } catch (Exception e) {
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 dialog.dismiss();
-                /*Answers.getInstance().logLogin(new LoginEvent()
+                Answers.getInstance().logLogin(new LoginEvent()
                         .putMethod("Facebook")
                         .putSuccess(false));
-                */
+
                 Snackbar.make(view.findViewById(R.id.CompleteCore), "Unable to connect.", Snackbar.LENGTH_SHORT).setAction("Retry", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -144,7 +154,7 @@ public class CompleteLoginForm extends Fragment implements AdapterView.OnItemSel
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("name", name.getText().toString());
-                params.put("fbid", getActivity().getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getString("UserID", ""));
+                params.put("user_id", getActivity().getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getString("UserID", ""));
                 params.put("semester", semester.getSelectedItemPosition() + "");
                 params.put("phone_number", phoneNo.getText().toString());
                 params.put("college", college.getSelectedItem().toString());

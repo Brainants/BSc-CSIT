@@ -28,6 +28,9 @@ import com.brainants.bsccsit.advance.Singleton;
 import com.brainants.bsccsit.networking.TagsDownloader;
 import com.devspark.robototextview.widget.RobotoTextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -148,17 +151,23 @@ public class AddProject extends AppCompatActivity implements TextWatcher {
                     @Override
                     public void onResponse(String response) {
                         dialog.dismiss();
-                        if (response.toLowerCase().contains("success")) {
-                            Snackbar.make(MainActivity.coordinatorLayout, "Project created successfully.", Snackbar.LENGTH_SHORT).show();
-                            finish();
-                        } else {
-                            Snackbar.make(findViewById(R.id.addProjectCood), response, Snackbar.LENGTH_SHORT).setAction("Retry", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    doneFab.callOnClick();
-                                }
-                            }).show();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if (!jsonObject.getBoolean("error")) {
+                                Snackbar.make(MainActivity.coordinatorLayout, "Project created successfully.", Snackbar.LENGTH_SHORT).show();
+                                finish();
+                            } else {
+                                Snackbar.make(findViewById(R.id.addProjectCood), jsonObject.getString("data"), Snackbar.LENGTH_SHORT).setAction("Retry", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        doneFab.callOnClick();
+                                    }
+                                }).show();
+                            }
+                        } catch (JSONException e) {
                         }
+
+
                     }
                 }, new Response.ErrorListener() {
                     @Override

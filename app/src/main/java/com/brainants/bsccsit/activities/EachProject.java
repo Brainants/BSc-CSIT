@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.AuthFailureError;
@@ -86,6 +88,7 @@ public class EachProject extends AppCompatActivity {
             project_id = getIntent().getStringExtra("project_id");
         } catch (Exception e) {
             project_id = getIntent().getData().getQueryParameter("project_id");
+            Log.d("debug", project_id);
         }
         loadFromInternet();
     }
@@ -101,7 +104,13 @@ public class EachProject extends AppCompatActivity {
                 try {
                     mScrollView.setVisibility(View.VISIBLE);
                     loading.setVisibility(View.GONE);
-                    final JSONObject coreObject = new JSONObject(response);
+                    JSONObject object = new JSONObject(response);
+                    if (object.getBoolean("error")) {
+                        Toast.makeText(EachProject.this, "Server error, please try in a little bit.", Toast.LENGTH_SHORT).show();
+                        finish();
+                        return;
+                    }
+                    final JSONObject coreObject = object.getJSONObject("data");
                     title.setText(coreObject.getString("title"));
                     setTitle(coreObject.getString("title"));
                     detail.setText(coreObject.getString("description"));

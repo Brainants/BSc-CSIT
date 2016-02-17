@@ -30,8 +30,7 @@ public class NoticeDownloader {
     private ArrayList<Integer> mIds = new ArrayList<>();
 
     public void doInBackground() {
-        String url = MyApp.getContext().getString(R.string.allNotices);
-        JsonArrayRequest arrayRequest = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
+        JsonArrayRequest arrayRequest = new JsonArrayRequest(MyApp.getContext().getString(R.string.allNotices), new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 for (int i = 0; i < response.length(); i++) {

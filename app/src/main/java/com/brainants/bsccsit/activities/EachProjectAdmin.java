@@ -349,8 +349,15 @@ public class EachProjectAdmin extends AppCompatActivity {
             public void onResponse(String response) {
                 dialog.dismiss();
                 dialogPrevious.dismiss();
-                if (response.toLowerCase().contains("true")) {
-                    loadFromInternet();
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if (object.getBoolean("error")) {
+                        Toast.makeText(EachProjectAdmin.this, object.getString("data"), Toast.LENGTH_SHORT).show();
+                    } else {
+                        loadFromInternet();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         }, new Response.ErrorListener() {
@@ -393,8 +400,15 @@ public class EachProjectAdmin extends AppCompatActivity {
             public void onResponse(String response) {
                 dialog.dismiss();
                 dialogPrevious.dismiss();
-                if (response.toLowerCase().contains("success")) {
-                    loadFromInternet();
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if (object.getBoolean("error")) {
+                        Toast.makeText(EachProjectAdmin.this, object.getString("data"), Toast.LENGTH_SHORT).show();
+                    } else {
+                        loadFromInternet();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         }, new Response.ErrorListener() {
@@ -546,15 +560,23 @@ public class EachProjectAdmin extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 dialog.dismiss();
-                if (shouldFinish) {
-                    finish();
-                    Toast.makeText(EachProjectAdmin.this, "Updated", Toast.LENGTH_SHORT).show();
-                } else {
-                    Snackbar.make(findViewById(R.id.projectEachCoordinator), "Updated.", Snackbar.LENGTH_SHORT).show();
-                    isChanged = false;
-                    invalidateOptionsMenu();
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if (object.getBoolean("error")) {
+                        Toast.makeText(EachProjectAdmin.this, object.getString("data"), Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (shouldFinish) {
+                            finish();
+                            Toast.makeText(EachProjectAdmin.this, "Updated", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Snackbar.make(findViewById(R.id.projectEachCoordinator), "Updated.", Snackbar.LENGTH_SHORT).show();
+                            isChanged = false;
+                            invalidateOptionsMenu();
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-
             }
         }, new Response.ErrorListener() {
             @Override

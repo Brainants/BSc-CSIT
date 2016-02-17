@@ -12,6 +12,9 @@ import com.brainants.bsccsit.R;
 import com.brainants.bsccsit.advance.MyApp;
 import com.brainants.bsccsit.advance.Singleton;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,8 +26,18 @@ public class MyCommunitiesUploader {
         final StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                listener.onTaskCompleted(true);
-                MyApp.getContext().getSharedPreferences("community", Context.MODE_PRIVATE).edit().putBoolean("changedComm", false).apply();
+                try {
+                    JSONObject core = new JSONObject(response);
+                    if (core.getBoolean("error"))
+                        listener.onTaskCompleted(false);
+                    else {
+                        MyApp.getContext().getSharedPreferences("community", Context.MODE_PRIVATE).edit().putBoolean("changedComm", false).apply();
+                        listener.onTaskCompleted(true);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override

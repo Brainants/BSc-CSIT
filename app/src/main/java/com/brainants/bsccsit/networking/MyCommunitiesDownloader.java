@@ -38,7 +38,10 @@ public class MyCommunitiesDownloader {
             public void onResponse(String response) {
                 try {
                     ArrayList<String> list = new ArrayList<>();
-                    JSONArray array = new JSONArray(response);
+                    JSONObject core = new JSONObject(response);
+                    if (core.getBoolean("error"))
+                        return;
+                    JSONArray array = core.getJSONArray("data");
                     for (int i = 0; i < array.length(); i++)
                         list.add(array.getString(i));
                     String tags = "";

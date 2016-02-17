@@ -2,10 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.brainants.bsccsit">
 
-    <uses-sdk
-        android:maxSdkVersion="23"
-        android:minSdkVersion="15"
-        android:targetSdkVersion="23" />
+    <uses-sdk android:maxSdkVersion="23" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -14,7 +11,6 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
-
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
@@ -55,7 +51,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_map_api"></meta-data>
+            android:value="@string/google_map_api" />
 
         <activity
             android:name=".activities.LoginActivity"
@@ -108,19 +104,33 @@
             android:name=".activities.FbPage"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
-            <data
-                android:host="bsccsit"
-                android:pathPrefix="/page"
-                android:scheme="brainants" />
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="bsccsit"
+                    android:pathPrefix="/page"
+                    android:scheme="brainants" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".activities.AboutUs"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
-            <data
-                android:host="bsccsit"
-                android:pathPrefix="/about"
-                android:scheme="brainants" />
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="bsccsit"
+                    android:pathPrefix="/about"
+                    android:scheme="brainants" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".admin.AdminPanel"
@@ -140,10 +150,17 @@
             android:name=".activities.FbEvent"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
-            <data
-                android:host="bsccsit"
-                android:pathPrefix="/event"
-                android:scheme="brainants" />
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="bsccsit"
+                    android:pathPrefix="/event"
+                    android:scheme="brainants" />
+            </intent-filter>
         </activity>
 
         <receiver android:name=".fragments.eLibraryPagerFragment$Receiver">
@@ -159,80 +176,135 @@
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|adjustResize">
-            <data
-                android:host="bsccsit"
-                android:pathPrefix="/addproject"
-                android:scheme="brainants" />
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="bsccsit"
+                    android:pathPrefix="/addproject"
+                    android:scheme="brainants" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".activities.NoticeDetails"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
-            <data
-                android:host="bsccsit"
-                android:pathPrefix="/notice"
-                android:scheme="brainants" />
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="bsccsit"
+                    android:pathPrefix="/notice"
+                    android:scheme="brainants" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".activities.EachProject"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
-            <data
-                android:host="bsccsit"
-                android:pathPrefix="/eachproject"
-                android:scheme="brainants" />
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="bsccsit"
+                    android:pathPrefix="/eachproject"
+                    android:scheme="brainants" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".activities.UserProfile"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
-            <data
-                android:host="bsccsit"
-                android:pathPrefix="/profile"
-                android:scheme="brainants" />
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="bsccsit"
+                    android:pathPrefix="/profile"
+                    android:scheme="brainants" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".activities.EachProjectAdmin"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
-            <data
-                android:host="bsccsit"
-                android:pathPrefix="/admineachproject"
-                android:scheme="brainants" />
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="bsccsit"
+                    android:pathPrefix="/admineachproject"
+                    android:scheme="brainants" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".activities.Notification"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
-            <data
-                android:host="bsccsit"
-                android:pathPrefix="/notification"
-                android:scheme="brainants" />
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="bsccsit"
+                    android:pathPrefix="/notification"
+                    android:scheme="brainants" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".activities.ProjectByTag"
             android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
-            <data
-                android:host="bsccsit"
-                android:pathPrefix="/projectbytag"
-                android:scheme="brainants" />
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="bsccsit"
+                    android:pathPrefix="/projectbytag"
+                    android:scheme="brainants" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".activities.Feedback"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden">
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
 
-            <data
-                android:host="bsccsit"
-                android:pathPrefix="/feedback"
-                android:scheme="brainants" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="bsccsit"
+                    android:pathPrefix="/feedback"
+                    android:scheme="brainants" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".activities.EventVenueMap"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden" />
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" />
 
         <!--Below code is the config file for GCM!-->
         <receiver
