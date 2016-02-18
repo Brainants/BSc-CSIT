@@ -58,7 +58,6 @@ public class FbEvent extends AppCompatActivity {
     private LinearLayout errorMsg;
     private FloatingActionButton fab;
     private NestedScrollView nestedScrollEvent;
-    private LinearLayout locationLayout;
     String startTime = "", endTime = "";
     private RobotoTextView event_name, event_description, event_place, event_location, event_street, event_time, hosted_by;
 
@@ -83,10 +82,13 @@ public class FbEvent extends AppCompatActivity {
         nestedScrollEvent = (NestedScrollView) findViewById(R.id.nestedScrollEvent);
 
         CollapsingToolbarLayout mCollapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.eventCollapse);
+        try {
+            eventId = getIntent().getData().getQueryParameter("event_id");
+        } catch (Exception e) {
+            eventId = getIntent().getStringExtra("eventID");
+        }
 
-        eventId = getIntent().getStringExtra("eventID");
-
-        locationLayout = (LinearLayout) findViewById(R.id.locationLayout);
+        LinearLayout locationLayout = (LinearLayout) findViewById(R.id.locationLayout);
 
 
         progressBar = (ProgressBar) findViewById(R.id.progressbarFbEvent);
@@ -124,6 +126,7 @@ public class FbEvent extends AppCompatActivity {
             eventName = cursor.getString(cursor.getColumnIndex("names"));
             eventPhoto = cursor.getString(cursor.getColumnIndex("fullImage"));
         }
+        cursor.close();
 
         mCollapsingToolbar.setTitle(eventName);
 
@@ -186,7 +189,7 @@ public class FbEvent extends AppCompatActivity {
         if (ActivityCompat.checkSelfPermission(FbEvent.this, Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_GRANTED) {
 
             Uri uri = getContentResolver().insert(CalendarContract.Events.CONTENT_URI, values);
-            long addedEventId = new Long(uri.getLastPathSegment());
+            long addedEventId = Long.valueOf(uri.getLastPathSegment());
 
             values.clear();
             values.put(CalendarContract.Reminders.EVENT_ID, addedEventId);
