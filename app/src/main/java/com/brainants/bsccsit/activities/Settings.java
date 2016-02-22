@@ -171,7 +171,7 @@ public class Settings extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("fbid", getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getString("UserID", ""));
+                params.put("user_id", getSharedPreferences("loginInfo", Context.MODE_PRIVATE).getString("UserID", ""));
                 params.put("semester", sem + "");
                 return params;
             }
