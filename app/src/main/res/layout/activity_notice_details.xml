@@ -6,6 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coreNoticeDetails"
     android:layout_width="match_parent"
+    android:background="@color/white"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context="com.brainants.bsccsit.activities.NoticeDetails">
@@ -36,6 +37,7 @@
                 android:id="@+id/mainBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="3dp"
                 android:orientation="vertical">
 
 
@@ -53,7 +55,7 @@
                 <com.devspark.robototextview.widget.RobotoTextView
                     android:id="@+id/noticeDate"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:layout_margin="3dp"
                     android:layout_weight="1"
                     android:text="5 days ago" />
@@ -78,10 +80,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/noticeContent"
-                android:visibility="gone"
-                fancy:fb_ghost="true"
                 fancy:fb_text="Download"
-                fancy:fb_textColor="@color/colorPrimaryDark" />
+                android:visibility="gone"
+                android:layout_margin="4dp"
+                fancy:fb_defaultColor="@color/colorPrimary"
+                fancy:fb_focusColor="@color/colorPrimaryDark"
+                android:layout_centerHorizontal="true"
+                 />
         </RelativeLayout>
 
     </android.support.v4.widget.NestedScrollView>

@@ -17,7 +17,7 @@ import com.brainants.bsccsit.advance.Singleton;
 import com.brainants.bsccsit.networking.eLibraryDownloader;
 
 
-public class eLibrary extends Fragment {
+public class eLibrary extends Fragment  {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
