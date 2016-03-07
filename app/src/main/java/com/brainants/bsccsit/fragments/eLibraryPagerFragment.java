@@ -124,7 +124,7 @@ public class eLibraryPagerFragment extends Fragment {
 
                     request.allowScanningByMediaScanner();
                     request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                    request.setDestinationInExternalPublicDir(Singleton.getSemester() + "/" + types[getArguments().getInt("position")],
+                    request.setDestinationInExternalFilesDir(getActivity(), Singleton.getSemester() + "/" + types[getArguments().getInt("position")],
                             FileName.get(position));
 
                     DownloadManager manager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
