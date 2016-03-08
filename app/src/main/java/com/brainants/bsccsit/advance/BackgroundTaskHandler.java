@@ -153,7 +153,6 @@ public class BackgroundTaskHandler extends GcmTaskService {
 
             }
         });
-
         return 1;
     }
 }

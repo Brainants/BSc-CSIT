@@ -53,7 +53,7 @@ public class Projects extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(), AddProject.class));
+                startActivityForResult(new Intent(getContext(), AddProject.class), 10);
             }
         });
         fab.show();
@@ -127,6 +127,13 @@ public class Projects extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_projects, container, false);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        swipeLayout.setRefreshing(true);
+        downloadFromInternet(false);
     }
 
     @Override

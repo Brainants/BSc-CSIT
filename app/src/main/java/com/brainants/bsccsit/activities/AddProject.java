@@ -24,6 +24,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
 import com.brainants.bsccsit.R;
+import com.brainants.bsccsit.advance.MyApp;
 import com.brainants.bsccsit.advance.Singleton;
 import com.brainants.bsccsit.networking.TagsDownloader;
 import com.devspark.robototextview.widget.RobotoTextView;
@@ -155,6 +156,7 @@ public class AddProject extends AppCompatActivity implements TextWatcher {
                             JSONObject jsonObject = new JSONObject(response);
                             if (!jsonObject.getBoolean("error")) {
                                 Snackbar.make(MainActivity.coordinatorLayout, "Project created successfully.", Snackbar.LENGTH_SHORT).show();
+                                setResult(MyApp.INTENT_SUCCESS);
                                 finish();
                             } else {
                                 Snackbar.make(findViewById(R.id.addProjectCood), jsonObject.getString("data"), Snackbar.LENGTH_SHORT).setAction("Retry", new View.OnClickListener() {

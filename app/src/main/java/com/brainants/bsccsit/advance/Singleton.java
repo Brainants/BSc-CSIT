@@ -111,10 +111,8 @@ public class Singleton {
 
     public static int eLibraryCount() {
         int i = 0;
-        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT Title FROM eLibrary", null);
-        while (cursor.moveToNext()) {
-            i++;
-        }
+        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT Title FROM eLibrary ", null);
+        i = cursor.getCount();
         cursor.close();
         return i;
     }

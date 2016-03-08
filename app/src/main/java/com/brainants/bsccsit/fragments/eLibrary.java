@@ -1,5 +1,6 @@
 package com.brainants.bsccsit.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -7,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +19,7 @@ import com.brainants.bsccsit.advance.Singleton;
 import com.brainants.bsccsit.networking.eLibraryDownloader;
 
 
-public class eLibrary extends Fragment  {
+public class eLibrary extends Fragment {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -30,7 +32,12 @@ public class eLibrary extends Fragment  {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        dowload();
+    }
+
+    private void dowload() {
         if (Singleton.eLibraryCount() == 0) {
+            viewPager.setVisibility(View.GONE);
             final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
                     .progress(true, 0)
                     .content("Fetching data...")
@@ -45,6 +52,7 @@ public class eLibrary extends Fragment  {
                 public void onTaskCompleted(boolean success) {
                     if (success) {
                         viewPager.setAdapter(new PagerAdapter(getChildFragmentManager()));
+                        viewPager.setVisibility(View.VISIBLE);
                         dialog.dismiss();
                     } else {
                         dialog.dismiss();
@@ -60,6 +68,13 @@ public class eLibrary extends Fragment  {
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        dowload();
+        Log.d("debug", "aayo");
     }
 
     @Override

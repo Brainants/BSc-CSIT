@@ -11,6 +11,7 @@ import io.fabric.sdk.android.Fabric;
 
 public class MyApp extends Application {
     private static Context mContext;
+    public static int INTENT_SUCCESS = 100;
 
     public static Context getContext() {
 

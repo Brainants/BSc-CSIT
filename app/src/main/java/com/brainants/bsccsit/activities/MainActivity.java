@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
                 fab.hide();
                 current = "E-Library";
                 previous = id;
-                manager.beginTransaction().replace(R.id.fragHolder, new eLibrary()).commit();
+                manager.beginTransaction().replace(R.id.fragHolder, new eLibrary(), "E-Library").commit();
                 break;
             case R.id.projects:
                 setTitle("Projects");
@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.setting:
-                startActivity(new Intent(MainActivity.this, Settings.class));
+                startActivityForResult(new Intent(MainActivity.this, Settings.class), 10);
                 break;
             case R.id.adminPanel:
                 startActivity(new Intent(MainActivity.this, AdminPanel.class));
@@ -329,4 +329,12 @@ public class MainActivity extends AppCompatActivity {
         mScheduler.schedule(periodic);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (getTitle().equals("E-Library")) {
+            getSupportFragmentManager().findFragmentByTag("E-Library")
+                    .onActivityResult(requestCode, resultCode, data);
+        }
+    }
 }

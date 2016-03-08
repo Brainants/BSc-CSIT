@@ -23,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.brainants.bsccsit.R;
+import com.brainants.bsccsit.advance.MyApp;
 import com.brainants.bsccsit.advance.Singleton;
 
 import org.json.JSONException;
@@ -154,6 +155,8 @@ public class Settings extends AppCompatActivity {
                         Singleton.getInstance().getDatabase().delete("eLibrary", null, null);
                         getSharedPreferences("loginInfo", MODE_PRIVATE).edit().putInt("semester", sem).apply();
                         Snackbar.make(findViewById(R.id.settingsCore), "Semester updated.", Snackbar.LENGTH_SHORT).show();
+                        Singleton.getInstance().getDatabase().delete("eLibrary", null, null);
+                        setResult(MyApp.INTENT_SUCCESS);
                     } else {
                         Snackbar.make(findViewById(R.id.settingsCore), "Something went wrong. Try again later.", Snackbar.LENGTH_SHORT).show();
                     }
