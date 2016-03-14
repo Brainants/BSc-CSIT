@@ -1,13 +1,16 @@
 package com.brainants.bsccsit.activities;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -79,9 +82,37 @@ public class Notification extends AppCompatActivity {
 
     private void fillRecy() {
         recy.setVisibility(View.VISIBLE);
-        NotificationAdapter adapter = new NotificationAdapter(this, title, desc, link);
+        final NotificationAdapter adapter = new NotificationAdapter(this, title, desc, link);
         recy.setLayoutManager(new LinearLayoutManager(this));
         recy.setAdapter(adapter);
+
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                Snackbar snackbar = Snackbar.make(findViewById(R.id.coodNotif), "Notification deleted.", Snackbar.LENGTH_LONG).setAction("Undo", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        adapter.notifyItemInserted(viewHolder.getAdapterPosition());
+                        ContentValues values = new ContentValues();
+                        values.put("title", title.get(viewHolder.getAdapterPosition()));
+                        values.put("desc", desc.get(viewHolder.getAdapterPosition()));
+                        values.put("link", link.get(viewHolder.getAdapterPosition()));
+                        values.put("show", show.get(viewHolder.getAdapterPosition()));
+                        Singleton.getInstance().getDatabase().insert("notifications", null, values);
+                    }
+                });
+                snackbar.show();
+                Singleton.getInstance().getDatabase().rawQuery("DELETE FROM notifications WHERE title='" + title.get(viewHolder.getAdapterPosition()) + "'", null);
+            }
+        };
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(recy);
     }
 
     @Override
