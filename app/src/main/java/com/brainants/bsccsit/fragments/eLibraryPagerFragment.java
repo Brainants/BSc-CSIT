@@ -1,6 +1,7 @@
 package com.brainants.bsccsit.fragments;
 
 
+import android.Manifest;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -9,6 +10,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -21,7 +23,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.anthonycr.grant.PermissionsManager;
+import com.anthonycr.grant.PermissionsResultAction;
 import com.brainants.bsccsit.R;
+import com.brainants.bsccsit.activities.MainActivity;
 import com.brainants.bsccsit.adapters.eLibraryAdapter;
 import com.brainants.bsccsit.advance.Singleton;
 import com.devspark.robototextview.widget.RobotoTextView;
@@ -89,51 +94,53 @@ public class eLibraryPagerFragment extends Fragment {
             nofilesMsg.setVisibility(View.VISIBLE);
         adapter.setOnCLickListener(new eLibraryAdapter.ClickListener() {
             @Override
-            public void onIconClick(View view, int position) {
-                if (eLibraryAdapter.checkExistance(types[getArguments().getInt("position")], FileName.get(position))) {
-                    if (!Singleton.isPermissionGiven()) {
-                        Singleton.requestPermission((AppCompatActivity) getActivity());
-                        return;
-                    }
-                    File file = new File(Environment.getExternalStorageDirectory() + "/" + Singleton.getSemester() + "/" + types[getArguments().getInt("position")] +
-                            "/" + FileName.get(position));
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setDataAndType(Uri.fromFile(file), "application/pdf");
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                    try {
-                        startActivity(intent);
-                    } catch (Exception e) {
-                        Snackbar.make(core.findViewById(R.id.coreLibrary), "No reader found.", Snackbar.LENGTH_LONG).setAction("Download", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                String appPackageName = "com.adobe.reader";
-                                try {
-                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                                } catch (android.content.ActivityNotFoundException anfe) {
-                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-                                }
-                            }
-                        }).show();
-                    }
-
-                } else {
-                    String url = Link.get(position);
-                    DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-                    request.setDescription("Source: " + Source.get(position));
-                    request.setTitle(FileName.get(position));
-
-                    request.allowScanningByMediaScanner();
-                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                    request.setDestinationInExternalFilesDir(getActivity(), Singleton.getSemester() + "/" + types[getArguments().getInt("position")],
-                            FileName.get(position));
-
-                    DownloadManager manager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
-                    manager.enqueue(request);
-
-                    Snackbar.make(core.findViewById(R.id.coreLibrary), "Download is in Queue.", Snackbar.LENGTH_SHORT).show();
-                }
+            public void onIconClick(View view, final int position) {
+                onClickHandler(position);
             }
         });
+    }
+
+    public void onClickHandler(final int position) {
+
+        if (eLibraryAdapter.checkExistance(types[getArguments().getInt("position")], FileName.get(position))) {
+
+            File file = new File(Environment.getExternalStorageDirectory() + "/BSc CSIT/" + Singleton.getSemester() + "/" + types[getArguments().getInt("position")] +
+                    "/" + FileName.get(position));
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(Uri.fromFile(file), "application/pdf");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            try {
+                startActivity(intent);
+            } catch (Exception e) {
+                Snackbar.make(core.findViewById(R.id.coreLibrary), "No reader found.", Snackbar.LENGTH_LONG).setAction("Download", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String appPackageName = "com.adobe.reader";
+                        try {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                        } catch (android.content.ActivityNotFoundException anfe) {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                        }
+                    }
+                }).show();
+            }
+
+
+        } else   {
+            String url = Link.get(position);
+            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+            request.setDescription("Source: " + Source.get(position));
+            request.setTitle(FileName.get(position));
+
+            request.allowScanningByMediaScanner();
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            request.setDestinationInExternalPublicDir("/Bsc CSIT/" + Singleton.getSemester(), types[getArguments().getInt("position")]);
+
+            DownloadManager manager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
+            manager.enqueue(request);
+
+            Snackbar.make(core.findViewById(R.id.coreLibrary), "Download is in Queue.", Snackbar.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -153,6 +160,9 @@ public class eLibraryPagerFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             Toast.makeText(context, "Download Completed.", Toast.LENGTH_SHORT).show();
         }
+
     }
+
+
 }
 

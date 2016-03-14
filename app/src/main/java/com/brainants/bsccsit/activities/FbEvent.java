@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -26,7 +27,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.anthonycr.grant.PermissionsManager;
+import com.anthonycr.grant.PermissionsResultAction;
 import com.brainants.bsccsit.R;
 import com.brainants.bsccsit.advance.Singleton;
 import com.devspark.robototextview.widget.RobotoTextView;
@@ -45,7 +49,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class FbEvent extends AppCompatActivity {
+public class FbEvent extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
 
     private String eventId;
@@ -161,6 +165,8 @@ public class FbEvent extends AppCompatActivity {
     }
 
     private void addEvent() {
+
+
         long calId = Singleton.calenderID(this);
         long startTimeForomDate;
         try {
@@ -198,6 +204,23 @@ public class FbEvent extends AppCompatActivity {
             getContentResolver().insert(CalendarContract.Reminders.CONTENT_URI, values);
             getSharedPreferences("event", MODE_PRIVATE).edit().putLong(eventId, addedEventId).apply();
             Snackbar.make(findViewById(R.id.eventCoordinator), "Remainder added to your calender", Snackbar.LENGTH_SHORT).show();
+        } else {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_CALENDAR)) {
+
+                Snackbar.make(this.findViewById(R.id.eventCoordinator), "Please provide storage permission to download and store reports in your device", Snackbar.LENGTH_INDEFINITE)
+                        .setAction("Ok.", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ActivityCompat.requestPermissions(FbEvent.this, new String[]{Manifest.permission.WRITE_CALENDAR}, 100);
+
+                            }
+                        }).show();
+            }  else
+
+                ActivityCompat.requestPermissions(FbEvent.this, new String[]{Manifest.permission.WRITE_CALENDAR}, 100);
+
+
         }
 
     }
@@ -356,5 +379,14 @@ public class FbEvent extends AppCompatActivity {
         DisplayMetrics metrics = resources.getDisplayMetrics();
         float px = dp * (metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
         return px;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "Request permission granted", Toast.LENGTH_SHORT).show();
+        } else
+            Toast.makeText(this, "Request permission denied", Toast.LENGTH_SHORT).show();
     }
 }

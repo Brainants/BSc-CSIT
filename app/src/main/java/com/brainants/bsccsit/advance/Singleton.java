@@ -297,27 +297,5 @@ public class Singleton {
         return Long.valueOf(uri.getLastPathSegment());
     }
 
-    public static boolean isPermissionGiven() {
-        return ContextCompat.checkSelfPermission(MyApp.getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-    }
-
-
-    public static void requestPermission(final AppCompatActivity activity) {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(activity, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            new MaterialDialog.Builder(activity)
-                    .title("Permission Request")
-                    .content("This permission allows us to store downloaded contents on your storage.")
-                    .positiveText("Proceed")
-                    .negativeText("Cancel")
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            ActivityCompat.requestPermissions(activity,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
-                        }
-                    }).build().show();
-        } else {
-            ActivityCompat.requestPermissions(activity,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
-        }
-    }
 }
 
