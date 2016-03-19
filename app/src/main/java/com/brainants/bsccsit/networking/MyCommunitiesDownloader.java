@@ -50,6 +50,7 @@ public class MyCommunitiesDownloader {
                     }
                     fillMyCommFromResponse(tags.substring(0, tags.length() - 1), list);
                 } catch (JSONException e) {
+                    listener.onTaskCompleted(false);
                 }
             }
         }, new Response.ErrorListener() {

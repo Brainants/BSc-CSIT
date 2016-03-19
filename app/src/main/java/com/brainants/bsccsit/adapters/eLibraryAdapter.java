@@ -52,7 +52,7 @@ public class eLibraryAdapter extends RecyclerView.Adapter<eLibraryAdapter.VH> {
     public static boolean checkExistance(String fileType, String fileName) {
         File file = new File(Environment.getExternalStorageDirectory() + "/BSc CSIT/" + Singleton.getSemester() + "/" + fileType + "/" + fileName);
         if (!file.exists()) {
-            new File(Environment.getExternalStorageDirectory() + "/BSc CSIT/" + Singleton.getSemester() + "/" + fileType + "/").mkdir();
+            file.mkdir();
         }
         return file.exists();
     }
@@ -71,7 +71,7 @@ public class eLibraryAdapter extends RecyclerView.Adapter<eLibraryAdapter.VH> {
     }
 
     public class VH extends RecyclerView.ViewHolder {
-        RobotoTextView name, source, view;
+        RobotoTextView name, source;
         ImageView icon;
         RelativeLayout coreFile;
 

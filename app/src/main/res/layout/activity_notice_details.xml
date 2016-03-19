@@ -85,8 +85,7 @@
                 android:layout_margin="4dp"
                 fancy:fb_defaultColor="@color/colorPrimary"
                 fancy:fb_focusColor="@color/colorPrimaryDark"
-                android:layout_centerHorizontal="true"
-                 />
+                android:layout_centerHorizontal="true" />
         </RelativeLayout>
 
     </android.support.v4.widget.NestedScrollView>

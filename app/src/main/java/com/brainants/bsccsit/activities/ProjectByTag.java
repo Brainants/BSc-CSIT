@@ -91,7 +91,6 @@ public class ProjectByTag extends AppCompatActivity {
                     }
                     fillRecy();
                 } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
         }, new Response.ErrorListener() {
@@ -99,7 +98,6 @@ public class ProjectByTag extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 errorMsg.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
-                error.printStackTrace();
             }
         }) {
             @Override

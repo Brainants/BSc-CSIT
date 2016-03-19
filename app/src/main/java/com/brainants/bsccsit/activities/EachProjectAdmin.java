@@ -133,7 +133,6 @@ public class EachProjectAdmin extends AppCompatActivity {
                     }
                     handleEdit();
                 } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
         }, new Response.ErrorListener() {
@@ -332,7 +331,6 @@ public class EachProjectAdmin extends AppCompatActivity {
                                 })
                                 .show();
                     } catch (JSONException e) {
-                        e.printStackTrace();
                     }
                 }
             });
@@ -363,7 +361,6 @@ public class EachProjectAdmin extends AppCompatActivity {
                         loadFromInternet();
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
                 }
             }
         }, new Response.ErrorListener() {
@@ -414,7 +411,6 @@ public class EachProjectAdmin extends AppCompatActivity {
                         loadFromInternet();
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
                 }
             }
         }, new Response.ErrorListener() {
@@ -581,7 +577,6 @@ public class EachProjectAdmin extends AppCompatActivity {
                         }
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
                 }
             }
         }, new Response.ErrorListener() {

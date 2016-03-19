@@ -161,7 +161,6 @@ public class Settings extends AppCompatActivity {
                         Snackbar.make(findViewById(R.id.settingsCore), "Something went wrong. Try again later.", Snackbar.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
                 }
             }
         }, new Response.ErrorListener() {

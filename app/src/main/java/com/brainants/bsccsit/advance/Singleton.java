@@ -1,24 +1,16 @@
 package com.brainants.bsccsit.advance;
 
-import android.Manifest;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.provider.CalendarContract;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateUtils;
 import android.view.View;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.brainants.bsccsit.R;
@@ -235,13 +227,6 @@ public class Singleton {
 
     public static int getNotifCount() {
         Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM notifications", null);
-        int count = cursor.getCount();
-        cursor.close();
-        return count;
-    }
-
-    public static int getEventCount() {
-        Cursor cursor = Singleton.getInstance().getDatabase().rawQuery("SELECT * FROM events", null);
         int count = cursor.getCount();
         cursor.close();
         return count;

@@ -106,7 +106,6 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onError(FacebookException e) {
-                e.printStackTrace();
                 Snackbar.make(findViewById(R.id.LoginCore), "Unable to connect.", Snackbar.LENGTH_SHORT).setAction("Retry", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -193,6 +192,8 @@ public class LoginActivity extends AppCompatActivity {
                             finish();
                         }
                     } catch (Exception ignored) {
+                        dialog.dismiss();
+                        Toast.makeText(LoginActivity.this, "Our server is having some hiccups. Please try in a little bit.", Toast.LENGTH_SHORT).show();
                     }
                 }
             }, new Response.ErrorListener() {

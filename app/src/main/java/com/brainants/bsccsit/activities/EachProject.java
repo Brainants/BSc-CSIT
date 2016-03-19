@@ -134,7 +134,6 @@ public class EachProject extends AppCompatActivity {
                         sendRequest.setVisibility(View.GONE);
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
         }, new Response.ErrorListener() {
@@ -143,7 +142,6 @@ public class EachProject extends AppCompatActivity {
                 mScrollView.setVisibility(View.GONE);
                 loading.setVisibility(View.GONE);
                 errorLayout.setVisibility(View.VISIBLE);
-                error.printStackTrace();
             }
         }) {
             @Override

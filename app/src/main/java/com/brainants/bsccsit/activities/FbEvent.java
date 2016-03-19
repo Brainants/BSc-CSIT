@@ -29,8 +29,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.anthonycr.grant.PermissionsManager;
-import com.anthonycr.grant.PermissionsResultAction;
 import com.brainants.bsccsit.R;
 import com.brainants.bsccsit.advance.Singleton;
 import com.devspark.robototextview.widget.RobotoTextView;
@@ -39,6 +37,8 @@ import com.facebook.FacebookRequestError;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -46,6 +46,7 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -151,78 +152,91 @@ public class FbEvent extends AppCompatActivity implements ActivityCompat.OnReque
     }
 
     private void deleteEvent() {
-        String[] selArgs =
+        final String[] selArgs =
                 new String[]{Long.toString(Singleton.isScheduledEvent(eventId))};
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_GRANTED) {
-            getContentResolver().
-                    delete(
-                            CalendarContract.Events.CONTENT_URI,
-                            CalendarContract.Events._ID + " =? ",
-                            selArgs);
-            getSharedPreferences("event", MODE_PRIVATE).edit().putLong(eventId, -1).apply();
-            Snackbar.make(findViewById(R.id.eventCoordinator), "Remainder removed from your calender", Snackbar.LENGTH_SHORT).show();
-        }
+
+        new TedPermission(this)
+                .setPermissions(Manifest.permission.WRITE_CALENDAR)
+                .setPermissionListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted() {
+                        if (ActivityCompat.checkSelfPermission(FbEvent.this, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED)
+
+                            getContentResolver().
+                                    delete(
+                                            CalendarContract.Events.CONTENT_URI,
+                                            CalendarContract.Events._ID + " =? ",
+                                            selArgs);
+                        getSharedPreferences("event", MODE_PRIVATE).edit().putLong(eventId, -1).apply();
+                        Snackbar.make(findViewById(R.id.eventCoordinator), "Remainder removed from your calender", Snackbar.LENGTH_SHORT).show();
+
+                    }
+
+                    @Override
+                    public void onPermissionDenied(ArrayList<String> arrayList) {
+                        Snackbar.make(MainActivity.coordinatorLayout, "Unable to get the permission.", Snackbar.LENGTH_SHORT).show();
+                    }
+                })
+                .setDeniedMessage("It seems that you rejected the permission request.\n\nPlease turn on Calender permissions from settings to proceed.")
+                .check();
+
     }
 
     private void addEvent() {
+        new TedPermission(this)
+                .setPermissionListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted() {
+                        long calId = Singleton.calenderID(FbEvent.this);
+                        long startTimeForomDate;
+                        try {
+                            SimpleDateFormat sfd = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZZZZZ", Locale.US);
+                            startTimeForomDate = sfd.parse(startTime).getTime();
+                        } catch (ParseException e) {
+                            return;
+                        }
 
-
-        long calId = Singleton.calenderID(this);
-        long startTimeForomDate;
-        try {
-            SimpleDateFormat sfd = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZZZZZ", Locale.US);
-            startTimeForomDate = sfd.parse(startTime).getTime();
-        } catch (ParseException e) {
-            return;
-        }
-
-        ContentValues values = new ContentValues();
-        values.put(CalendarContract.Events.DTSTART, startTimeForomDate);
-        values.put(CalendarContract.Events.DTEND, startTimeForomDate);
-        values.put(CalendarContract.Events.TITLE, event_name.getText().toString());
-        values.put(CalendarContract.Events.EVENT_LOCATION, event_place.getText().toString());
-        values.put(CalendarContract.Events.CALENDAR_ID, calId);
-        values.put(CalendarContract.Events.EVENT_TIMEZONE, "Asia/Kathmandu");
-        values.put(CalendarContract.Events.DESCRIPTION, event_description.getText().toString());
+                        final ContentValues values = new ContentValues();
+                        values.put(CalendarContract.Events.DTSTART, startTimeForomDate);
+                        values.put(CalendarContract.Events.DTEND, startTimeForomDate);
+                        values.put(CalendarContract.Events.TITLE, event_name.getText().toString());
+                        values.put(CalendarContract.Events.EVENT_LOCATION, event_place.getText().toString());
+                        values.put(CalendarContract.Events.CALENDAR_ID, calId);
+                        values.put(CalendarContract.Events.EVENT_TIMEZONE, "Asia/Kathmandu");
+                        values.put(CalendarContract.Events.DESCRIPTION, event_description.getText().toString());
 // reasonable defaults exist:
-        values.put(CalendarContract.Events.ACCESS_LEVEL, CalendarContract.Events.ACCESS_PRIVATE);
-        values.put(CalendarContract.Events.SELF_ATTENDEE_STATUS,
-                CalendarContract.Events.STATUS_CONFIRMED);
-        values.put(CalendarContract.Events.ORGANIZER, hosted_by.getText().toString());
-        values.put(CalendarContract.Events.GUESTS_CAN_INVITE_OTHERS, 1);
-        values.put(CalendarContract.Events.GUESTS_CAN_MODIFY, 1);
-        values.put(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
-        if (ActivityCompat.checkSelfPermission(FbEvent.this, Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_GRANTED) {
+                        values.put(CalendarContract.Events.ACCESS_LEVEL, CalendarContract.Events.ACCESS_PRIVATE);
+                        values.put(CalendarContract.Events.SELF_ATTENDEE_STATUS,
+                                CalendarContract.Events.STATUS_CONFIRMED);
+                        values.put(CalendarContract.Events.ORGANIZER, hosted_by.getText().toString());
+                        values.put(CalendarContract.Events.GUESTS_CAN_INVITE_OTHERS, 1);
+                        values.put(CalendarContract.Events.GUESTS_CAN_MODIFY, 1);
+                        values.put(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
 
-            Uri uri = getContentResolver().insert(CalendarContract.Events.CONTENT_URI, values);
-            long addedEventId = Long.valueOf(uri.getLastPathSegment());
+                        if (ActivityCompat.checkSelfPermission(FbEvent.this, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+                            return;
+                        }
+                        Uri uri = getContentResolver().insert(CalendarContract.Events.CONTENT_URI, values);
+                        long addedEventId = Long.valueOf(uri.getLastPathSegment());
 
-            values.clear();
-            values.put(CalendarContract.Reminders.EVENT_ID, addedEventId);
-            values.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
-            values.put(CalendarContract.Reminders.MINUTES, 60);
-            getContentResolver().insert(CalendarContract.Reminders.CONTENT_URI, values);
-            getSharedPreferences("event", MODE_PRIVATE).edit().putLong(eventId, addedEventId).apply();
-            Snackbar.make(findViewById(R.id.eventCoordinator), "Remainder added to your calender", Snackbar.LENGTH_SHORT).show();
-        } else {
+                        values.clear();
+                        values.put(CalendarContract.Reminders.EVENT_ID, addedEventId);
+                        values.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
+                        values.put(CalendarContract.Reminders.MINUTES, 60);
+                        getContentResolver().insert(CalendarContract.Reminders.CONTENT_URI, values);
+                        getSharedPreferences("event", MODE_PRIVATE).edit().putLong(eventId, addedEventId).apply();
+                        Snackbar.make(findViewById(R.id.eventCoordinator), "Remainder added to your calender", Snackbar.LENGTH_SHORT).show();
 
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_CALENDAR)) {
+                    }
 
-                Snackbar.make(this.findViewById(R.id.eventCoordinator), "Please provide storage permission to download and store reports in your device", Snackbar.LENGTH_INDEFINITE)
-                        .setAction("Ok.", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                ActivityCompat.requestPermissions(FbEvent.this, new String[]{Manifest.permission.WRITE_CALENDAR}, 100);
-
-                            }
-                        }).show();
-            }  else
-
-                ActivityCompat.requestPermissions(FbEvent.this, new String[]{Manifest.permission.WRITE_CALENDAR}, 100);
-
-
-        }
-
+                    @Override
+                    public void onPermissionDenied(ArrayList<String> arrayList) {
+                        Snackbar.make(MainActivity.coordinatorLayout, "Unable to get the permission.", Snackbar.LENGTH_SHORT).show();
+                    }
+                })
+                .setDeniedMessage("It seems that you rejected the permission request.\n\nPlease turn on Calender permissions from settings to proceed.")
+                .setPermissions(Manifest.permission.WRITE_CALENDAR)
+                .check();
     }
 
     private void handleFab() {

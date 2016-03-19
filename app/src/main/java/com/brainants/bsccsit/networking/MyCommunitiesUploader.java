@@ -36,7 +36,6 @@ public class MyCommunitiesUploader {
                     }
 
                 } catch (JSONException e) {
-                    e.printStackTrace();
                 }
             }
         }, new Response.ErrorListener() {
