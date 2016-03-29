@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -33,6 +34,8 @@ import com.liulishuo.filedownloader.FileDownloadListener;
 import com.liulishuo.filedownloader.FileDownloader;
 
 import java.io.File;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
 public class eLibraryPagerFragment extends Fragment {
@@ -47,6 +50,7 @@ public class eLibraryPagerFragment extends Fragment {
     private RobotoTextView nofilesMsg;
     eLibraryAdapter adapter;
     int downloadId = 1;
+    int size = -1;
 
 
     public eLibraryPagerFragment() {
@@ -123,7 +127,6 @@ public class eLibraryPagerFragment extends Fragment {
 
             File file = new File(Environment.getExternalStorageDirectory() + "/BSc CSIT/" + Singleton.getSemester() + "/" + types[getArguments().getInt("position")] +
                     "/" + FileName.get(position));
-            file.mkdirs();
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setDataAndType(Uri.fromFile(file), "application/pdf");
             intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
@@ -145,11 +148,11 @@ public class eLibraryPagerFragment extends Fragment {
 
 
         } else {
-            String url = Link.get(position);
+            final String url = Link.get(position);
             final MaterialDialog dialog;
             dialog = new MaterialDialog.Builder(getContext())
                     .title("Downloading " + Title.get(position))
-                    .progress(false, 100)
+                    .progress(true, 0)
                     .cancelable(false)
                     .positiveText("Cancel")
                     .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -160,35 +163,34 @@ public class eLibraryPagerFragment extends Fragment {
                     })
                     .build();
             dialog.show();
-            downloadId = FileDownloader.getImpl().create(url)
+
+            downloadId = FileDownloader
+                    .getImpl()
+                    .create(url)
                     .setPath(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Bsc CSIT/" + Singleton.getSemester() + "/" + types[getArguments().getInt("position")] + "/" + FileName.get(position))
                     .setListener(new FileDownloadListener() {
+
                         @Override
                         protected void pending(BaseDownloadTask task, int soFarBytes, int totalBytes) {
-                            Log.d("debud", "pending");
+
                         }
 
                         @Override
                         protected void connected(BaseDownloadTask task, String etag, boolean isContinue, int soFarBytes, int totalBytes) {
-                            Log.d("debud", "Connected");
+
                         }
 
                         @Override
                         protected void progress(BaseDownloadTask task, int soFarBytes, int totalBytes) {
-                            try {
-                                dialog.setProgress(soFarBytes / totalBytes * 100);
-                            } catch (Exception r) {
-                            }
+
                         }
 
                         @Override
                         protected void blockComplete(BaseDownloadTask task) {
-                            Log.d("debud", "block completed");
                         }
 
                         @Override
                         protected void retry(final BaseDownloadTask task, final Throwable ex, final int retryingTimes, final int soFarBytes) {
-                            Log.d("debud", "retry");
                         }
 
                         @Override
@@ -199,19 +201,22 @@ public class eLibraryPagerFragment extends Fragment {
 
                         @Override
                         protected void paused(BaseDownloadTask task, int soFarBytes, int totalBytes) {
-                            Toast.makeText(getContext(), "Download unsuccessful paused.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Download paused.", Toast.LENGTH_SHORT).show();
+                            new File(task.getPath()).delete();
                             dialog.dismiss();
                         }
 
                         @Override
                         protected void error(BaseDownloadTask task, Throwable e) {
-                            Toast.makeText(getContext(), "Download unsuccessful.error", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Download unsuccessful.", Toast.LENGTH_SHORT).show();
+                            new File(task.getPath()).delete();
                             dialog.dismiss();
                         }
 
                         @Override
                         protected void warn(BaseDownloadTask task) {
-                            Toast.makeText(getContext(), "Download unsuccessful. warn", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Download unsuccessful.", Toast.LENGTH_SHORT).show();
+                            new File(task.getPath()).delete();
                             dialog.dismiss();
                         }
                     }).start();

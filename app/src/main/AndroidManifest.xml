@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.SEND_DOWNLOAD_COMPLETED_INTENTS" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.READ_CALENDAR" />
-    <uses-permission android:name="android.permission.WRITE_CALENDAR" />recei
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
 
     <application
         android:name=".advance.MyApp"

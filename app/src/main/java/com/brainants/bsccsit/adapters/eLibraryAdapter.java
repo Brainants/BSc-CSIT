@@ -51,9 +51,6 @@ public class eLibraryAdapter extends RecyclerView.Adapter<eLibraryAdapter.VH> {
 
     public static boolean checkExistance(String fileType, String fileName) {
         File file = new File(Environment.getExternalStorageDirectory() + "/BSc CSIT/" + Singleton.getSemester() + "/" + fileType + "/" + fileName);
-        if (!file.exists()) {
-            file.mkdir();
-        }
         return file.exists();
     }
 
