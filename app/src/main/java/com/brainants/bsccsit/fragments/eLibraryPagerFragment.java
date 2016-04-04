@@ -4,10 +4,8 @@ import android.Manifest;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -18,10 +16,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.ProgressBar;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.brainants.bsccsit.R;
 import com.brainants.bsccsit.activities.MainActivity;
 import com.brainants.bsccsit.adapters.eLibraryAdapter;
@@ -34,8 +30,6 @@ import com.liulishuo.filedownloader.FileDownloadListener;
 import com.liulishuo.filedownloader.FileDownloader;
 
 import java.io.File;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 
 public class eLibraryPagerFragment extends Fragment {
@@ -49,8 +43,6 @@ public class eLibraryPagerFragment extends Fragment {
     private View core;
     private RobotoTextView nofilesMsg;
     eLibraryAdapter adapter;
-    int downloadId = 1;
-    int size = -1;
 
 
     public eLibraryPagerFragment() {
@@ -101,12 +93,12 @@ public class eLibraryPagerFragment extends Fragment {
             nofilesMsg.setVisibility(View.VISIBLE);
         adapter.setOnCLickListener(new eLibraryAdapter.ClickListener() {
             @Override
-            public void onIconClick(View view, final int position) {
+            public void onIconClick(final View view, final int position) {
                 new TedPermission(getActivity())
                         .setPermissionListener(new PermissionListener() {
                             @Override
                             public void onPermissionGranted() {
-                                onClickHandler(position);
+                                onClickHandler(view, position);
                             }
 
                             @Override
@@ -121,9 +113,9 @@ public class eLibraryPagerFragment extends Fragment {
         });
     }
 
-    public void onClickHandler(final int position) {
+    public void onClickHandler(final View view, final int position) {
 
-        if (eLibraryAdapter.checkExistance(types[getArguments().getInt("position")], FileName.get(position))) {
+        if (eLibraryAdapter.downloadStatus(FileName.get(position)) == 100) {
 
             File file = new File(Environment.getExternalStorageDirectory() + "/BSc CSIT/" + Singleton.getSemester() + "/" + types[getArguments().getInt("position")] +
                     "/" + FileName.get(position));
@@ -145,26 +137,11 @@ public class eLibraryPagerFragment extends Fragment {
                     }
                 }).show();
             }
-
-
+        } else if (eLibraryAdapter.downloadStatus(FileName.get(position)) > 0) {
+            FileDownloader.getImpl().pause(Singleton.getInstance().getDownloadID(FileName.get(position)));
         } else {
             final String url = Link.get(position);
-            final MaterialDialog dialog;
-            dialog = new MaterialDialog.Builder(getContext())
-                    .title("Downloading " + Title.get(position))
-                    .progress(true, 0)
-                    .cancelable(false)
-                    .positiveText("Cancel")
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            FileDownloader.getImpl().pause(downloadId);
-                        }
-                    })
-                    .build();
-            dialog.show();
-
-            downloadId = FileDownloader
+            int downloadId = FileDownloader
                     .getImpl()
                     .create(url)
                     .setPath(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Bsc CSIT/" + Singleton.getSemester() + "/" + types[getArguments().getInt("position")] + "/" + FileName.get(position))
@@ -182,7 +159,12 @@ public class eLibraryPagerFragment extends Fragment {
 
                         @Override
                         protected void progress(BaseDownloadTask task, int soFarBytes, int totalBytes) {
+                            ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressDownload);
+                            progressBar.setMax(totalBytes);
+                            progressBar.setProgress(soFarBytes);
+                            Log.d("Debug", totalBytes + " " + soFarBytes);
 
+                            eLibraryAdapter.setDownloadStatus(FileName.get(position), (int) ((float) soFarBytes / (float) totalBytes));
                         }
 
                         @Override
@@ -196,30 +178,21 @@ public class eLibraryPagerFragment extends Fragment {
                         @Override
                         protected void completed(BaseDownloadTask task) {
                             adapter.notifyItemChanged(position);
-                            dialog.dismiss();
                         }
 
                         @Override
                         protected void paused(BaseDownloadTask task, int soFarBytes, int totalBytes) {
-                            Toast.makeText(getContext(), "Download paused.", Toast.LENGTH_SHORT).show();
-                            new File(task.getPath()).delete();
-                            dialog.dismiss();
                         }
 
                         @Override
                         protected void error(BaseDownloadTask task, Throwable e) {
-                            Toast.makeText(getContext(), "Download unsuccessful.", Toast.LENGTH_SHORT).show();
-                            new File(task.getPath()).delete();
-                            dialog.dismiss();
                         }
 
                         @Override
                         protected void warn(BaseDownloadTask task) {
-                            Toast.makeText(getContext(), "Download unsuccessful.", Toast.LENGTH_SHORT).show();
-                            new File(task.getPath()).delete();
-                            dialog.dismiss();
                         }
                     }).start();
+            Singleton.getInstance().setDownloadId(downloadId, FileName.get(position));
         }
     }
 

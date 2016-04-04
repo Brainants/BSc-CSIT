@@ -282,5 +282,12 @@ public class Singleton {
         return Long.valueOf(uri.getLastPathSegment());
     }
 
+    public int getDownloadID(String fileName) {
+        return MyApp.getContext().getSharedPreferences("download_ids", Context.MODE_PRIVATE).getInt(fileName, 0);
+    }
+
+    public void setDownloadId(int downloadId, String fileName) {
+        MyApp.getContext().getSharedPreferences("download_ids", Context.MODE_PRIVATE).edit().putInt(fileName, downloadId).apply();
+    }
 }
 
