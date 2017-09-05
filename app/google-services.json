@@ -15,11 +15,19 @@
       },
       "oauth_client": [
         {
+          "client_id": "664292084224-tmqrbtesre2uomas14s6o48ngfkfomek.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.brainants.bsccsit",
+            "certificate_hash": "b939d8cf6bfc38216dfb8dde1fe06753e1abe1b8"
+          }
+        },
+        {
           "client_id": "664292084224-j42g07lpum7f7g4q023pa9258e2kp37d.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.brainants.bsccsit",
-            "certificate_hash": "B79ED18CED81D0E29E5602403FFE68BD17F00666"
+            "certificate_hash": "b79ed18ced81d0e29e5602403ffe68bd17f00666"
           }
         },
         {

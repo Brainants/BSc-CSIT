@@ -28,9 +28,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.brainants.bsccsit.R;
 import com.brainants.bsccsit.advance.Singleton;
-import com.brainants.bsccsit.networking.GCMRegIdUploader;
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.LoginEvent;
 
 import org.json.JSONObject;
 
@@ -122,11 +119,6 @@ public class CompleteLoginForm extends Fragment implements AdapterView.OnItemSel
                         editor.putString("college", college.getSelectedItem().toString());
                         editor.putBoolean("formFilled", true);
                         editor.apply();
-                        new GCMRegIdUploader().doInBackground();
-                        Answers.getInstance().logLogin(new LoginEvent()
-                                .putMethod("Facebook")
-                                .putSuccess(true));
-
                         getActivity().getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.completeFragHolder, new BasicCommunityChooser())
                                 .commit();
@@ -138,10 +130,6 @@ public class CompleteLoginForm extends Fragment implements AdapterView.OnItemSel
             @Override
             public void onErrorResponse(VolleyError error) {
                 dialog.dismiss();
-                Answers.getInstance().logLogin(new LoginEvent()
-                        .putMethod("Facebook")
-                        .putSuccess(false));
-
                 Snackbar.make(view.findViewById(R.id.CompleteCore), "Unable to connect.", Snackbar.LENGTH_SHORT).setAction("Retry", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

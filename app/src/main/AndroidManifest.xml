@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.brainants.bsccsit">
 
-    <uses-sdk android:maxSdkVersion="23" />
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -28,7 +26,6 @@
 
         <activity
             android:name=".activities.MainActivity"
-            android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -54,33 +51,26 @@
 
         <activity
             android:name=".activities.LoginActivity"
-            android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
         <activity
             android:name="com.facebook.FacebookActivity"
-            android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.CompleteLogin"
-            android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:theme="@style/FullscreenTheme" />
         <activity
             android:name=".activities.Settings"
-            android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.ImageViewActivity"
-            android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
         <activity
             android:name=".activities.EachPost"
-            android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -101,7 +91,6 @@
 
         <activity
             android:name=".activities.FbPage"
-            android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -117,7 +106,6 @@
         </activity>
         <activity
             android:name=".activities.AboutUs"
-            android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -133,7 +121,6 @@
         </activity>
         <activity
             android:name=".admin.AdminPanel"
-            android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
 
         <service
@@ -147,7 +134,6 @@
 
         <activity
             android:name=".activities.FbEvent"
-            android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -164,7 +150,6 @@
 
         <activity
             android:name=".activities.AddProject"
-            android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|adjustResize">
             <intent-filter>
@@ -181,7 +166,6 @@
         </activity>
         <activity
             android:name=".activities.NoticeDetails"
-            android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -197,7 +181,6 @@
         </activity>
         <activity
             android:name=".activities.EachProject"
-            android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -213,7 +196,6 @@
         </activity>
         <activity
             android:name=".activities.UserProfile"
-            android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -229,7 +211,6 @@
         </activity>
         <activity
             android:name=".activities.EachProjectAdmin"
-            android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -245,7 +226,6 @@
         </activity>
         <activity
             android:name=".activities.Notification"
-            android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -261,7 +241,6 @@
         </activity>
         <activity
             android:name=".activities.ProjectByTag"
-            android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -278,7 +257,6 @@
         </activity>
         <activity
             android:name=".activities.Feedback"
-            android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -294,7 +272,6 @@
         </activity>
         <activity
             android:name=".activities.EventVenueMap"
-            android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
 
         <!--Below code is the config file for GCM!-->

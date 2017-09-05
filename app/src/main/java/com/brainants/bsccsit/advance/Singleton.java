@@ -14,7 +14,6 @@ import android.view.View;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.brainants.bsccsit.R;
-import com.google.android.gms.gcm.GcmNetworkManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,13 +26,11 @@ public class Singleton {
     private static Singleton sInstance = null;
     private RequestQueue mRequestQueue;
     private DatabaseHandler mDatabase;
-    private GcmNetworkManager mScheduler;
 
 
     private Singleton() {
         mDatabase = new DatabaseHandler(MyApp.getContext());
         mRequestQueue = Volley.newRequestQueue(MyApp.getContext());
-        mScheduler = GcmNetworkManager.getInstance(MyApp.getContext());
     }
 
     public static Singleton getInstance() {
@@ -213,9 +210,6 @@ public class Singleton {
         return mDatabase.getWritableDatabase();
     }
 
-    public GcmNetworkManager getGcmScheduler() {
-        return mScheduler;
-    }
 
     public static boolean hasNewNotifications() {
         return MyApp.getContext().getSharedPreferences("notifications", Context.MODE_PRIVATE).getBoolean("hasNewNotif", false);

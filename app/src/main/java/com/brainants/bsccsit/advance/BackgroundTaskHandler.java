@@ -2,17 +2,19 @@ package com.brainants.bsccsit.advance;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.IBinder;
 import android.os.PowerManager;
+import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 
 import com.brainants.bsccsit.R;
 import com.brainants.bsccsit.networking.EventsDownloader;
-import com.brainants.bsccsit.networking.GCMRegIdUploader;
 import com.brainants.bsccsit.networking.MyCommunitiesUploader;
 import com.brainants.bsccsit.networking.NewsDownloader;
 import com.brainants.bsccsit.networking.NoticeDownloader;
@@ -20,14 +22,12 @@ import com.brainants.bsccsit.networking.NotificationDownloader;
 import com.brainants.bsccsit.networking.PopularCommunitiesDownloader;
 import com.brainants.bsccsit.networking.TagsDownloader;
 import com.brainants.bsccsit.networking.eLibraryDownloader;
-import com.google.android.gms.gcm.GcmTaskService;
-import com.google.android.gms.gcm.TaskParams;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class BackgroundTaskHandler extends GcmTaskService {
+public class BackgroundTaskHandler extends Service {
 
     private static int notifLibrary = 1;
     private static int notifNotice = 2;
@@ -74,8 +74,7 @@ public class BackgroundTaskHandler extends GcmTaskService {
     }
 
     @Override
-    public int onRunTask(TaskParams taskParams) {
-        new GCMRegIdUploader().doInBackground();
+    public int onStartCommand(Intent intent, int flags, int startId) {
 
         final int previousNews = Singleton.getNewsCount();
         NewsDownloader newsDownloader = new NewsDownloader();
@@ -153,6 +152,12 @@ public class BackgroundTaskHandler extends GcmTaskService {
 
             }
         });
-        return 1;
+        return START_STICKY;
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 }

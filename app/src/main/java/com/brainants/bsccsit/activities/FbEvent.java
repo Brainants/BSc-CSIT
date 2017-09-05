@@ -155,7 +155,7 @@ public class FbEvent extends AppCompatActivity implements ActivityCompat.OnReque
         final String[] selArgs =
                 new String[]{Long.toString(Singleton.isScheduledEvent(eventId))};
 
-        new TedPermission(this)
+        TedPermission.with(this)
                 .setPermissions(Manifest.permission.WRITE_CALENDAR)
                 .setPermissionListener(new PermissionListener() {
                     @Override
@@ -183,7 +183,7 @@ public class FbEvent extends AppCompatActivity implements ActivityCompat.OnReque
     }
 
     private void addEvent() {
-        new TedPermission(this)
+         TedPermission.with(this)
                 .setPermissionListener(new PermissionListener() {
                     @Override
                     public void onPermissionGranted() {

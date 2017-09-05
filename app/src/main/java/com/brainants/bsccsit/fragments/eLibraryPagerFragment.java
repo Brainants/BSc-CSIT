@@ -94,7 +94,7 @@ public class eLibraryPagerFragment extends Fragment {
         adapter.setOnCLickListener(new eLibraryAdapter.ClickListener() {
             @Override
             public void onIconClick(final View view, final int position) {
-                new TedPermission(getActivity())
+                TedPermission.with(getActivity())
                         .setPermissionListener(new PermissionListener() {
                             @Override
                             public void onPermissionGranted() {

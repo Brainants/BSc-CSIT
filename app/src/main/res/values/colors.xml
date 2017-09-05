@@ -11,4 +11,5 @@
     <color name="colorPrimaryTrans">#80009688</color>
     <color name="unfollowColor">#8A0707</color>
     <color name="unfollowColorTrans">#808A0707</color>
+    <color name="google_color">#0057e7</color>
 </resources>

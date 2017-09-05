@@ -25,7 +25,6 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.brainants.bsccsit.R;
 import com.brainants.bsccsit.admin.AdminPanel;
-import com.brainants.bsccsit.advance.BackgroundTaskHandler;
 import com.brainants.bsccsit.advance.Singleton;
 import com.brainants.bsccsit.fragments.Community;
 import com.brainants.bsccsit.fragments.Forum;
@@ -33,8 +32,7 @@ import com.brainants.bsccsit.fragments.NewsEvents;
 import com.brainants.bsccsit.fragments.Projects;
 import com.brainants.bsccsit.fragments.TuNotices;
 import com.brainants.bsccsit.fragments.eLibrary;
-import com.google.android.gms.gcm.GcmNetworkManager;
-import com.google.android.gms.gcm.PeriodicTask;
+import com.brainants.bsccsit.util.SpHandler;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -57,15 +55,13 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences pref = getSharedPreferences("loginInfo", MODE_PRIVATE);
         manager = getSupportFragmentManager();
 
-        //Login chaina vane login activity ma lanchha
-        if (!pref.getBoolean("loggedIn", false)) {
-            if (pref.getBoolean("loggedFirstIn", false)) {
-                startActivity(new Intent(this, CompleteLogin.class));
-                finish();
-            } else {
-                startActivity(new Intent(this, LoginActivity.class));
-                finish();
-            }
+        if (!SpHandler.getInstance().isUserLoggedIn()) {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+            return;
+        } else if (!SpHandler.getInstance().hasUserUpdatedLogin()) {
+            startActivity(new Intent(this, CompleteLogin.class));
+            finish();
             return;
         }
 
@@ -104,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
         setTitle("Home");
 
-        drawerLayout.setDrawerListener(actionBarDrawerToggle);
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
 
         //calling sync state is necessay or else your hamburger icon wont show up
         actionBarDrawerToggle.syncState();
@@ -112,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
         //checkAdmin
         navigationView.getMenu().getItem(7).setVisible(pref.getBoolean("admin", false));
 
-        constructJob();
 
         previous = R.id.newsEvent;
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -227,7 +222,6 @@ public class MainActivity extends AppCompatActivity {
                                 getSharedPreferences("misc", MODE_PRIVATE).edit().clear().apply();
                                 getSharedPreferences("community", MODE_PRIVATE).edit().clear().apply();
                                 getSharedPreferences("notifications", MODE_PRIVATE).edit().clear().apply();
-                                Singleton.getInstance().getGcmScheduler().cancelTask("periodic", BackgroundTaskHandler.class);
                                 Singleton.getInstance().getDatabase().execSQL("DELETE FROM popularCommunities");
                                 Singleton.getInstance().getDatabase().execSQL("DELETE FROM eLibrary");
                                 Singleton.getInstance().getDatabase().execSQL("DELETE FROM myCommunities");
@@ -307,26 +301,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
-    }
-
-    private void constructJob() {
-
-        String tag = "periodic";
-
-        GcmNetworkManager mScheduler = Singleton.getInstance().getGcmScheduler();
-
-        long periodSecs = 1800L;
-
-        PeriodicTask periodic = new PeriodicTask.Builder()
-                .setService(BackgroundTaskHandler.class)
-                .setPeriod(periodSecs)
-                .setTag(tag)
-                .setFlex(periodSecs)
-                .setPersisted(true)
-                .setUpdateCurrent(true)
-                .setRequiredNetwork(com.google.android.gms.gcm.Task.NETWORK_STATE_CONNECTED)
-                .build();
-        mScheduler.schedule(periodic);
     }
 
     @Override
